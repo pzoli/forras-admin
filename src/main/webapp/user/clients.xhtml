@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+
+		<p:growl id="growl" showSummary="true" showDetail="true"
+			sticky="true" />
+		<p:focus for="lazyForm:tableView:lazyTable" />
+		<h:form id="lazyForm">
+			<p:growl id="messages" showSummary="true" showDetail="true"
+				sticky="true" />
+			<p:tabView id="tableView">
+				<p:tab id="activeClients" title="Aktív kliensek">
+					<h:panelGrid columns="3" cellpadding="5">
+						<p:selectCheckboxMenu id="ctype_active"
+							value="#{clientsManager.visibleClientTypes}" label="Kliens típus"
+							panelStyle="width:250px">
+							<f:selectItems value="#{clientTypeService.findAll()}"
+								var="clientTypeItem" itemLabel="#{clientTypeItem.typename}"
+								itemValue="#{clientTypeItem.id}" />
+							<f:selectItem itemLabel="Nincs meghatározva" itemValue="" />
+						</p:selectCheckboxMenu>
+						<p:commandButton value="Frissítés" id="refreshFilterOnActive"
+							actionListener="#{clientsManager.cleanLazyDataModel}"
+							update=":lazyForm:tableView:lazyTable" ajax="true" />
+
+						<p:selectOneButton id="activefilter" value="#{clientsManager.visibleByActive}">
+							<f:selectItem itemLabel="Aktív" itemValue="true" />
+							<f:selectItem itemLabel="Passzív" itemValue="false" />
+							<f:selectItem itemLabel="Minden" itemValue="#{null}" />
+							<p:ajax event="change" update=":lazyForm:tableView:lazyTable" />
+						</p:selectOneButton>
+					</h:panelGrid>
+					<div tabindex="1" id="table_div">
+						<p:dataTable id="lazyTable" var="item" widgetVar="table"
+							rowKey="#{item.id}"
+							value="#{clientsManager.lazyDataModel}"
+							selection="#{clientsManager.selectedClients}"
+							emptyMessage="Nincs rögzített kliens"
+							styleClass="shorttablestyle" paginator="true" rows="10"
+							sortBy="#{item.neve}" resizableColumns="true"
+							draggableColumns="true" style="margin-bottom:20px"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+							rowsPerPageTemplate="5,10,15" lazy="true">
+							<f:facet name="{Exporters}">
+								<h:commandLink>
+									<p:graphicImage name="img/excel.png" width="24" />
+									<p:dataExporter type="xls" target="lazyTable"
+										fileName="clients"
+										postProcessor="#{exporterView.postProcessXLS}" />
+								</h:commandLink>
+							</f:facet>
+
+							<f:facet name="header">  
+            kliens lista  
+		                    </f:facet>
+							<p:ajax event="rowEdit" listener="#{clientsManager.onEdit}"
+								update=":lazyForm:messages" />
+							<p:ajax event="rowEditCancel"
+								listener="#{clientsManager.onCancel}"
+								update=":lazyForm:messages" />
+
+							<p:column selectionMode="multiple" style="width:4%" id="selectMultipleOnActive"/>
+
+							<p:column style="width:20%" resizable="true"
+								id="nyszamOnActive"
+								styleClass="tableFieldLeft" filterMatchMode="contains"
+								headerText="Nyilvántartási szám"
+								filterBy="#{item.nyilvantartasiSzam}"
+								sortBy="#{item.nyilvantartasiSzam}">
+								<h:outputText value="#{item.nyilvantartasiSzam}" />
+							</p:column>
+
+							<p:column filterBy="#{item.neve}" sortBy="#{item.neve}" id="neveOnActive"
+								resizable="true" styleClass="tableFieldLeft" style="width:20%"
+								filterMatchMode="contains" headerText="Név">
+								<h:outputText value="#{item.neve}" />
+							</p:column>
+
+							<p:column filterBy="#{item.taj}" filterMatchMode="contains" id="tajOnActive"
+								style="width:20%" headerText="Taj szám">
+								<h:outputText value="#{item.taj}" />
+							</p:column>
+
+							<p:column filterBy="#{item.currentManager.username}"
+								style="width:20%" filterMatchMode="contains" id="managerOnActive"
+								headerText="Esetmenedzser" styleClass="tableFieldLeft">
+								<h:outputText value="#{item.currentManager.username}"
+									rendered="#{item.currentManager != null}" />
+							</p:column>
+
+							<p:column filterBy="#{item.currentDoctor.name}" style="width:20%"
+								headerText="Orvos" id="doctorNameOnActive"
+								styleClass="tableFieldLeft">
+								<h:outputText value="#{item.currentDoctor.name}"
+									rendered="#{item.currentDoctor != null}" />
+							</p:column>
+
+							<p:column style="width:4%" id="togglerOnActive">
+								<p:rowToggler rendered="true" />
+							</p:column>
+
+							<p:column style="width:6%;text-align: center" id="detailsColumn">
+								<p:commandButton
+									update=":editForm:clientDetailsView,:editForm:btnSave,:editForm:btnQR"
+									id="showClientButton" widgetVar="showClientButtonWidget"
+									action="#{clientsManager.prepareCurrentClient(item)}"
+									oncomplete="PF('editDialogWidget').show();PF('clientDetailsWidget').select(0,true);"
+									icon="ui-icon-search" title="Részletek">
+								</p:commandButton>
+							</p:column>
+							<!-- 							
+							<p:column style="width:6%;text-align: center" id="testColumn">
+								<p:commandButton actionListener="#{clientsService.findLastVisit(item)}" icon="ui-icon-edit"/>
+							</p:column>
+ -->
+							<p:rowExpansion id="rowexp">
+								<p:panelGrid columns="2" styleClass="borderlessGrid">
+									<h:panelGrid id="itemdetails" columns="2" cellpadding="4"
+										style="width:500px;float:left;padding:10px;">
+
+										<f:facet name="header">
+							Kliens adatok
+						</f:facet>
+
+										<h:outputText value="Születési neve:" />
+										<p:outputLabel
+											rendered="#{(item.szuletesiNev == null) or (item.szuletesiNev == '')}"
+											value="üres" />
+										<p:outputLabel value="#{item.szuletesiNev}"
+											rendered="#{(item.szuletesiNev != null) and (item.szuletesiNev != '')}" />
+
+										<h:outputText value="Születés helye:" />
+										<p:outputLabel
+											rendered="#{(item.szuletesiHely == null) or (item.szuletesiHely == '')}"
+											value="üres" />
+										<p:outputLabel value="#{item.szuletesiHely}"
+											rendered="#{(item.szuletesiHely != null) and (item.szuletesiHely != '')}" />
+
+										<h:outputText value="Születés dátuma:" />
+										<p:outputLabel rendered="#{item.szuletesiIdo == null}"
+											value="üres" />
+										<p:outputLabel value="#{item.szuletesiIdo}"
+											rendered="#{item.szuletesiIdo != null}">
+											<f:convertDateTime pattern="yyyy.MM.dd" />
+										</p:outputLabel>
+
+										<h:outputText value="Anyja neve:" />
+										<p:outputLabel
+											rendered="#{(item.anyjaNeve == null) or (item.anyjaNeve== '')}"
+											value="üres" />
+										<p:outputLabel value="#{item.anyjaNeve}"
+											rendered="#{(item.anyjaNeve != null) and (item.anyjaNeve != '')}" />
+
+										<h:outputText value="felvétel dátuma:" />
+										<p:outputLabel rendered="#{item.felvetDatum == null}"
+											value="üres" />
+
+										<p:outputLabel value="#{item.felvetDatum}"
+											rendered="#{item.felvetDatum != null}">
+											<f:convertDateTime pattern="yyyy.MM.dd" />
+										</p:outputLabel>
+
+										<h:outputText value="megszünés dátuma:" />
+										<p:outputLabel rendered="#{item.megszDatum == null}"
+											value="Nincs meghatározva" />
+										<p:outputLabel value="#{item.megszDatum}"
+											rendered="#{item.megszDatum != null}">
+											<f:convertDateTime pattern="yyyy.MM.dd" />
+										</p:outputLabel>
+
+										<h:outputText value="életkor:" />
+										<p:outputLabel value="#{item.age} év" />
+									</h:panelGrid>
+
+									<h:panelGrid id="itemdetails2" columns="2" cellpadding="4"
+										columnClasses="borderlessGridLabel,borderlessGridInput"
+										style="width:400px;paddign:10px;float:right;display:block;">
+										<f:facet name="header">
+							Igazolások / nyilatkozat / megállapodás
+						</f:facet>
+										<h:outputText value="Jövedelem igazolás:" />
+										<p:outputLabel rendered="#{item.jovedelemIgazolas == null}"
+											value="Nincs meghatározva" />
+										<p:outputLabel value="#{item.jovedelemIgazolas}"
+											rendered="#{item.jovedelemIgazolas != null}">
+											<f:converter converterId="BoolConv" />
+										</p:outputLabel>
+
+
+										<h:outputText value="Megállapodas:" />
+										<p:outputLabel rendered="#{item.megallapodas == null}"
+											value="Nincs meghatározva" />
+										<p:outputLabel value="#{item.megallapodas}"
+											rendered="#{item.megallapodas != null}">
+											<f:converter converterId="BoolConv" />
+										</p:outputLabel>
+
+										<h:outputText value="Nyilatkozat (alap):" />
+										<p:outputLabel rendered="#{item.nyilatkozatalap == null}"
+											value="Nincs meghatározva" />
+										<p:outputLabel value="#{item.nyilatkozatalap}"
+											rendered="#{item.nyilatkozatalap != null}">
+											<f:converter converterId="BoolConv" />
+										</p:outputLabel>
+
+
+										<h:outputText value="Nyilatkozat (adat):" />
+										<p:outputLabel rendered="#{item.nyilatkozatadat == null}"
+											value="Nincs meghatározva" />
+										<p:outputLabel value="#{item.nyilatkozatadat}"
+											rendered="#{item.nyilatkozatadat != null}">
+											<f:converter converterId="BoolConv" />
+										</p:outputLabel>
+
+										<h:outputText value="Orvosi javaslat:" />
+										<p:outputLabel rendered="#{item.orvosiJavaslat == null}"
+											value="Nincs meghatározva" />
+										<p:outputLabel value="#{item.orvosiJavaslat}"
+											rendered="#{item.orvosiJavaslat != null}">
+											<f:converter converterId="BoolConv" />
+										</p:outputLabel>
+
+									</h:panelGrid>
+								</p:panelGrid>
+								<div
+									style="display: block; word-wrap: normal; width: 80%; padding-top: 10px; padding-bottom: 10px;">
+									<h:outputText
+										style="float:left;font-weight:bold;text-decoration:underline;"
+										value="Megjegyzés:" />
+									<p:outputLabel
+										rendered="#{(item.megjegyzes == null) or (item.megjegyzes== '')}"
+										value="üres" />
+
+									<h:inputTextarea value="#{item.megjegyzes}" disabled="true"
+										cols="127" rows="20" style="display:block;"
+										rendered="#{(item.megjegyzes != null) and (item.megjegyzes != '')}" />
+
+								</div>
+							</p:rowExpansion>
+						</p:dataTable>
+					</div>
+					<p:commandButton id="addNewClient" widgetVar="addNewClientWidget"
+						value="Ú&#x0332;j kliens" tabindex="1"
+						onclick="PF('editDialogWidget').show(); PF('clientDetailsWidget').select(0,true);"
+						update=":editForm:clientDetailsView,:editForm:btnSave,:editForm:btnQR"
+						action="#{clientsManager.createNewClient}" />
+					<p:hotkey bind="ctrl+shift+u"
+						handler="PF('addNewClientWidget').jq.click();" />
+
+					<p:commandButton value="Kliens(ek) törlése" tabindex="2" id="deleteActiveClientButton"
+						update=":confirmDialogForm:selectedItems"
+						onclick="PF('confirmDialog').show();" />
+
+					<p:commandButton value="Kliens(ek) menedzserváltása" tabindex="3" id="chManagerButton"
+						onclick="PF('changeManagerDialog').show();" />
+
+					<p:commandButton
+						actionListener="#{clientsManager.generateClientQRCodeForSelecteds()}"
+						update=":lazyForm:messages" value="QR kód generálása" tabindex="4"
+						rendered="${userService.admin}" />
+				</p:tab>
+				<p:tab title="Töröltek">
+					<h:panelGrid columns="3" cellpadding="5">
+					</h:panelGrid>
+					<p:dataTable id="lazyTableForPassivated" var="ditem"
+						rowKey="#{ditem.id}"
+						value="#{clientsManager.lazyDataModelForDeleted}"
+						selection="#{clientsManager.selectedDeletedClients}"
+						emptyMessage="Nincs rögzített kliens" styleClass="shorttablestyle"
+						paginator="true" rows="10" sortBy="#{ditem.neve}"
+						resizableColumns="true" draggableColumns="true"
+						style="margin-bottom:20px"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+						rowsPerPageTemplate="5,10,15" lazy="true">
+						<f:facet name="header">  
+            kliens lista  
+	                    </f:facet>
+						<f:facet name="{Exporters}">
+							<h:commandLink>
+								<p:graphicImage name="img/excel.png" width="24" />
+								<p:dataExporter type="xls" target="lazyTableForPassivated"
+									fileName="clients"
+									postProcessor="#{exporterView.postProcessXLS}" />
+							</h:commandLink>
+						</f:facet>
+
+
+						<p:column selectionMode="multiple" style="width:4%" id="selectOnDeleted"/>
+
+						<p:column style="width:20%" resizable="true" id="nyszamOnDeleted"
+							styleClass="tableFieldLeft" filterMatchMode="contains"
+							headerText="Nyilvántartási szám"
+							filterBy="#{ditem.nyilvantartasiSzam}"
+							sortBy="#{ditem.nyilvantartasiSzam}">
+							<h:outputText value="#{ditem.nyilvantartasiSzam}" />
+						</p:column>
+
+						<p:column filterBy="#{ditem.neve}" sortBy="#{ditem.neve}"
+							resizable="true" styleClass="tableFieldLeft" id="neveOnDeleted"
+							filterMatchMode="contains" headerText="Név">
+							<h:outputText value="#{ditem.neve}" />
+						</p:column>
+
+						<p:column filterBy="#{ditem.taj}" filterMatchMode="contains" id="tajOnDeleted"
+							headerText="Taj szám">
+							<h:outputText value="#{ditem.taj}" />
+						</p:column>
+
+						<p:column filterBy="#{ditem.currentManager.username}"
+							filterMatchMode="contains" headerText="Eset menedzser" id="managerOnDeleted"
+							styleClass="tableFieldLeft">
+							<h:outputText value="#{ditem.currentManager.username}"
+								rendered="#{ditem.currentManager != null}" />
+						</p:column>
+						<p:column style="width:6%;text-align: center" id="detailsColumn">
+							<p:commandButton
+								update=":editForm:clientDetailsView,:editForm:btnSave,:editForm:btnQR"
+								id="showClientButton" widgetVar="showDelClientButtonWidget"
+								action="#{clientsManager.prepareCurrentClient(ditem)}"
+								oncomplete="PF('editDialogWidget').show();PF('clientDetailsWidget').select(0,true);"
+								icon="ui-icon-search" title="Részletek">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					<p:commandButton
+						actionListener="#{clientsManager.restoreSelectedItems()}"
+						update=":lazyForm:tableView:lazyTableForPassivated,:lazyForm:tableView:lazyTable"
+						value="Adat(ok) visszaállítása" />
+
+					<p:commandButton
+						actionListener="#{clientsManager.deleteSelectedItems()}" id="deleteClientFinally"
+						update=":lazyForm:tableView:lazyTableForPassivated,:growl"
+						value="Végleges eltávolítás" rendered="${userService.admin}" />
+				</p:tab>
+			</p:tabView>
+		</h:form>
+
+		<h:outputScript library="js" name="keyboard_navigation.js" />
+
+		<p:dialog widgetVar="editDialogWidget" modal="true"
+			closeOnEscape="true" id="editDialog" showEffect="fade"
+			hideEffect="fade" header="Kliens adatok">
+			<p:ajax event="close" oncomplete="$('#table_div').focus();"
+				update=":lazyForm:tableView:lazyTableForPassivated,:lazyForm:tableView:lazyTable" />
+			<h:form id="editForm">
+
+				<p:tabView id="clientDetailsView" widgetVar="clientDetailsWidget">
+					<p:tab title="Alapadatok" id="defaultDataPage">
+
+						<div class="viewBorder">
+							<h:panelGrid columns="2"
+								columnClasses="cells-align-top,cells-align-top">
+								<h:panelGrid id="itemdetails" widgetVar="itemdetailsWidget"
+									columns="2" cellpadding="4" style="margin:10px;"
+									columnClasses="gridLabel,gridValue">
+									<p:outputLabel value="Nyilvántartási szám" id="nyszamlabel" />
+									<p:inputText
+										value="#{clientsManager.currentClient.nyilvantartasiSzam}"
+										disabled="#{clientsManager.currentClient.nyilvantartasiSzam != null and not userService.admin}"
+										style="width:100%;" label="nyilvántartási szám" id="nyszam">
+									</p:inputText>
+
+									<h:outputLabel value="Név" />
+									<p:inputText value="#{clientsManager.currentClient.neve}"
+										style="width:100%;" id="nev" label="név">
+									</p:inputText>
+
+									<h:outputLabel value="taj szám" />
+									<p:inputMask mask="999-999-999"
+										value="#{clientsManager.currentClient.taj}" style="width:100%;"
+										label="taj szám" id="taj">
+									</p:inputMask>
+
+									<h:outputText value="Születési neve:" />
+									<p:inputText style="width:100%;" id="bornname"
+										value="#{clientsManager.currentClient.szuletesiNev}" />
+
+									<h:outputText value="Születés helye:" />
+									<p:inputText style="width:100%;" id="bornplace"
+										value="#{clientsManager.currentClient.szuletesiHely}" />
+
+									<h:outputText value="Születés dátuma:" />
+									<p:calendar id="bornedDate" style="width:100%;" showOn="button"
+										showButtonPanel="true" navigator="true"
+										value="#{clientsManager.currentClient.szuletesiIdo}" lang="hu"
+										locale="hu" />
+
+									<h:outputText value="Anyja neve:" />
+									<p:inputText style="width:100%;" id="mothersname"
+										value="#{clientsManager.currentClient.anyjaNeve}" />
+
+									<h:outputText value="felvétel dátuma:" />
+									<p:calendar id="validDateFrom" style="width:100%;"
+										disabled="#{clientsManager.currentClient.felvetDatum != null and not userService.admin}"
+										showOn="button" showButtonPanel="true" navigator="true"
+										label="felvétel dátuma"
+										value="#{clientsManager.currentClient.felvetDatum}" lang="hu"
+										locale="hu">
+									</p:calendar>
+
+									<p:outputLabel value="Aktuális esetmenedzser"
+										id="casemanagerlabel" />
+									<p:selectOneMenu id="managerSelect" style="width:200px;"
+										value="#{clientsManager.currentClient.currentManager}">
+										<f:selectItem itemLabel="--válasszon--" itemValue="#{null}" />
+										<f:selectItems value="#{userService.findAll(true)}"
+											var="manager" itemLabel="#{manager.username}"
+											itemValue="#{manager}" />
+										<f:converter converterId="userConv" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+								<h:panelGrid id="others2" widgetVar="othersWidget" columns="2"
+									cellpadding="4" style="margin:10px;"
+									columnClasses="gridLabel,gridValue">
+									<p:outputLabel value="Orvos" id="doclabel" />
+									<p:selectOneMenu id="docSelect" style="width:200px;"
+										value="#{clientsManager.currentDoctorId}">
+										<f:selectItem itemLabel="--válasszon--" itemValue="" />
+										<f:selectItems value="#{doctorService.findAllDoctor()}"
+											var="doctor" itemLabel="#{doctor.name}"
+											itemValue="#{doctor.id}" />
+									</p:selectOneMenu>
+									<h:outputText value="aktív kliens:" />
+									<p:selectBooleanCheckbox
+										value="#{clientsManager.currentClient.active}" />
+
+									<h:outputText value="megszünés dátuma:" />
+									<p:calendar id="validDateTo" showOn="button"
+										showButtonPanel="true" navigator="true" disabled="#{!userService.adminRole}"
+										value="#{clientsManager.currentClient.megszDatum}" lang="hu"
+										locale="hu" />
+									<p:outputLabel value="Kliens típus:" />
+									<p:selectOneMenu id="clientTypeSelect" style="width:200px;"
+										value="#{clientsManager.currentClient.clientType}">
+										<f:selectItem itemLabel="--válasszon--" itemValue="#{null}" />
+										<f:selectItems value="#{clientTypeService.findAll()}"
+											var="clientType" itemLabel="#{clientType.typename}"
+											itemValue="#{clientType}" />
+										<f:converter converterId="clientTypeConv" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+							</h:panelGrid>
+						</div>
+					</p:tab>
+					<p:tab title="Igazolások / nyilatkozat / megállapodás" id="documentsPage">
+						<div class="viewBorder">
+							<h:panelGrid id="itemdetails2" columns="2" cellpadding="4"
+								style="margin:10px;" columnClasses="gridLabel,gridValue">
+
+								<h:outputText value="Jövedelem igazolás:" />
+								<p:selectBooleanCheckbox
+									value="#{clientsManager.currentClient.jovedelemIgazolas}" />
+
+								<h:outputText value="Megállapodas:" />
+								<p:selectBooleanCheckbox
+									value="#{clientsManager.currentClient.megallapodas}" />
+
+								<h:outputText value="Nyilatkozat (alap):" />
+								<p:selectBooleanCheckbox
+									value="#{clientsManager.currentClient.nyilatkozatalap}" />
+
+								<h:outputText value="Nyilatkozat (adat):" />
+								<p:selectBooleanCheckbox
+									value="#{clientsManager.currentClient.nyilatkozatadat}" />
+
+								<h:outputText value="Orvosi javaslat:" />
+								<p:selectBooleanCheckbox
+									value="#{clientsManager.currentClient.orvosiJavaslat}" />
+							</h:panelGrid>
+						</div>
+					</p:tab>
+					<p:tab title="Elérhetőségek" id="contactPage">
+						<div class="viewBorder"
+							style="width: 96%; padding-left: 2%; 
+							padding-right: 2%;">
+							<h:panelGrid id="accEdPanel" columns="3">
+								<h:outputText value="Elérhetőség jellege" />
+								<h:outputText value="Elérhetőség" />
+								<h:outputText value=" " />
+
+								<p:selectOneMenu id="accTypeSelect" style="width:175px;"
+									value="#{clientsManager.newAccessibleType}">
+									<f:selectItems value="#{clientsManager.accessibleTypes}"
+										var="accType" itemLabel="#{accType.typename}"
+										itemValue="#{accType}" />
+									<f:converter converterId="accTypeConv" />
+								</p:selectOneMenu>
+								<p:inputText id="accValue" style="padding-right:20px;"
+									value="#{clientsManager.currentAccessible.accessibleValue}"
+									label="Elérhetőség" />
+								<p:commandButton value="Hozzáad" process="@parent"
+									disabled="#{not empty clientsManager.currentClient.megszDatum}"
+									actionListener="#{clientsManager.persistNewAccessible()}"
+									update="itemdetails3,accValue,:growl" />
+
+							</h:panelGrid>
+
+
+							<p:panel id="itemdetails3">
+								<f:facet name="header">
+							Elérhetőségek
+						</f:facet>
+								<p:dataTable value="#{clientsManager.currentClient.accessibles}" var="acc"
+									id="accTable" styleClass="simpletablestyle" rowKey="#{acc}"									
+									emptyMessage="Nincs rögzített elérhetőség" editable="true">
+
+									<p:ajax event="rowEdit" listener="#{clientsManager.onEditAcc}"
+										update=":lazyForm:messages" />
+									<p:ajax event="rowEditCancel"
+										listener="#{clientsManager.onCancelAcc}"
+										update=":lazyForm:messages" />
+
+									<p:column headerText="jelleg" style="width:30%;">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{acc.accessible_type.typename}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="accTypeSelect" style="width:100%;"
+													value="#{acc.accessible_type}">
+													<!-- #{currentAccessibleType} must have equals and hashCode impl and a converter -->
+													<f:selectItems value="#{clientsManager.accessibleTypes}"
+														var="accType" itemLabel="#{accType.typename}"
+														itemValue="#{accType}" />
+													<f:converter converterId="accTypeConv" />
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column headerText="Elérhetőség" style="width:40%;">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{acc.accessibleValue}" />
+											</f:facet>
+											<f:facet name="input">
+												<h:inputText value="#{acc.accessibleValue}"
+													style="width:100%;" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									<p:column style="width:6%"
+										rendered="#{empty clientsManager.currentClient.megszDatum}">
+										<p:rowEditor />
+									</p:column>
+									<p:column style="width:6%" 
+										rendered="#{empty clientsManager.currentClient.megszDatum}">
+										<p:commandButton id="deleteBtn" actionListener="#{clientsManager.deleteAccessibles(acc)}" update="accTable" icon="ui-icon-trash"/>
+									</p:column>
+								</p:dataTable>
+							</p:panel>
+						</div>
+					</p:tab>
+					<p:tab title="Kliens története"
+						rendered="#{not empty clientsManager.currentClient.id}">
+						<p:panel id="clientChangesPanel">
+							<p:dataTable editable="true" scrollable="true" scrollHeight="400"
+								value="#{clientsManager.clientChanges}" var="changes"
+								id="clientLog" styleClass="simpletablestyle"
+								rowKey="#{changes.id}"
+								selection="#{clientsManager.selectedChanges}"
+								emptyMessage="Nincs rögzített történet">
+								<p:ajax event="rowEdit"
+									listener="#{clientsManager.onEditHistory}"
+									update=":lazyForm:messages" />
+
+								<p:ajax event="rowEditCancel"
+									listener="#{clientsManager.onCancelHistoryEdit}"
+									update=":lazyForm:messages" />
+								<p:ajax event="rowSelect"
+									listener="#{clientsManager.onHistoryRowSelect}" />
+
+								<p:column selectionMode="multiple" style="width:4%"
+									rendered="#{userService.admin}" />
+								<p:column headerText="Periódus kezdete">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{changes.periodStart}">
+												<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss" />
+											</h:outputText>
+										</f:facet>
+										<f:facet name="input">
+											<p:calendar id="periodStartDate" value="#{changes.periodStart}" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="aktív" style="width:8%">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{changes.active}">
+												<f:converter converterId="BoolConv" />
+											</h:outputText>
+										</f:facet>
+										<f:facet name="input">
+											<p:selectBooleanCheckbox id="chEnabled"
+												value="#{changes.active}" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="típus">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{changes.clientType.typename}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:selectOneMenu id="clientTypeAtChange" style="width:80%;"
+												value="#{changes.clientType}">
+												<f:selectItem itemLabel="--válasszon--" itemValue="#{null}" />
+												<f:selectItems value="#{clientTypeService.findAll()}"
+													var="clientType" itemLabel="#{clientType.typename}"
+													itemValue="#{clientType}" />
+												<f:converter converterId="clientTypeConv" />
+											</p:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="utolsó módosítás dátuma">
+									<h:outputText value="#{changes.modifiedAt}">
+										<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="utolsó módosító">
+									<h:outputText value="#{changes.modifiedBy.username}">
+										<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss" />
+									</h:outputText>
+								</p:column>
+
+								<p:column style="width:6%"
+									rendered="#{userService.admin}">
+									<p:rowEditor />
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+						<p:commandButton value="Új"
+							action="#{clientsManager.addNewClientChange()}"
+							update=":editForm:clientDetailsView:clientChangesPanel,:growl"
+							rendered="#{userService.admin}" />
+						<p:commandButton value="Törlés"
+							action="#{clientsManager.removeSelectedHistory()}"
+							update=":editForm:clientDetailsView:clientChangesPanel"
+							rendered="#{userService.admin}" />
+					</p:tab>
+					<p:tab title="Megjegyzés">
+						<div class="viewBorder">
+							<h:panelGrid columns="2">
+								<h:outputText value="Megjegyzés:" />
+								<h:inputTextarea style="width:100%;" rows="20" cols="200"
+									value="#{clientsManager.currentClient.megjegyzes}"
+									readonly="#{not empty clientsManager.currentClient.megszDatum}" />
+							</h:panelGrid>
+						</div>
+					</p:tab>
+				</p:tabView>
+
+				<p:commandButton value="Mentés" widgetVar="saveNewClientWidget"
+					actionListener="#{clientsManager.persistCurrent()}"
+					validateClient="true" ajax="true"
+					disabled="#{not empty clientsManager.currentClient.megszDatum and not userService.admin}"
+					update=":editForm:clientDetailsView:itemdetails, :growl"
+					id="btnSave"
+					oncomplete="currentDialogWidget='editDialogWidget';handleComplete(xhr, status, args)">
+				</p:commandButton>
+
+				<p:commandButton value="Mégsem" process="@none" id="cancel"
+					oncomplete="PF('editDialogWidget').hide();" />
+				<p:commandButton value="QR kód generálása" id="btnQR"
+					update=":lazyForm:messages"
+					actionListener="#{clientsManager.generateClientQRCode()}"
+					disabled="#{empty clientsManager.currentClient.id or not empty clientsManager.currentClient.megszDatum}"
+					rendered="${userService.admin}" process="@this" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="confirmDialog" modal="true" header="Megerősítés"
+			closeOnEscape="true" width="550px">
+			<h:form id="confirmDialogForm">
+				<div class="viewBorder">
+					<h:outputText value="Biztos törli a kliens(ek)et?" />
+
+					<h:panelGrid id="selectedItems">
+						<p:dataTable value="#{clientsManager.selectedClients}" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" emptyMessage="nincs törlésre jelölt kliens a listában"
+							var="selecteditem">
+							<p:column styleClass="tableFieldLeft"
+								headerText="Nyilvántartási szám">
+								<h:outputText value="#{selecteditem.nyilvantartasiSzam}" />
+							</p:column>
+							<p:column styleClass="tableFieldLeft" headerText="Név">
+								<h:outputText value="#{selecteditem.neve}" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+				</div>
+				<p:commandButton value="Törlés" id="deleteConfirmedButton"
+					onclick="PF('confirmDialog').hide();"
+					update=":lazyForm:tableView:lazyTableForPassivated,:lazyForm:tableView:lazyTable"
+					actionListener="#{clientsManager.passivateClients}" />
+				<p:commandButton value="Mégsem"
+					onclick="PF('confirmDialog').hide();" />
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog widgetVar="changeManagerDialog" modal="true"
+			closeOnEscape="true" header="Megerősítés">
+			<h:form id="changeManagermDialogForm">
+				<div class="viewBorder">
+					<h:outputText value="Válasszon új menedzsert" />
+				</div>
+				<h:panelGrid id="changeGrid" columns="2" cellpadding="4">
+					<p:outputLabel value="Eset menedzserek:" id="casemanagerlabelTo"
+						style="break-word:normal;white-space: nowrap;" />
+					<p:selectOneMenu id="managerSelectTo"
+						value="#{clientsManager.currentCaseManager}">
+						<f:selectItems value="#{userService.findAll(true)}" var="manager"
+							itemLabel="#{manager.username}" itemValue="#{manager}" />
+						<f:converter converterId="userConv" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:commandButton value="Váltás"
+					onclick="PF('changeManagerDialog').hide();" update=":lazyForm"
+					actionListener="#{clientsManager.changeClientsManager}" />
+				<p:commandButton value="Mégsem"
+					onclick="PF('changeManagerDialog').hide();" />
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h:form id="newSubjForm">
+			<p:panel id="newSubjPanel">
+				<f:facet name="header">
+							Foglalkozások
+						</f:facet>
+				<h:panelGrid columns="4">
+					<h:outputLabel value="Foglalkozás neve: " />
+					<p:inputText id="newSubjTitle" required="true"
+						requiredMessage="Foglalkozás nevét kötelező kitölteni!"
+						value="#{subjectManager.newSubject.title}" />
+					<p:commandButton value="Hozzáad" id="addSubjectBtn"
+						actionListener="#{subjectManager.persistNew()}"
+						update="@form,:growl,:subjForm" />
+						<p:selectOneButton id="activefilter" value="#{subjectManager.deletedVisible}">
+							<f:selectItem itemLabel="Aktív" itemValue="#{false}" />
+							<f:selectItem itemLabel="Passzív" itemValue="#{true}" />
+							<f:selectItem itemLabel="Minden" itemValue="#{null}" />
+							<p:ajax event="change" update=":subjForm:subjPanel" />
+						</p:selectOneButton>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+		<h:form id="subjForm">
+			<p:panel id="subjPanel">
+				<p:dataTable value="#{subjectManager.lazyDataModel}" var="subj"
+					id="subjTable" styleClass="simpletablestyle"
+					selection="#{subjectManager.selectedSubjects}" lazy="true"
+					emptyMessage="Nincs rögzített foglalkozás" paginator="true"
+					rows="10" sortBy="#{subj.title}" editable="true"
+					rowKey="#{subj.id}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage name="img/excel.png" width="24" />
+							<p:dataExporter type="xls" target="subjTable"
+								fileName="foglalkozasok"
+								postProcessor="#{exporterView.postProcessXLS}" />
+						</h:commandLink>
+					</f:facet>
+					<p:ajax event="rowEdit" listener="#{subjectManager.onEdit}"
+						update=":subjForm:subjTable,:growl" />
+					<p:ajax event="rowEditCancel" listener="#{subjectManager.onCancel}" />
+					<p:column selectionMode="multiple" style="width:4%"
+						id="selectColmn" />
+
+					<p:column headerText="foglalkozás neve" style="width:30%;"
+						styleClass="tableFieldLeft" sortBy="#{subj.title}" id="titleCol"
+						filterMatchMode="contains" filterBy="#{subj.title}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{subj.title}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{subj.title}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Egyéni foglalkozás" style="width:30%;"
+						id="uniqueEventCol" sortBy="#{subj.uniqueMeeting}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{subj.uniqueMeeting}">
+									<f:converter converterId="BoolConv" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:selectBooleanCheckbox value="#{subj.uniqueMeeting}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Foglalkozás jellege" style="width:30%;"
+						id="subjectTypeCol">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{subj.subjectType.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{subj.subjectType}" style="width:80%;">
+									<f:selectItem itemLabel="-- válasszon --" itemValue="null" />
+									<f:selectItems value="#{subjectService.findAllSubjectType()}"
+										var="subjTypeItem" itemLabel="#{subjTypeItem.name}"
+										itemValue="#{subjTypeItem}" />
+									<f:converter converterId="subjTypeConv" />
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Foglalkozás hossza (perc)" style="width:30%;"
+						id="subjectLengthCol">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{subj.lenghtInMinute}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{subj.lenghtInMinute}" style="width:90%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Figyelmeztetés nullázó" style="width:20%;"
+						id="alertNullCol" sortBy="#{subj.resetAlert}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{subj.resetAlert}">
+									<f:converter converterId="BoolConv" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:selectBooleanCheckbox value="#{subj.resetAlert}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width:6%" id="editRowCol" rendered="#{empty subj.deleteDate}">
+						<p:rowEditor />
+					</p:column>
+
+					<p:column style="width:6%" rendered="#{empty subj.deleteDate}">
+						<p:commandButton id="editSubjectBtn"
+							actionListener="#{subjectManager.prepareNewSubject(subj)}"
+							update=":subjModify:subjEditGrid"
+							oncomplete="PF('subjEditDialog').show()" icon="ui-icon-search"
+							title="foglalkozás részletek" />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Törlés" id="deleteSubjBtn"
+					actionListener="#{subjectManager.deleteSubjects()}" process="@form"
+					update="@form,:subjForm:subjTable,growl" />
+				<p:commandButton value="Visszaállítás" id="restoreSubjBtn"
+					actionListener="#{subjectManager.restoreSubjects()}" process="@form"
+					update="@form,:subjForm:subjTable,growl" />
+			</p:panel>
+		</h:form>
+
+		<p:dialog widgetVar="subjEditDialog" header="Foglalkozás szerkesztés"
+			closeOnEscape="true" modal="true">
+			<h:form id="subjModify">
+				<div class="viewBorder">
+					<h:panelGrid columns="2" id="subjEditGrid"
+						columnClasses="gridLabel,gridValue">
+						<h:outputLabel value="Foglalkozás neve" />
+						<h:inputText id="subjTitle"
+							value="#{subjectManager.currentSubject.title}" required="true"
+							requiredMessage="Foglalkozás nevét kötelező megadni." />
+
+						<h:outputLabel value="Egyedi foglalkozás" />
+						<p:selectBooleanCheckbox
+							value="#{subjectManager.currentSubject.uniqueMeeting}" />
+
+						<h:outputLabel value="Foglalkozás jellege" />
+						<p:selectOneMenu id="subjecttypeselect"
+							value="#{subjectManager.currentSubjectTypeId}" style="width:90%;">
+							<f:selectItem itemLabel="-- válasszon --" itemValue="null" />
+							<f:selectItems value="#{subjectManager.getSubjectTypes()}"
+								var="stype" itemValue="#{stype.id}" itemLabel="#{stype.name}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel value="Figyelmeztetés nullázó" />
+						<p:selectBooleanCheckbox
+							value="#{subjectManager.currentSubject.resetAlert}" />
+
+					</h:panelGrid>
+				</div>
+				<p:commandButton actionListener="#{subjectManager.persistCurrent()}"
+					update=":growl,subjTitle,:subjForm:subjTable" value="Mentés"
+					process="@form" ajax="true"
+					oncomplete="currentDialogWidget='subjEditDialog';handleComplete(xhr, status, args)" />
+				<p:commandButton value="Mégsem" process="@none"
+					oncomplete="PF('subjEditDialog').hide()" />
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

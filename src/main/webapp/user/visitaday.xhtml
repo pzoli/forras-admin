@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"	
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/templates/default.xhtml">
+	<f:metadata>
+		<!--   <f:viewParam name="birthdayRequestId" value="#{birthdayFormController.birthdayRequestId}"/> -->
+		<f:event type="preRenderView"
+			listener="#{visitRequests.updateManager('visitaday')}"></f:event>
+	</f:metadata>
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<c:if
+			test="${userService.isAdminRole() or userService.isCaseManager()}">
+			<div id="loadingText"
+				style="font-weight: bold; margin: -5px 0 5px 0; visibility: hidden;">Loading
+				...</div>
+			<h:form>
+				<p:growl id="messages" showDetail="true" />
+				<h:panelGrid columns="3" style="width:60%;"
+					columnClasses="borderlessGridLabel,borderlessGridInput,borderlessGridInput">
+					<p:outputLabel value="Kezdő dátum:" />
+					<p:calendar value="#{activityManager.visitorsTime}" />
+					<p:commandButton value="frissítés" update=":mainform:visitorstable" />
+				</h:panelGrid>
+			</h:form>
+			<h:form id="mainform">
+				<p:panel id="visitorstable">
+					<p:dataTable scrollable="false" rows="10" styleClass="ui-datatable"
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						id="visitlist" value="#{activityManager.visitorsLazyData}"
+						lazy="true" scrollWidth="1800" emptyMessage="Nincs találat"
+						var="visite" resizableColumns="true" rowKey="#{visite.id}">
+						<p:column headerText="Nyilvántartási szám" sortBy="#{visite.nyilvantartasiSzam}"
+							filterBy="#{visite.nyilvantartasiSzam}">
+							<h:outputText value="#{visite.nyilvantartasiSzam}" />
+						</p:column>
+						<p:column headerText="Név" filterBy="#{visite.neve}" sortBy="#{visite.neve}">
+							<h:outputText value="#{visite.neve}" />
+						</p:column>
+						<p:column headerText="Jelenlegi felvétel dátuma">
+							<h:outputText value="#{visite.felvetDatum}" />
+						</p:column>
+						<p:column headerText="Jelenlegi ellátás jellege"
+							filterBy="#{visite.clientType.typename}">
+							<h:outputText value="#{visite.clientType.typename}" />
+						</p:column>
+						<p:column headerText="Jelenleg aktiv" filterBy="#{visite.active}"
+							width="10%" filterOptions="#{activityManager.options}">
+							<h:outputText value="#{visite.active}">
+								<f:converter converterId="BoolConv" />
+							</h:outputText>
+						</p:column>
+						<p:column width="4%">
+							<p:commandButton update=":changesForm:changesPanel,changesDlg"
+								id="showClientChButton" widgetVar="showClientChButtonWidget"
+								action="#{activityManager.setCurrentClient(visite)}"
+								oncomplete="PF('changesDialogWidget').show();"
+								icon="ui-icon-search" title="Részletek">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+
+			<p:dialog id="changesDlg" widgetVar="changesDialogWidget" width="65%"
+				closeOnEscape="true"
+				header="#{activityManager.currentClient.neve} - történet">
+				<h:form id="changesForm">
+					<p:panel id="changesPanel">
+						<p:dataTable id="changesTable"
+							emptyMessage="Nincs története a kliensnek"
+							value="#{activityManager.getClientChanges()}" var="cchange">
+							<p:column headerText="Módosító">
+								<h:outputText value="#{cchange.modifiedBy.username}"
+									style="#{activityManager.getCurrentChangeStyle(cchange)}" />
+							</p:column>
+							<p:column headerText="Módosítás dátum">
+								<h:outputText value="#{cchange.modifiedAt}"
+									style="#{activityManager.getCurrentChangeStyle(cchange)}" />
+							</p:column>
+							<p:column headerText="Periódus kezdete">
+								<h:outputText value="#{cchange.periodStart}"
+									style="#{activityManager.getCurrentChangeStyle(cchange)}" />
+							</p:column>
+							<p:column headerText="Ellátás jellege">
+								<h:outputText value="#{cchange.clientType.typename}"
+									style="#{activityManager.getCurrentChangeStyle(cchange)}" />
+							</p:column>
+							<p:column headerText="Aktív" width="15%">
+								<h:outputText value="#{cchange.active}"
+									style="#{activityManager.getCurrentChangeStyle(cchange)}">
+									<f:converter converterId="BoolConv" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+						<p:commandButton onclick="PF('changesDialogWidget').hide()"
+							process="@none" value="Bezárás" />
+					</p:panel>
+				</h:form>
+			</p:dialog>
+
+		</c:if>
+	</ui:define>
+</ui:composition>

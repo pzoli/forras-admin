@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+
+		<h:form id="lazyForm">
+			<p:growl id="messages" showDetail="true" />
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:selectCheckboxMenu id="ctype_active"
+					value="#{alertManager.visibleClientTypes}" label="Kliens típus"
+					panelStyle="width:250px">
+					<f:selectItems value="#{clientTypeService.findAll()}"
+						var="clientTypeItem" itemLabel="#{clientTypeItem.typename}"
+						itemValue="#{clientTypeItem.id}" />
+					<f:selectItem itemLabel="Nincs meghatározva" itemValue="" />
+				</p:selectCheckboxMenu>
+				<p:commandButton value="Frissítés" update=":lazyForm:lazyTable"
+					ajax="true" />
+
+				<p:selectOneButton value="#{alertManager.visibleByActive}">
+					<f:selectItem itemLabel="Aktív" itemValue="true" />
+					<f:selectItem itemLabel="Passzív" itemValue="false" />
+					<f:selectItem itemLabel="Minden" itemValue="null" />
+					<p:ajax event="change" update=":lazyForm:lazyTable" />
+				</p:selectOneButton>
+			</h:panelGrid>
+			<p:dataTable id="lazyTable" var="item" widgetVar="lazyTableWidget"
+				value="#{alertManager.lazyDataModel}" styleClass="simpletablestyle"
+				selection="#{alertManager.selectedAlerts}" paginator="true"
+				rows="10" emptyMessage="Nincs rögzített figyelmeztetés"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+				rowsPerPageTemplate="5,10,15" lazy="true" editable="true">
+				<f:facet name="{Exporters}">
+					<h:commandLink>
+						<p:graphicImage name="img/excel.png" width="24" />
+						<p:dataExporter type="xls" target="lazyTable"
+							fileName="üzenetek"
+							postProcessor="#{exporterView.postProcessXLS}" />
+					</h:commandLink>
+				</f:facet>
+				<f:facet name="header">  
+            Figyelmeztetések  
+                    </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{alertManager.onEdit}"
+					update=":lazyForm:messages" />
+				<p:ajax event="rowEditCancel" listener="#{alertManager.onCancel}"
+					update=":lazyForm:messages" />
+				<p:column selectionMode="multiple" style="width:4%" />
+
+				<p:column headerText="Kliens azonosító" styleClass="tableFieldLeft"
+					sortBy="#{c.nyilvantartasiSzam}" filterBy="#{c.nyilvantartasiSzam}">
+					<h:outputText value="#{item.client.nyilvantartasiSzam}" />
+				</p:column>
+
+				<p:column headerText="Kliens neve" styleClass="tableFieldLeft"
+					sortBy="#{c.neve}">
+					<!-- filterBy="#{item.client.neve}" -->
+					<h:outputText value="#{item.client.neve}" />
+				</p:column>
+
+				<p:column headerText="Ellátás" styleClass="tableFieldLeft">
+					
+					<h:outputText value="#{item.clientType.typename}" />
+				</p:column>
+
+				<p:column headerText="Figyelmeztetés" sortBy="#{item.title}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.title}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:inputText value="#{item.title}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="N napja volt utoljára" sortBy="#{item.NDay}">
+					<h:outputText value="#{item.NDay}" />
+				</p:column>
+
+				<p:column headerText="Utolsó látogatás" sortBy="#{item.lastVisit}">
+					<h:outputText value="#{item.lastVisit}">
+						<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:4%">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="Új figyelmeztetés"
+				onclick="PF('addDialog').show();" update="lazyDialogForm"
+				actionListener="#{alertManager.createNewAlert()}" />
+
+			<p:commandButton value="Figyelmeztetés(ek) törlése"
+				onclick="PF('confirmDialog').show();" />
+		</h:form>
+
+		<p:dialog widgetVar="addDialog" modal="true" header="Kliens adatok"
+			closeOnEscape="true">
+			<h:form id="lazyDialogForm">
+				<div class="viewBorder">
+					<h:panelGrid columns="2" rules="none">
+						<h:outputText value="Kliens" />
+						<p:selectOneMenu value="#{alertManager.alertedClientId}">
+							<f:selectItems var="client"
+								value="#{clientsService.findAll(true, null, null,null)}"
+								itemLabel="#{client.neve}" itemValue="#{client.id}" />
+						</p:selectOneMenu>
+						<h:outputText value="Figyelmeztetés" />
+						<h:inputText value="#{alertManager.newAlert.title}" />
+					</h:panelGrid>
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2" rules="none">
+						<p:commandButton value="Mentés"
+							actionListener="#{alertManager.persistCurrent()}"
+							onsuccess="PF('addDialog').hide();" update=":lazyForm" />
+						<p:commandButton value="Megsem" onclick="PF('addDialog').hide();"
+							update=":lazyForm" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="confirmDialog" modal="true" header="Megerősítés"
+			closeOnEscape="true">
+			<h:form id="confirmDialogForm">
+				<div class="viewBorder">
+					<h:outputText value="Biztos törölni kívánja a figyelmeztetést ?" />
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Törlés"
+							onclick="PF('confirmDialog').hide();" update=":lazyForm"
+							actionListener="#{alertManager.deleteSelected()}" />
+						<p:commandButton value="Mégsem"
+							onclick="PF('confirmDialog').hide();" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+		<div class="viewBorder"
+			style="width: 96%; padding-left: 2%; padding-right: 2%;">
+			<h:panelGrid id="accEdPanel" columns="3">
+				<h:outputText value="Elérhetőség jellege" />
+				<h:outputText value="Elérhetőség" />
+				<h:outputText value=" " />
+
+				<p:selectOneMenu id="accTypeSelect" style="width:100%;"
+					value="#{clientsManager.currentAccessibleType}">
+					<f:selectItems value="#{clientsManager.accessibleTypes}"
+						var="accType" itemLabel="#{accType.typename}"
+						itemValue="#{accType.id}" />
+				</p:selectOneMenu>
+				<p:inputText id="accValue" style="padding-right:20px;"
+					value="#{clientsManager.currentAccessible.accessibleValue}"
+					label="Elérhetőség" />
+				<p:commandButton value="Hozzáad"
+					actionListener="#{clientsManager.persistCurrentAccessible()}"
+					update=":editAccDialogForm" />
+
+			</h:panelGrid>
+
+
+			<p:panel id="itemdetails3">
+				<f:facet name="header">
+							Elérhetőségek
+						</f:facet>
+				<p:dataTable value="#{clientsManager.accessibles}" var="acc"
+					id="accTable" styleClass="simpletablestyle" rowKey="#{acc.id}"
+					selection="#{clientsManager.selectedAccessibles}"
+					emptyMessage="Nincs rögzített elérhetőség" editable="true">
+
+					<p:ajax event="rowEdit" listener="#{clientsManager.onEditAcc}"
+						update=":lazyForm:messages" />
+					<p:ajax event="rowEditCancel"
+						listener="#{clientsManager.onCancelAcc}"
+						update=":lazyForm:messages" />
+
+					<p:column selectionMode="multiple" style="width:4%" />
+
+					<p:column headerText="jelleg" style="width:30%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{acc.accessible_type.typename}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu id="accTypeSelect" style="width:100%;"
+									value="#{clientsManager.currentAccessibleType}">
+									<f:selectItems value="#{clientsManager.accessibleTypes}"
+										var="accType" itemLabel="#{accType.typename}"
+										itemValue="#{accType.id}" />
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Elérhetőség" style="width:40%;">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{acc.accessibleValue}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{acc.accessibleValue}" style="width:100%;" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="width:6%">
+						<p:rowEditor />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Törlés"
+					actionListener="#{clientsManager.deleteAccessibles()}"
+					update=":editAccDialogForm" />
+				<p:commandButton value="Bezárás"
+					onclick="PF('editAccDialogWidget').hide();" />
+			</h:panelGrid>
+		</div>
+
+</ui:composition>

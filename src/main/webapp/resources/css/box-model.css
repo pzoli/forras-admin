@@ -1,0 +1,155 @@
+@CHARSET "UTF-8";
+
+.ui-dialog .ui-dialog-content {
+	width: auto !important;
+}
+
+.user {
+	background-color: #FFFFFF;
+}
+
+.borderlessGridLabel {
+	border: 0px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.templateGridLeft {
+	background-color: #FBF9E6;
+	border-radius: 6px;
+	border: 0px;
+	text-align: right;
+	padding-right: 5px;
+	vertical-align: top;
+	width: 50%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.templateGridRight {
+	border: 0px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.borderlessGridInput {
+	border: 0px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.borderlessCheckBox {
+	border: 0px;
+	text-align: left;
+	vertical-align: text-middle !important;
+}
+
+.ui-chkbox div {
+	vertical-align: middle !important;
+}
+
+.ui-selectmanycheckbox label {
+	margin-top: 0px !important;
+}
+
+.borderlessGrid.ui-panelgrid td, .borderlessGrid.ui-panelgrid tr {
+	border-style: none !important;
+	vertical-align: top;
+}
+
+div.viewBorder {
+	float: center;
+	background-color: #D1E2FF;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 4px;
+	border: 5px;
+	border-style: ridge;
+	border-color: Silver;
+	border-radius: 12px;
+	padding: 15px;
+}
+
+.viewStyleClass {
+	background-color: #FBF9E6;
+	margin-top: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	float: center;
+	vertical-align: top;
+	text-align: center;
+	width: 100%;	
+	padding-top: 10px;
+	padding-left: auto;	
+	padding-right: auto;
+	padding-bottom: 10px;
+	border-radius: 6px;	
+}
+
+div.view {
+	background-color: #FBF9E6;
+	margin-top: 6px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 6px;
+	float: center;
+	text-align: center;
+	width: 95%;
+	padding-left: auto;
+	padding-right: auto;
+	border-radius: 6px;
+}
+
+div.view {
+	padding: 5px;
+}
+
+div.formlabel {
+	width: 40%;
+	margin-right: 20px;
+	text-align: right;
+	vertical-align: middle;
+	margin-top: 5px;
+	margin-bottom: 2px;
+}
+
+div.forminput {
+	text-align: left;
+	vertical-align: middle;
+}
+
+div.formbuttons {
+	margin-top: 20px;
+}
+
+.tableFieldLeft {
+	text-align: left;
+}
+
+.meetingstyle .fc-event, .meetingstyle .a, .meetingstyle .fc-event-inner,
+	.meetingstyle .fc-event-skin {
+	background-color: green;
+	border-color: green;
+	color: white;
+}
+
+.simpletablestyle {
+	
+}
+
+.shorttablestyle {
+	padding-left: 2%;
+	padding-right: 2%;
+}
+
+.gridLabel {
+	text-align: right;
+	padding-right: 10px;
+}
+
+.gridValue {
+	text-align: left;
+}

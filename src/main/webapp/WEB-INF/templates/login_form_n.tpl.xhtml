@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:p="http://primefaces.org/ui">
+   <form action="j_security_check" method="post" id="loginForm"
+      name="form_login">
+      <p align="center">Bejelentkezés</p>
+
+      <h:panelGrid columns="2" style="margin:auto;" columnClasses="formlabel,forminput">
+
+         <h:outputLabel id="email" value="E-mail address:">:</h:outputLabel>
+         <p:inputText tabindex="1" id="j_username" />
+
+         <h:outputLabel value="Password">:</h:outputLabel>
+         <p:password tabindex="2" id="j_password" />
+      </h:panelGrid>
+      <p>
+         <input type="submit" id="submit" value="Belépés"/>
+      </p>
+   </form>
+</ui:composition>

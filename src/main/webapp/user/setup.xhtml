@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<f:metadata>
+		<!--   <f:viewParam name="birthdayRequestId" value="#{birthdayFormController.birthdayRequestId}"/> -->
+		<f:event type="preRenderView"
+			listener="#{setupRequests.updateSetupManager()}"></f:event>
+	</f:metadata>
+
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+
+
+		<div class="view">
+			<p:tabView id="tabView">
+				<p:tab title="Alapadatok">
+					<h:form id="userDataForm">
+						<h:panelGrid columns="2" columnClasses="gridLabel,gridValue"
+							style="padding-left: 25%; padding-right: 25%;">
+							<p:outputLabel value="Név:" />
+							<p:inputText value="#{selfManager.currentSystemUser.username}"
+								required="true" />
+
+							<p:outputLabel value="E-mail cím: " />
+							<p:inputText
+								value="#{selfManager.currentSystemUser.emailAddress}"
+								required="true" />
+
+							<p:outputLabel value="jelszó: " />
+							<p:password value="#{selfManager.currentSystemUser.userpassword}" />
+
+							<p:outputLabel value="nyelv: " rendered="true" />
+							<p:selectOneMenu id="langselector"
+								value="#{selfManager.language}" rendered="true">
+								<f:selectItem itemLabel="Magyar" itemValue="hu" />
+								<f:selectItem itemLabel="English" itemValue="en" />
+							</p:selectOneMenu>
+
+							<h:outputText value="" />
+							<p:commandButton actionListener="#{selfManager.persistCurrent()}"
+								value="Mentés" update=":growl" />
+						</h:panelGrid>
+					</h:form>
+				</p:tab>
+				<p:tab title="Egyéb beállítások">
+					<h:form id="pinqr">
+						<p:commandButton value="PIN kód generálása"
+							update=":growl,btnQRgen,pinPanel"
+							actionListener="#{userManager.generateUserPINCode()}" />
+						<p:commandButton id="btnQRgen" value="QR kód generálása"
+							disabled="#{empty userService.loggedInSystemUser.pinCode}"
+							update=":growl"
+							actionListener="#{userManager.generateUserQRCode()}" />
+						<br />
+						<br />
+						<p:panel id="pinPanel"
+							rendered="#{not empty userService.loggedInSystemUser.pinCode}">
+							<p:outputLabel value="PIN kód: ">#{userService.loggedInSystemUser.pinCode}</p:outputLabel>
+						</p:panel>
+					</h:form>
+				</p:tab>
+			</p:tabView>
+		</div>
+	</ui:define>
+</ui:composition>

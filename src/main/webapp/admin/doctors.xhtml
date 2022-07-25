@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+			
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h:form id="newDoctorForm">
+			<p:panel id="newDoctorPanel">
+				<f:facet name="header">
+							Orvosok
+						</f:facet>
+				<h:panelGrid columns="4">
+					<h:outputLabel value="Orvos neve: " />
+					<p:inputText id="doctorName" required="true"
+						requiredMessage="Az orvos nevét kötelező kitölteni!"
+						value="#{doctorManager.newDoctor.name}" />
+					<p:commandButton value="Hozzáad" id="addBtn"
+						actionListener="#{doctorManager.persistNew}"
+						update="@form,:growl,:DoctorForm" />
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+		<h:form id="DoctorForm">
+			<p:panel id="DoctorPanel">
+				<p:dataTable value="#{doctorManager.lazyDataModel}" var="doctor"
+					id="DoctorTable" styleClass="simpletablestyle"
+					selection="#{doctorManager.selectedDoctors}" lazy="true"
+					emptyMessage="Nincs rögzített orvos jellege" paginator="true"
+					rows="10" sortBy="#{doctor.name}" editable="true"
+					rowKey="#{doctor.id}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="5,10,15">
+						<f:facet name="{Exporters}">
+								<h:commandLink>
+									<p:graphicImage name="img/excel.png" width="24" />
+									<p:dataExporter type="xls" target="DoctorTable"
+										fileName="orvosok"
+										postProcessor="#{exporterView.postProcessXLS}" />
+								</h:commandLink>
+							</f:facet>
+					<p:ajax event="rowEdit" listener="#{doctorManager.onEdit}"
+						update=":DoctorForm:DoctorTable,:growl" />
+					<p:ajax event="rowEditCancel" listener="#{doctorManager.onCancel}" update=":growl"/>
+					<p:column selectionMode="multiple" style="width:4%" />
+
+					<p:column headerText="Orvos neve" style="width:30%;" id="doctorNameCol"
+						styleClass="tableFieldLeft" sortBy="#{doctor.name}"
+						filterMatchMode="contains" filterBy="#{doctor.name}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{doctor.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:inputText value="#{doctor.name}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width:6%" id="editRowCol">
+						<p:rowEditor />
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton value="Törlés" id="deleteDoctorBtn"
+					actionListener="#{doctorManager.deleteDoctors}" process="@form"
+					update="@form,:DoctorForm:DoctorTable,growl" />
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

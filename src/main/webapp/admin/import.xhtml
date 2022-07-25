@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h:form id="importForm">
+			<p:growl id="messages" showDetail="true" />
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Aktív:" />
+				<p:selectBooleanCheckbox value="#{importManager.active}" />
+
+				<p:outputLabel value="Kliens típus:" />
+				<p:selectOneMenu id="clientTypeSelect" style="width:100%;"
+					value="#{importManager.newClientType}">
+					<f:selectItem itemLabel="--válasszon--" itemValue="#{null}" />
+					<f:selectItems value="#{clientTypeService.findAll()}"
+						var="clientType" itemLabel="#{clientType.typename}"
+						itemValue="#{clientType}" />
+					<f:converter converterId="clientTypeConv" />
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+			<p:dataTable id="importTable" var="item" width="150%"
+				styleClass="shorttablestyle" resizableColumns="true"
+				selection="#{importManager.selectedRows}" draggableColumns="true"
+				value="#{importManager.rows}" rowKey="#{item[0]}"
+				paginator="true" rows="10" emptyMessage="Nincs rögzített kliens"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" lazy="false" editable="true">
+				<f:facet name="header">  
+            Kliens lista  
+                    </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{userManager.onEdit}"
+					update=":importForm:messages" />
+				<p:ajax event="rowEditCancel" listener="#{userManager.onCancel}"
+					update=":importForm:messages" />
+				<p:column selectionMode="multiple" style="width:4%" />
+
+				<p:column styleClass="tableFieldLeft" headerText="Egyedi azonosító">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item[0]}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item[0]}" style="width:20%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column styleClass="tableFieldLeft" headerText="Név">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item[1]}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item[1]}" style="width:20%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column styleClass="tableFieldLeft" headerText="Születési név">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item[2]}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item[2]}" style="width:20%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column styleClass="tableFieldLeft" headerText="Anyja neve">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item[3]}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item[3]}" style="width:20%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column styleClass="tableFieldLeft" headerText="Születés helye">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item[4]}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item[4]}" style="width:20%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column styleClass="tableFieldLeft" headerText="Születési idő">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item[5]}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item[5]}" style="width:20%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+			</p:dataTable>
+			<p:panel id="upButtons" style="padding-top: 10px">
+				<p:commandButton value="Feltöltés"
+					onsuccess="PF('uploadDialog').show()" />
+				<p:commandButton value="Bemásolás" id="createButton"
+					rendered="#{importManager.imported}"
+					action="#{importManager.createClients()}"
+					update=":importForm:messages" />
+			</p:panel>
+			<p:panel id="downButtons">
+				<p:commandButton value="Napló" id="logButton"
+					rendered="${fileUploadController.clientsFileName != null}"
+					onsuccess="PF('uploadLogDialog').show()"
+					update=":uploadLogForm:uploadLogTable" />
+				<p:commandButton value="Törlés" id="clearButton"
+					rendered="${fileUploadController.clientsFileName != null}"
+					actionListener="#{importManager.resetLists()}"
+					update=":importForm:importTable,:importForm:upButtons" />
+			</p:panel>
+		</h:form>
+
+		<p:dialog widgetVar="uploadLogDialog" modal="true"
+			header="File feltöltése" width="450px">
+			<h:form id="uploadLogForm">
+				<p:dataTable id="uploadLogTable" var="item" width="450px"
+					styleClass="shorttablestyle" resizableColumns="true"
+					draggableColumns="true" value="#{importManager.importLog}">
+					<p:column styleClass="tableFieldLeft" headerText="Napló">
+						<p:outputLabel value="#{item}" style="width:100%" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="bezárás"
+					onclick="PF('uploadLogDialog').hide();" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="uploadDialog" modal="true"
+			header="File feltöltése">
+			<h:form id="uploadDialogForm" enctype="multipart/form-data">
+				<div class="viewBorder">
+					<h:outputText value="Feltöltéshez válasszon ki egy file-t."
+						style="padding:10px;text-font:16px;" /><br/><br/>
+					<p:fileUpload mode="simple"
+						value="#{fileUploadController.clientsXslx}"
+						oncomplete="PF('uploadDialog').hide();"
+						update=":importForm:messages" />
+				</div>
+				<p:commandButton value="Küldés" ajax="false"
+					action="#{fileUploadController.upload}" disabled="false"
+					update=":importForm:importTable" />
+				<p:commandButton value="Mégsem" onclick="PF('uploadDialog').hide();" />
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>

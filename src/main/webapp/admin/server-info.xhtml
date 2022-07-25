@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<p:tabView id="tabView">
+			<p:tab id="scheduleButtonsTab" title="Rendszerfeladatok">
+				<p:outputLabel value="Időzítő kezelés" />
+				<h:form id="scheduleForm">
+					<p:poll interval="5" update="scheduledTable" autoStart="true"/>
+					<p:panelGrid id="scheduleButtonsGrid" columns="2"
+						style="width:100%;">
+						<p:commandButton
+							actionListener="#{alertManager.startSystemJobs()}"
+							value="Indítás" disabled="#{alertManager.scheduled}"
+							update="scheduleButtonsGrid" />
+						<p:commandButton actionListener="#{alertManager.stopSystemJobs()}"
+							value="Leállítás" disabled="#{!alertManager.scheduled}"
+							update="scheduleButtonsGrid" />
+					</p:panelGrid>
+					<p:dataTable id="scheduledTable" var="item" rowKey="#{item.id}"
+						value="#{serverManager.lazyDataModel}" widgetVar="Table"
+						styleClass="simpletablestyle" lazy="true"
+						emptyMessage="Nincs időzített feladat" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column headerText="Időzítő" id="jobSchedName">
+							<h:outputText value="#{item.id.schedName}" />
+						</p:column>
+						<p:column headerText="Csoport" id="jobGroup">
+							<h:outputText value="#{item.id.jobGroup}" />
+						</p:column>
+						<p:column headerText="Név" id="jobName">
+							<h:outputText value="#{item.id.jobName}" />
+						</p:column>
+					</p:dataTable>
+					<p:commandButton actionListener="#{alertManager.startAlertJob()}"
+						update=":growl,scheduledTable" value="Figyelmeztetések frissítése" />
+					<p:commandButton actionListener="#{alertManager.startBackwardAlertsJob()}"
+						update=":growl,scheduledTable" value="Visszamenőleges figyelmeztetések generálás" />
+					<p:commandButton actionListener="#{alertManager.deleteAllAlerts()}"
+						update=":growl" value="Figyelmeztetések törlése" />
+				</h:form>
+			</p:tab>
+			<p:tab id="serverInfoTab" title="Rendszer információk">
+				<ui:include src="/WEB-INF/templates/info.tpl.xhtml" />
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+</ui:composition>

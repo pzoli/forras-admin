@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h:form>
+			<p:commandButton ajax="true" update=":MessageForm:tableView:MessagePanel"
+				value="Frissítés" />
+		</h:form>
+		<h:form id="MessageForm">
+			<p:tabView id="tableView">
+				<p:ajax event="tabChange" listener="#{messageManager.onTabChange}" update=":MessageForm:tableView:SentMessagePanel,:MessageForm:tableView:MessagePanel,:growl"/>
+				<p:tab id="incomingTab" title="Beérkező üzenetek">
+					<p:panel id="MessagePanel">
+						<p:dataTable value="#{messageManager.lazyDataModel}" var="card"
+							id="MessageTable" styleClass="simpletablestyle"
+							selection="#{messageManager.selectedCards}" lazy="true"
+							emptyMessage="Nincs üzenete" paginator="true" toggleable="true"
+							rows="10" sortBy="#{card.id}" rowKey="#{card.id}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+							rowsPerPageTemplate="5,10,15">
+							<f:facet name="{Exporters}">
+								<h:commandLink>
+									<p:graphicImage name="img/excel.png" width="24" />
+									<p:dataExporter type="xls" target="MessageTable"
+										fileName="üzenetek"
+										postProcessor="#{exporterView.postProcessXLS}" />
+								</h:commandLink>
+							</f:facet>
+							<p:ajax event="rowEdit" listener="#{messageManager.onEdit}"
+								update=":MessageForm:tableView:MessageTable,:growl" />
+							<p:ajax event="rowEditCancel"
+								listener="#{messageManager.onCancel}" update=":growl" />
+							<p:ajax event="rowToggle" listener="#{messageManager.onToggle}" update=":growl,:MessageForm:tableView:MessageTable"/>
+							
+							<p:column selectionMode="multiple" style="width:4%" />
+							<!-- sortBy="#{message.sentDate}" filterBy="#{message.sentDate}" -->
+							<p:column headerText="Küldés dátuma" style="width:30%;"
+								styleClass="tableFieldLeft" filterMatchMode="contains">
+								<h:outputText value="#{card.message.sentDate}" />
+							</p:column>
+							<!-- sortBy="#{message.sender.username}" filterBy="#{message.sender.username}" -->
+							<p:column headerText="Üzenet küldő" style="width:30%;"
+								styleClass="tableFieldLeft" filterMatchMode="contains">
+								<h:outputText value="#{card.message.sender.username}" />
+							</p:column>
+
+							<!-- sortBy="#{message.title}" filterBy="#{message.title}" -->
+							<p:column headerText="Üzenet tárgya"
+								style="width:30%;#{messageManager.getCardTitleStyle(card)}"
+								styleClass="tableFieldLeft" filterMatchMode="contains">
+								<h:outputText value="#{card.message.title}" />
+							</p:column>
+
+							<p:column style="width:6%">
+								<p:rowToggler/>
+							</p:column>
+
+							<p:rowExpansion id="rowexp">
+								<p:editor controls="" value="#{card.message.message}" disabled="true" />
+							</p:rowExpansion>
+						</p:dataTable>
+						<p:commandButton value="Törlés"
+							actionListener="#{messageManager.delete}" process="@form"
+							update="@form,:MessageForm:tableView:MessageTable" />
+						<p:commandButton value="Rendben"
+							actionListener="#{messageManager.setReceivedDateToNow()}" process="@form"
+							update="@form,:MessageForm:tableView:MessageTable,:growl" />
+					</p:panel>
+				</p:tab>
+				<p:tab id="sentTab" title="küldött üzenetek">
+					<p:panel id="SentMessagePanel">
+						<p:dataTable value="#{messageManager.lazyDataModelForSent}"
+							var="sentmessage" id="SentMessageTable"
+							styleClass="simpletablestyle"
+							selection="#{messageManager.selectedSentMessages}" lazy="true"
+							emptyMessage="Nincs üzenete" paginator="true" toggleable="true"
+							rows="10" sortBy="#{sentmessage.sentDate}"
+							rowKey="#{sentmessage.id}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+							rowsPerPageTemplate="5,10,15">
+							<f:facet name="{Exporters}">
+								<h:commandLink>
+									<p:graphicImage name="img/excel.png" width="24" />
+									<p:dataExporter type="xls" target="MessageTable"
+										fileName="foglalkozasok"
+										postProcessor="#{exporterView.postProcessXLS}" />
+								</h:commandLink>
+							</f:facet>
+							<p:ajax event="rowEdit" listener="#{messageManager.onSentEdit}"
+								update=":MessageForm:tableView:SentMessageTable,:growl" />
+							<p:ajax event="rowEditCancel"
+								listener="#{messageManager.onSentCancel}" update=":growl" />
+
+							<p:column selectionMode="multiple" style="width:4%" />
+							<!-- sortBy="#{message.sentDate}" filterBy="#{message.sentDate}" -->
+							<p:column headerText="Küldés dátuma" style="width:30%;"
+								styleClass="tableFieldLeft" filterMatchMode="contains">
+								<h:outputText value="#{sentmessage.sentDate}" />
+							</p:column>
+
+							<!-- sortBy="#{message.title}" filterBy="#{message.title}" -->
+							<p:column headerText="Üzenet tárgya" style="width:30%;"
+								styleClass="tableFieldLeft" filterMatchMode="contains">
+								<h:outputText value="#{sentmessage.title}" />
+							</p:column>
+
+							<p:column style="width:6%">
+								<p:rowToggler />
+							</p:column>
+
+							<p:rowExpansion id="rowexp">
+								<p:editor controls="" value="#{sentmessage.message}" disabled="true" />
+							</p:rowExpansion>
+						</p:dataTable>
+						<p:commandButton value="Törlés"
+							actionListener="#{messageManager.deleteSelectedSentMessage}" process="@form"
+							update="@form,:MessageForm:tableView:SentMessageTable" />
+					</p:panel>
+				</p:tab>
+			</p:tabView>
+			<p:commandButton value="Új" ajax="true"
+				actionListener="#{messageManager.createNewMessage}" process="@this"
+				onsuccess="PF('messageDialogWidget').show();"
+				update=":messageDialogForm:messageDialogPanel" />
+		</h:form>
+
+		<p:dialog id="messageDialog" widgetVar="messageDialogWidget"
+			showEffect="clip" hideEffect="clip" header="Új üzenet"
+			closeOnEscape="true" modal="true" draggable="true">
+			<h:form id="messageDialogForm">
+				<h:panelGrid id="messageDialogPanel" columns="2">
+					<p:outputLabel value="Tárgy" />
+					<p:inputText value="#{messageManager.newMessage.title}"
+						maxlength="255" />
+
+					<p:outputLabel value="címzettek" />
+					<p:selectCheckboxMenu id="userFilter" style="width:100%;"
+						label="Felhasználó" value="#{messageManager.mailRecipients}">
+						<f:selectItem value="#{null}" itemLabel="-- Saját --"
+							itemValue="#{null}" />
+						<f:selectItems value="#{userService.findAllExceptMe()}" var="user"
+							itemLabel="#{user.username}" itemValue="#{user}" />
+						<f:converter converterId="userConv" />
+					</p:selectCheckboxMenu>
+
+					<p:outputLabel value="Üzenet" />
+					<h:inputTextarea value="#{messageManager.newMessage.message}"
+						style="height:150px;width:300px" />
+					<!-- controls="bold italic underline" -->
+				</h:panelGrid>
+				<p:commandButton value="Mentés" ajax="true"
+					actionListener="#{messageManager.saveNewMessage}" process="@form"
+					onsuccess="PF('messageDialogWidget').hide()"
+					update=":MessageForm:tableView:SentMessagePanel" />
+				<p:commandButton value="Mégsem" ajax="true" process="@none"
+					onsuccess="PF('messageDialogWidget').hide()" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

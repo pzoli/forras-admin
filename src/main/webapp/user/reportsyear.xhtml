@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h1>Éves kimutatás generálása</h1>
+		<h:form id="lazyForm">
+			<div class="view">
+				<h:panelGrid rendered="${userService.isAdminRole()}"
+					cellspacing="5px"
+					style="padding-left:20%;padding-right:20%;padding-top:5%;padding-bottom:10%;width:100%;">
+					<h:panelGrid columns="2" style="width:100%;"
+						columnClasses="gridLabel,gridValue">
+						<h:outputText style="font-size:x-large;font-weight: bold;"
+							value="Válasszon kezdő évet" />
+						<p:spinner value="#{yearReportManager.reportStartDate}" />
+
+						<h:outputText style="font-size:x-large;font-weight: bold;"
+							value="Válasszon záró évet" />
+						<p:spinner value="#{yearReportManager.reportEndDate}"/>
+
+						<h:outputText style="font-size:x-large; font-weight: bold;"
+							value="Válasszon kliens típust" />
+						<p:selectCheckboxMenu id="grid" styleClass="borderlessCheckBox"
+							style="padding-left: 40px;"
+							value="#{yearReportManager.selectedClientTypes}"
+							label="Kliens típus" layout="grid" columns="1">
+							<f:selectItems value="#{clientTypeService.findAll()}"
+								var="clientType" itemLabel="#{clientType.typename}"
+								itemValue="#{clientType.id}" />
+							<f:selectItem
+								itemLabel="Nincs meghatározva" itemValue="" />
+						</p:selectCheckboxMenu>
+					</h:panelGrid>
+					<p:selectOneButton value="#{yearReportManager.visibleByActive}">
+						<f:selectItem itemLabel="Aktív" itemValue="true" />
+						<f:selectItem itemLabel="Passzív" itemValue="false" />
+						<f:selectItem itemLabel="Minden" itemValue="" />
+					</p:selectOneButton>
+
+					<p:commandButton
+						actionListener="#{yearReportManager.createReport()}" ajax="true"
+						update="@parent,:growl" title="Jelentés legyártása"
+						value="Jelentés legyártása">
+					</p:commandButton>
+				</h:panelGrid>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

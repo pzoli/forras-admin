@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+			
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+
+		<p:dialog widgetVar="timerDialogWidget" id="timerDialog" closeOnEscape="true">
+			<h:form id="timerForm">
+				<p:tabView activeIndex="0">
+					<p:tab title="Találkozó">
+						<div>
+							<h:panelGrid columns="2">
+								<h:outputLabel value="Cimke felirat" />
+								<p:inputText id="meetingsTitle" value="#{scheduleManager.currentEvent.title}" requiredMessage="A cimke feliratát kötelező kitölteni!">
+									<f:validateRequired />
+								</p:inputText>
+
+								<h:outputLabel value="Induló időpont" />
+								<p:calendar value="#{scheduleManager.currentEvent.startDate}"
+									pattern="yyyy-MM-dd HH:mm" />
+
+								<h:outputLabel value="Záró időpont" />
+								<p:calendar value="#{scheduleManager.currentEvent.endDate}"
+									pattern="yyyy-MM-dd HH:mm" />
+							</h:panelGrid>
+						</div>
+					</p:tab>
+					<p:tab title="Megjegyzés">
+						<div>
+							<h:inputTextarea value="#{scheduleManager.currentEvent.description}" cols="34" rows="4"/>
+						</div>
+					</p:tab>
+
+				</p:tabView>
+				<p:commandButton value="Mentés" ajax="true"
+					oncomplete="currentDialogWidget='timerDialogWidget';handleComplete(xhr, status, args);"
+					actionListener="#{scheduleManager.persistCurrentEvent('True')}"
+					update=":ScheduleForm, @form, :growl" />
+				<p:commandButton value="Mégsem" process="@none"
+					onclick="PF('timerDialogWidget').hide()" />
+				<p:commandButton value="Törlés" process="@this"
+					onclick="PF('timerDialogWidget').hide()"
+					rendered="#{scheduleManager.currentEvent.eventId != null}"
+					actionListener="#{scheduleManager.deleteCurrentEvent()}"
+					update=":ScheduleForm" />
+			</h:form>
+		</p:dialog>
+
+		<h:form id="ScheduleForm">
+			<p:schedule style="width:100%;height:100%" view="month" id="schedule"
+				timeZone="Europe/Budapest" widgetVar="scheduleWidget" locale="hu"
+				value="#{scheduleManager.meetingModel()}">
+				<p:ajax event="dateSelect"
+					listener="#{scheduleManager.onDateSelect}" update=":timerForm"
+					oncomplete="PF('timerDialogWidget').show();" />
+				<p:ajax event="eventSelect"
+					listener="#{scheduleManager.onEventSelect}" update=":timerForm"
+					oncomplete="PF('timerDialogWidget').show();" />
+				<p:ajax event="eventMove" listener="#{scheduleManager.onEventMove}" />
+				<p:ajax event="eventResize"
+					listener="#{scheduleManager.onEventResize}" />
+			</p:schedule>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+<f:facet name="first">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+</f:facet>
+</h:head>
+<f:view contentType="text/html" locale="hu_HU">
+<h:body>
+<strong>Encoding: </strong><h:outputText value="#{facesContext.externalContext.response.characterEncoding}"/>
+<h:form method="post" id="form_sign_up" name="form_sign_up" border="0">		
+	                      <table width="460" cellspacing="0" cellpadding="0" border="0">
+                            <tbody><tr> 
+                              <td width="238" align="right" height="25"><h:outputLabel for="name" class="MainText"  value="Neved">:</h:outputLabel></td>
+                              <td width="18" align="left"></td>
+                              <td width="261" align="left">
+                                <h:inputText id="name" name="name" label="Neved" size="25" value="#{authBackingBean.userName}" />  
+                               </td>
+                            </tr>
+                            <tr> 
+                              <td width="238" align="right" height="25"><h:outputLabel for="email" class="MainText" value="E-mail címed">:</h:outputLabel></td>
+                              <td width="18" align="left"></td>
+                              <td width="261" align="left">
+                                <h:inputText id="email" name="email" label="E-mail címed" size="25" value="#{authBackingBean.emailAddress}"/>
+                              </td>
+                            </tr>
+                            <tr> 
+                              <td width="238" align="right" height="25"><h:outputLabel for="passwd" value="Választott jelszavad">:</h:outputLabel></td>
+                              <td width="18" align="left"></td>
+                              <td width="261" align="left">
+                                <h:inputText id="passwd" name="passwd" match="passwd2" label="Választott jelszavad" value="#{authBackingBean.password}"/>
+                              </td>
+                            </tr>
+                            <tr> 
+                              <td align="right" height="25"><h:outputLabel for="passwd2" class="MainText" value="Jelszó mégegyszer">:</h:outputLabel></td>
+                              <td align="left"></td>
+                              <td align="left">
+                                <h:inputText id="passwd2" name="passwd2" label="Jelszó mégegyszer" value="#{authBackingBean.password2}"/>
+                              </td>
+                            </tr>
+                            <tr> 
+                              <td width="238" align="right" height="25"></td>
+                              <td width="18" align="left"></td>
+                              <td width="261" align="left" height="30">
+                              <h:commandButton id="sendlink" value="register" actionListener="#{authBackingBean.create}"/> 
+                              </td>
+                            </tr>
+                          </tbody></table>
+	</h:form>
+</h:body>
+</f:view>
+</html>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+
+		<p:growl id="growl" sticky="true" />
+
+		<p:dialog widgetVar="timerDialogWidget" id="timerDialog"
+			showEffect="clip" hideEffect="clip" modal="true" closeOnEscape="true"
+			header="Foglalkozás adatok">
+			<h:form id="timerForm">
+				<div class="viewBorder">
+					<p:tabView id="clientsTabs" activeIndex="0"
+						widgetVar="clientsTabWidget">
+						<p:tab title="Foglalkozás alapadatok">
+							<h:panelGrid columns="2" styleClass="viewStyleClass"
+								columnClasses="borderlessGridLabel,borderlessGridInput">
+
+								<h:outputLabel value="Esemény:" for="subjectSelect" />
+								<p:selectOneMenu id="subjectSelect" style="width:170px;"
+									label="Esemény" value="#{scheduleManager.currentEvent.subject}">
+									<p:ajax event="change"
+										listener="#{scheduleManager.onSubjectChangeListener}"
+										update="eventTitle,endTime"
+										onsuccess="$('#timerForm\\:eventTitle').focus();" />
+									<f:selectItem itemLabel="--Válasszon--" itemValue="#{null}" />
+									<f:selectItems value="#{subjectService.findAllSubject(scheduleManager.currentEvent.startDate)}"
+										var="subject" itemLabel="#{subject.title}"
+										itemValue="#{subject}" />
+									<f:converter converterId="subjConv" />
+								</p:selectOneMenu>
+
+
+								<h:outputLabel value="Felirat:" />
+								<p:inputText value="#{scheduleManager.currentEvent.title}"
+									id="eventTitle" />
+
+								<h:outputLabel value="Induló időpont:" />
+								<p:calendar value="#{scheduleManager.currentEvent.startDate}"
+									lang="hu" locale="hu" pattern="yyyy-MM-dd HH:mm">
+									<p:ajax event="dateSelect" listener="#{scheduleManager.updateEndDateOnStartChange}" update="endTime"/>	
+								</p:calendar>
+
+								<h:outputLabel value="Záró időpont:" />
+								<p:calendar id="endTime"
+									value="#{scheduleManager.currentEvent.endDate}" lang="hu"
+									locale="hu" pattern="yyyy-MM-dd HH:mm" />
+							</h:panelGrid>
+							<h:panelGrid columns="2">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="Nyilvántartási szám" />
+									<p:selectBooleanButton offLabel="be" onLabel="ki"
+										showLabels="true" value="#{scheduleManager.showNYSzam}">
+										<p:ajax update="pickList" />
+									</p:selectBooleanButton>
+								</h:panelGrid>
+							</h:panelGrid>
+							<div>
+								<p:selectOneMenu id="groupSelect" style="width:80%;"
+									value="#{scheduleManager.currentEvent.groupForClients}"
+									valueChangeListener="#{scheduleManager.onGroupChangeListener}">
+									<p:ajax event="change" update="pickList"
+										onsuccess="$('#timerForm\\:clientsTabs\\:pickList_source_filter').focus();" />
+									<f:selectItem itemLabel="-- Válasszon csoportot --"
+										itemValue="#{null}" />
+									<f:selectItems value="#{groupForClientsService.findAll()}"
+										var="group" itemLabel="#{group.name}" itemValue="#{group}" />
+									<f:converter converterId="groupConv" />
+								</p:selectOneMenu>
+							</div>
+							<p:pickList id="pickList" value="#{scheduleManager.clientsModel}"
+								style="width:100%;" var="pickclient"
+								converter="#{clientsManager}" itemValue="#{pickclient}"
+								itemLabel="#{pickclient.neve}" showSourceControls="true"
+								showTargetControls="true" showCheckbox="false"
+								showSourceFilter="true" showTargetFilter="true"
+								filterMatchMode="contains">
+
+								<f:facet name="sourceCaption">Kliensek</f:facet>
+								<f:facet name="targetCaption">Csoport tagok</f:facet>
+
+								<p:ajax event="transfer"
+									listener="#{scheduleManager.onTransferClient}" update=":growl" />
+
+								<p:column>
+									<c:choose>
+										<c:when test="#{scheduleManager.showNYSzam == true}">
+											<h:outputText
+												value="#{pickclient.neve} (#{pickclient.nyilvantartasiSzam})" />
+										</c:when>
+										<c:otherwise>
+											<h:outputText value="#{pickclient.neve}" />
+										</c:otherwise>
+									</c:choose>
+								</p:column>
+							</p:pickList>
+						</p:tab>
+						<p:tab title="Csoportvezetők">
+							<p:pickList id="leaderpickList"
+								value="#{scheduleManager.userModel}" var="user" effect="bounce"
+								itemValue="#{user}" itemLabel="#{user.username}"
+								converter="#{userManager}" showSourceControls="true"
+								showTargetControls="true" showCheckbox="false"
+								showSourceFilter="true" showTargetFilter="true"
+								filterMatchMode="contains">
+
+								<f:facet name="sourceCaption">Felhasználók</f:facet>
+								<f:facet name="targetCaption">Csoport vezetők</f:facet>
+
+								<p:ajax event="transfer"
+									listener="#{scheduleManager.onTransferLeader}"
+									partialSubmit="true" update=":growl" />
+
+								<p:column>
+									<h:outputText value="#{user.username}" />
+								</p:column>
+							</p:pickList>
+						</p:tab>
+						<p:tab title="Megjegyzés">
+							<div>
+								<h:inputTextarea
+									value="#{scheduleManager.currentEvent.description}" cols="57"
+									rows="15" />
+							</div>
+						</p:tab>
+					</p:tabView>					
+				</div>
+				<p:commandButton value="Mentés"
+					actionListener="#{scheduleManager.persistCurrentEvent('False')}"
+					oncomplete="currentDialogWidget='timerDialogWidget';handleComplete(xhr, status, args);"
+					update=":ScheduleForm,:growl" />
+				<p:commandButton value="Mégsem"
+					onclick="PF('timerDialogWidget').hide()" process="@none" />
+				<p:commandButton value="Törlés"
+					onclick="PF('timerDialogWidget').hide()"
+					rendered="#{scheduleManager.currentEvent.eventId != null}"
+					actionListener="#{scheduleManager.deleteCurrentEvent()}"
+					update=":ScheduleForm" process="@this" />
+				<p:commandButton value="Sablon készítés" style="padding-left:20px;"
+					onclick="PF('timerDialogWidget').hide()" process="@this"
+					rendered="#{scheduleManager.currentEvent.eventId != null}"
+					actionListener="#{scheduleManager.createTemplate(scheduleManager.currentEvent)}" />
+			</h:form>
+		</p:dialog>
+
+		<h:form id="ScheduleForm">
+			<h:panelGrid columns="2"
+				rendered="#{userService.getLoggedInSystemUser().adminUser or userService.getLoggedInSystemUser().caseManager}">
+				<p:selectCheckboxMenu id="userFilter" style="width:100%;"
+					label="Felhasználó" value="#{scheduleManager.lessionManagers}">
+					<p:ajax event="change"
+						listener="#{scheduleManager.cleanLazyMeetingModel()}"
+						update="schedule" />
+					<f:selectItem value="#{null}" itemLabel="-- Saját --"
+						itemValue="#{null}" />
+					<f:selectItems value="#{userService.findAllExceptMe()}" var="user"
+						itemLabel="#{user.username}" itemValue="#{user}" />
+					<f:converter converterId="userConv" />
+				</p:selectCheckboxMenu>
+
+				<p:commandButton value="frissít" update="schedule" />
+			</h:panelGrid>
+			<p:schedule style="width:100%;height:100%"
+				view="#{scheduleManager.scheduleView}" locale="hu" id="schedule"
+				initialDate="#{scheduleManager.initialDate}" name="schedule_lessons"
+				value="#{scheduleManager.eventModel}" timeZone="Europe/Budapest"
+				widgetVar="scheduleWidget">
+				<p:ajax event="dateSelect"
+					listener="#{scheduleManager.onDateSelect}" update=":timerForm"
+					oncomplete="PF('timerDialogWidget').show();PF('clientsTabWidget').select(0,true);" />
+				<p:ajax event="eventSelect"
+					listener="#{scheduleManager.onEventSelect}" update=":timerForm"
+					oncomplete="PF('timerDialogWidget').show();PF('clientsTabWidget').select(0,true);" />
+				<p:ajax event="eventMove" listener="#{scheduleManager.onEventMove}"
+					update=":timerForm" />
+				<p:ajax event="eventResize"
+					listener="#{scheduleManager.onEventResize}" />
+				<p:ajax event="viewChange"
+					listener="#{scheduleManager.onViewChange}" />
+
+			</p:schedule>
+		</h:form>
+	</ui:define>
+</ui:composition>

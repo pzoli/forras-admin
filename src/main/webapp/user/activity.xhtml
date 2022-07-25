@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"	
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/templates/default.xhtml">
+	<f:metadata>
+		<f:event type="preRenderView"
+			listener="#{activityManager.clearTimeline()}"></f:event>
+	</f:metadata>
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<c:if
+			test="${userService.isAdminRole() or userService.isCaseManager()}">
+			<div id="loadingText"
+				style="font-weight: bold; margin: -5px 0 5px 0; visibility: hidden;">Loading
+				...</div>
+			<h:form id="lazyForm">
+				<p:growl id="messages" showDetail="true" />
+				<h:panelGrid columns="4" style="width:60%;">
+					<h:outputLabel value="Nyilvántartási szám:" />					
+					<h:outputLabel value="Kezdő dátum:" />
+					<div></div>
+					<p:outputLabel style="width:100%;" value="Válasszon klienst:" for="clientSelect" />
+
+					<p:inputText value="#{activityManager.filterNySzam}" />
+					<p:calendar value="#{activityManager.currentTime}" />
+					<p:commandButton value="frissítés" update="clientSelect,:mainform:timeline" partialSubmit="true"/>
+					<p:selectOneMenu id="clientSelect" style="width:100%;"
+						label="Kliens" value="#{activityManager.currentClientId}">
+						<p:ajax listener="#{activityManager.onClientChangeListener}"
+							update=":mainform:timeline" partialSubmit="true"/>
+						<f:selectItem itemLabel="--Válasszon--" itemValue="#{null}" />
+						<f:selectItems value="#{activityManager.findAllAliveClient()}"
+							var="client"
+							itemLabel="#{client.neve} - (#{client.nyilvantartasiSzam})"
+							itemValue="#{client.id}" />						
+					</p:selectOneMenu>
+				</h:panelGrid>
+			</h:form>
+			<h:form id="mainform">
+				<p:timeline id="timeline" value="#{activityManager.model}"
+					start="#{activityManager.currentTime}" widgetVar="timelineWdgt"
+					var="eventItem" preloadFactor="0.5"
+					zoomMax="#{activityManager.zoomMax}" zoomable="true" locale="hu"
+					minHeight="350" showNavigation="true">
+					<p:ajax event="lazyload" update="@none" process="@form"
+						listener="#{activityManager.onLazyLoad}" />
+				</p:timeline>
+			</h:form>
+		</c:if>
+	</ui:define>
+</ui:composition>

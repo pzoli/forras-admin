@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h:form>
+			<p:panel>
+				Naplózott érték:
+				<p:inputText value="#{logManager.loggedValue}"/>
+				<p:commandButton action="#{logManager.filterByNySzam()}" value="Szűrés" update="LogPanel"/>
+			</p:panel>
+			<p:panel id="LogPanel">
+				<p:dataTable value="#{logManager.lazyDataModel}" var="log"
+					widgetVar="Table" id="logTable" styleClass="simpletablestyle"
+					lazy="true" emptyMessage="Nincs rögzített napló bejegyzés"
+					paginator="true" rows="10" sortBy="#{log.logTimestamp}"
+					sortOrder="DESCENDING" rowKey="#{doctor.id}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage name="img/excel.png" width="24" />
+							<p:dataExporter type="xls" target="logTable" fileName="napló" />
+						</h:commandLink>
+					</f:facet>
+					<p:column headerText="Felhasználó neve" style="width:30%;"
+						styleClass="tableFieldLeft" sortBy="#{log.loggedByUser.username}"
+						filterMatchMode="contains" filterBy="#{log.loggedByUser.username}">
+						<h:outputText value="#{log.loggedByUser.username}" />
+					</p:column>
+					<p:column headerText="Dátum" style="width:20%;"
+						styleClass="tableFieldLeft" sortBy="#{log.logTimestamp}"
+						filterFunction="#{logManager.filterByDate}"
+						filterBy="#{log.logTimestamp}">
+						<f:facet name="filter">
+							<p:calendar id="calLog" pattern="yyyy-MM-dd">
+								<p:ajax event="dateSelect" oncomplete="PF('Table').filter()"
+									update="logTable" />
+								<p:ajax event="change" execute="@this"
+									oncomplete="PF('Table').filter()" update="logTable" />
+							</p:calendar>
+						</f:facet>
+						<h:outputText value="#{log.logTimestamp}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Funkció" style="width:20%;"
+						styleClass="tableFieldLeft"
+						sortBy="#{log.loggedFunction.functionName}"
+						filterMatchMode="contains"
+						filterBy="#{log.loggedFunction.functionName}">
+						<h:outputText value="#{log.loggedFunction.functionName}" />
+					</p:column>
+					<p:column headerText="Művelet" style="width:10%;"
+						styleClass="tableFieldLeft" sortBy="#{log.action}"
+						filterOptions="#{logManager.options}" filterBy="#{log.action}">
+						<h:outputText value="#{log.action}">
+							<f:converter converterId="ActionConv" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:4%">
+						<p:rowToggler rendered="true" />
+					</p:column>
+					<p:rowExpansion id="rowexp">
+						<div
+							style="display: block; word-wrap: normal; width: 80%; padding-top: 10px; padding-bottom: 10px;">
+							<h:outputText
+								style="float:left;font-weight:bold;text-decoration:underline;"
+								value="Napló:" />
+							<p:outputLabel
+								rendered="#{(log.loggedValue == null) or (log.loggedValue== '')}"
+								value="üres" />
+
+							<h:inputTextarea value="#{log.loggedValue}" disabled="true"
+								cols="127" rows="20" style="display:block;"
+								rendered="#{(log.loggedValue != null) and (log.loggedValue != '')}" />
+
+						</div>
+					</p:rowExpansion>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

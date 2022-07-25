@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h:form id="lazyForm">
+			<p:growl id="messages" showDetail="true" />
+			<h:panelGrid columns="2">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Töröltek láthatók: " />
+					<p:selectBooleanButton offLabel="nem" onLabel="igen" showLabels="true"
+						value="#{userManager.deletedVisible}">
+						<p:ajax update="lazyTable" />
+					</p:selectBooleanButton>
+				</h:panelGrid>
+			</h:panelGrid>
+			<p:dataTable id="lazyTable" var="item" styleClass="shorttablestyle"
+				selection="#{userManager.selectedUsers}" resizableColumns="true"
+				draggableColumns="true" value="#{userManager.lazyDataModel}"
+				sortBy="#{item.username}" paginator="true" rows="10"
+				emptyMessage="Nincs rögzített felhasználó"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" lazy="true" editable="true">
+				<f:facet name="header">  
+            Felhasználó lista  
+                    </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{userManager.onEdit}"
+					update=":lazyForm:messages" />
+				<p:ajax event="rowEditCancel" listener="#{userManager.onCancel}"
+					update=":lazyForm:messages" />
+
+				<p:column selectionMode="multiple" style="width:4%" id="selections" />
+
+				<p:column filterBy="#{item.username}" filterMatchMode="contains"
+					id="username" sortBy="#{item.username}" headerText="Név" with="30%"
+					styleClass="tableFieldLeft">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.username}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.username}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column filterBy="#{item.emailAddress}" filterMatchMode="contains"
+					id="email" sortBy="#{item.emailAddress}" headerText="Email cím"
+					width="20%" styleClass="tableFieldLeft">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.emailAddress}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.emailAddress}" style="width:95%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Engedélyezve" width="11%" id="enabled">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="Igen" rendered="#{item.enabled == 'True'}" />
+							<h:outputText value="Nem" rendered="#{item.enabled == 'False'}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectBooleanCheckbox value="#{item.enabled}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Esetmenedzser" width="11%" id="casemgr">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="Igen"
+								rendered="#{item.caseManager == 'True'}" />
+							<h:outputText value="Nem"
+								rendered="#{item.caseManager == 'False'}" />
+							<h:outputText value="Üres érték"
+								rendered="#{item.caseManager == null}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectBooleanCheckbox value="#{item.caseManager}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Adminisztrátor" width="11%" id="admin">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="Igen" rendered="#{item.adminUser == 'True'}" />
+							<h:outputText value="Nem" rendered="#{item.adminUser == 'False'}" />
+							<h:outputText value="Üres érték"
+								rendered="#{item.adminUser == null}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectBooleanCheckbox value="#{item.adminUser}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column width="10%" headerText="Jelszó" id="passwd">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="*****" />
+						</f:facet>
+						<f:facet name="input">
+							<p:password value="#{item.userpassword}" style="width:90%;"></p:password>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column width="10%" headerText="Törlés dátuma" id="delDate" rendered="#{userManager.deletedVisible}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.deletedDate}">
+								<f:convertDateTime type="date" pattern="yyyy.MM.dd"/>
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{item.deletedDate}" lang="hu" locale="hu" pattern="yyyy-MM-dd HH:mm" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:4%">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="Új felhasználó" ajax="true"
+				id="newUserButton" onclick="PF('addDialog').show();"
+				update="lazyDialogForm"
+				actionListener="#{userManager.createNewSystemUser()}" />
+
+			<p:commandButton value="Felhasználó(k) tiltása" id="disableUser"
+				onclick="PF('confirmDialog').show();" />
+
+			<p:commandButton value="Felhasználó(k) törlése" id="deleteUser"
+				onclick="PF('confirmDeleteDialog').show();" />
+		</h:form>
+
+		<p:dialog widgetVar="addDialog" header="Új felhasználó" modal="true"
+			closeOnEscape="true">
+			<h:form id="lazyDialogForm">
+				<div class="viewBorder">
+					<h:panelGrid columns="2"
+						columnClasses="borderlessGridLabel,borderlessGridInput">
+						<h:outputLabel value="Felhasználó név:" />
+						<p:inputText value="#{userManager.newSystemUser.username}"
+							id="userName" rendered="true" label="Felhasználó neve">
+							<f:validateRequired />
+						</p:inputText>
+
+						<h:outputLabel value="Email cím:" />
+						<p:inputText value="#{userManager.newSystemUser.emailAddress}"
+							id="emailAddress" rendered="true" label="email cím">
+							<f:validateRequired />
+						</p:inputText>
+
+						<h:outputLabel value="Jelszó:" />
+						<p:password value="#{userManager.newSystemUser.userpassword}"
+							id="password" rendered="true" label="Jelszó">
+							<f:validateRequired />
+							<f:validateLength minimum="3" />
+						</p:password>
+
+						<h:outputLabel value="Engedélyezés:" />
+						<p:selectBooleanCheckbox id="enabledUser"
+							value="#{userManager.newSystemUser.enabled}" rendered="true" />
+					</h:panelGrid>
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Mentés" id="saveUser"
+							actionListener="#{userManager.persistCurrent()}"
+							onclick="PF('addDialog').hide();" update=":lazyForm" />
+						<p:commandButton value="Mégsem" onclick="PF('addDialog').hide();"
+							process="@this" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="confirmDialog" modal="true" header="Megerősítés"
+			closeOnEscape="true">
+			<h:form id="confirmDialogForm">
+				<div class="viewBorder" style="padding-bottom: 20px;">
+					<h:outputText
+						value="Biztos le kívánja tiltani a felhasználó(k) bejelentkezését ?" />
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Tiltás"
+							onclick="PF('confirmDialog').hide();" update=":lazyForm"
+							actionListener="#{userManager.disableUsers}" />
+						<p:commandButton value="Mégsem" process="@this"
+							onclick="PF('confirmDialog').hide();" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="confirmDeleteDialog" modal="true"
+			closeOnEscape="true" header="Megerősítés">
+			<h:form id="confirmDeleteDialogForm">
+				<div class="viewBorder" style="padding-bottom: 20px;">
+					<h:outputText value="Biztos törölni kívánja a felhasználó(ka)t ?" />
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Törlés" id="deleteUserConfirmed"
+							onclick="PF('confirmDeleteDialog').hide();" update=":lazyForm"
+							actionListener="#{userManager.deleteUsers}" />
+						<p:commandButton value="Mégsem" process="@this"
+							onclick="PF('confirmDeleteDialog').hide();" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

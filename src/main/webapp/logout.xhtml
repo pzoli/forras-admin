@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/default.xhtml">
+
+<f:metadata>
+  <f:event type="preRenderView" listener="#{authBackingBean.logout()}"/>
+</f:metadata> 
+
+    <ui:define name="content">
+      <ui:include src="/WEB-INF/templates/login_form.tpl.xhtml"/>
+    </ui:define>
+
+</ui:composition>

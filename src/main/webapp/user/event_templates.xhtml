@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+
+		<h:form id="lazyForm">
+			<p:growl id="messages" showDetail="true" />
+			<p:dataTable id="lazyTable" var="item" widgetVar="lazyTableWidget"
+				value="#{eventTemplateManager.lazyDataModel}"
+				styleClass="simpletablestyle" sortBy="#{item.title}"
+				selection="#{eventTemplateManager.selectedTemplates}"
+				paginator="true" rows="10" emptyMessage="Nincs rögzített sablon"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" lazy="true" editable="true">
+				<f:facet name="header">  
+            Sablonok  
+                    </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{eventTemplateManager.onEdit}"
+					update=":lazyForm:messages" />
+				<p:ajax event="rowEditCancel"
+					listener="#{eventTemplateManager.onCancel}"
+					update=":lazyForm:messages" />
+				<p:column selectionMode="multiple" style="width:4%" />
+
+				<p:column filterBy="#{item.title}" filterMatchMode="contains"
+					sortBy="#{item.title}" headerText="Cimke"
+					styleClass="tableFieldLeft">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.title}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.title}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column filterBy="#{item.startDate}" filterMatchMode="contains"
+					sortBy="#{item.startDate}" headerText="kezdő dátum">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.periodStartDate}">
+								<f:convertDateTime pattern="yyyy-MM-dd  HH:mm" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{item.periodStartDate}" style="width:100%"
+								pattern="yyyy-MM-dd HH:mm" lang="hu" locale="hu" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column sortBy="#{item.period}" headerText="Periódus napokban">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.period}">
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{item.period}" style="width:100%;">
+								<f:selectItem itemLabel="1 nap" itemValue="1" />
+								<f:selectItem itemLabel="1 hét" itemValue="7" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Tulajdonos"
+					rendered="${userService.isAdminRole()}">
+					<h:outputText value="#{item.createdBy.username}" />
+				</p:column>
+
+				<p:column sortBy="#{item.enabled}" headerText="Engedélyezve">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.enabled}">
+								<f:converter converterId="BoolConv" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectBooleanCheckbox value="#{item.enabled}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Hétvégeken is fut">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.enabledOnWeekend}">
+								<f:converter converterId="BoolConv" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectBooleanCheckbox value="#{item.enabledOnWeekend}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:6%">
+					<p:rowEditor />
+				</p:column>
+				<p:column style="width:4%;text-align:center;">
+					<p:commandButton update=":timerForm" title="Részletek" ajax="true"
+						action="#{eventTemplateManager.viewCurrentItem(item)}"
+						onsuccess="PF('timerDialogWidget').show();PF('clientsTabWidget').select(0,true);"
+						icon="ui-icon-search">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:commandButton action="#{eventTemplateManager.createNewTemplate()}"
+				update=":timerForm" title="Új sablon" value="Új sablon" ajax="true"
+				onsuccess="PF('timerDialogWidget').show();PF('clientsTabWidget').select(0,true);" />
+			<p:commandButton
+				actionListener="#{eventTemplateManager.deleteTemplates()}"
+				update="@parent" title="Sablon(ok) törlése"
+				value="Sablon(ok) törlése" />
+		</h:form>
+
+		<p:dialog widgetVar="timerDialogWidget" id="timerDialog"
+			showEffect="clip" hideEffect="clip" modal="true" closeOnEscape="true"
+			header="Foglalkozás adatok">
+			<h:form id="timerForm">
+				<div class="viewBorder">
+					<p:outputLabel value="Következő futás: " />
+					<p:outputLabel value="#{eventTemplateManager.nextStartDate}" id="nextStartDate">
+						<f:convertDateTime type="both" timeStyle="short" dateStyle="short" />
+					</p:outputLabel>
+
+					<p:tabView id="clientsTabs" activeIndex="0"
+						widgetVar="clientsTabWidget">
+						<p:tab title="Foglalkozás adatok">
+							<h:panelGrid columns="2" styleClass="viewStyleClass"
+								style="height:auto;"
+								columnClasses="borderlessGridLabel,borderlessGridInput">
+
+								<h:outputLabel value="Esemény:" for="subjectSelect" />
+								<p:selectOneMenu id="subjectSelect" style="width:170px;"
+									label="Esemény"
+									value="#{eventTemplateManager.currentEventTemplate.subject}">
+									<p:ajax event="change"
+										listener="#{eventTemplateManager.onSubjectChangeListener}"
+										update="eventTitle,endTime"
+										onsuccess="$('#timerForm\\:eventTitle').focus();" />
+									<f:selectItem itemLabel="--Válasszon--" itemValue="#{null}" />
+									<f:selectItems value="#{subjectService.findAllSubject(null)}"
+										var="subject" itemLabel="#{subject.title}"
+										itemValue="#{subject}" />
+									<f:converter converterId="subjConv" />
+								</p:selectOneMenu>
+
+
+								<h:outputLabel value="Felirat:" />
+								<p:inputText
+									value="#{eventTemplateManager.currentEventTemplate.title}"
+									id="eventTitle" />
+
+								<h:outputLabel value="Induló időpont:" />
+								<p:calendar
+									value="#{eventTemplateManager.currentEventTemplate.startDate}"
+									lang="hu" locale="hu" pattern="yyyy-MM-dd HH:mm" />
+
+								<h:outputLabel value="Záró időpont:" />
+								<p:calendar id="endTime"
+									value="#{eventTemplateManager.currentEventTemplate.endDate}"
+									lang="hu" locale="hu" pattern="yyyy-MM-dd HH:mm" />
+
+								<h:outputLabel value="Periódus kezdete:" />
+								<p:calendar id="periodStartTime"
+									value="#{eventTemplateManager.currentEventTemplate.periodStartDate}"
+									lang="hu" locale="hu" pattern="yyyy-MM-dd HH:mm" />
+
+								<h:outputLabel value="Periódus:" />
+								<p:selectOneMenu id="period" style="width:170px;"
+									label="Periódus"
+									value="#{eventTemplateManager.currentEventTemplate.period}">
+									<f:selectItem itemLabel="naponta" itemValue="1" />
+									<f:selectItem itemLabel="hetente" itemValue="7" />
+								</p:selectOneMenu>
+
+								<h:outputLabel value="Hétvégén is fut:" />
+								<p:selectBooleanCheckbox
+									value="#{eventTemplateManager.currentEventTemplate.enabledOnWeekend}" />
+
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="Kliensek">
+							<h:panelGrid columns="2">
+								<h:panelGrid columns="2">
+									<p:outputLabel value="Nyilvántartási szám" />
+									<p:selectBooleanButton offLabel="be" onLabel="ki"
+										showLabels="true" value="#{eventTemplateManager.showNYSzam}">
+										<p:ajax update="pickList" />
+									</p:selectBooleanButton>
+								</h:panelGrid>
+							</h:panelGrid>
+							<div>
+								<p:selectOneMenu id="groupSelect" style="width:75%;"
+									value="#{eventTemplateManager.currentEventTemplate.groupForClients}"
+									valueChangeListener="#{eventTemplateManager.onGroupChangeListener}">
+									<p:ajax event="change" update="pickList"
+										onsuccess="$('#timerForm\\:clientsTabs\\:pickList_source_filter').focus();" />
+									<f:selectItem itemLabel="-- Válasszon csoportot --"
+										itemValue="#{null}" />
+									<f:selectItems value="#{groupForClientsService.findAll()}"
+										var="group" itemLabel="#{group.name}" itemValue="#{group}" />
+									<f:converter converterId="groupConv" />
+								</p:selectOneMenu>
+							</div>
+							<p:pickList id="pickList"
+								value="#{eventTemplateManager.clientsModel}" style="width:80%;"
+								var="pickclient" converter="#{clientsManager}"
+								itemValue="#{pickclient}" itemLabel="#{pickclient.neve}"
+								showSourceControls="true" showTargetControls="true"
+								showCheckbox="false" showSourceFilter="true"
+								showTargetFilter="true" filterMatchMode="contains">
+
+								<f:facet name="sourceCaption">Kliensek</f:facet>
+								<f:facet name="targetCaption">Csoport tagok</f:facet>
+
+								<p:ajax event="transfer"
+									listener="#{eventTemplateManager.onTransferClient}"
+									update=":growl" />
+
+								<p:column>
+									<c:choose>
+										<c:when test="#{eventTemplateManager.showNYSzam == true}">
+											<h:outputText
+												value="#{pickclient.neve} (#{pickclient.nyilvantartasiSzam})" />
+										</c:when>
+										<c:otherwise>
+											<h:outputText value="#{pickclient.neve}" />
+										</c:otherwise>
+									</c:choose>
+								</p:column>
+							</p:pickList>
+						</p:tab>
+						<p:tab title="Csoportvezetők">
+							<p:pickList id="leaderpickList"
+								value="#{eventTemplateManager.userModel}" var="user"
+								effect="bounce" itemValue="#{user}" itemLabel="#{user.username}"
+								converter="#{userManager}" showSourceControls="true"
+								showTargetControls="true" showCheckbox="false"
+								showSourceFilter="true" showTargetFilter="true"
+								filterMatchMode="contains">
+
+								<f:facet name="sourceCaption">Felhasználók</f:facet>
+								<f:facet name="targetCaption">Csoport vezetők</f:facet>
+
+								<p:ajax event="transfer"
+									listener="#{eventTemplateManager.onTransferLeader}"
+									partialSubmit="true" update=":growl" />
+
+								<p:column>
+									<h:outputText value="#{user.username}" />
+								</p:column>
+							</p:pickList>
+						</p:tab>
+						<p:tab title="Megjegyzés">
+							<div>
+								<h:inputTextarea
+									value="#{eventTemplateManager.currentEventTemplate.description}"
+									cols="40" rows="15" />
+							</div>
+						</p:tab>
+					</p:tabView>
+				</div>
+				<p:commandButton value="Mentés"
+					action="#{eventTemplateManager.persistCurrent()}"
+					oncomplete="currentDialogWidget='timerDialogWidget';handleComplete(xhr, status, args);"
+					update=":growl,:lazyForm" />
+				<p:commandButton value="Mégsem"
+					onclick="PF('timerDialogWidget').hide()" process="@none" />
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

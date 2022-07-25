@@ -1,0 +1,11 @@
+								<h:panelGrid id="filterGrid" columns="2"> 									
+									<p:outputLabel  value="Regiszter:" />
+									<p:selectOneMenu id="chapter" value="#{scheduleManager.nameLike}" disabled="#{scheduleManager.currentEvent.groupForClients != null}"
+										onchange="#{scheduleManager.setClients()}">
+										<f:selectItem itemLabel="-- Összes --" itemValue="#{null}" />
+										<f:selectItems value="#{clientsService.alpha}"
+										var="a" itemLabel="#{a}" itemValue="#{a}" />
+										<p:ajax event="change" update="pickList"
+											onsuccess="$('#timerForm\\:clientsTabs\\:pickList_source_filter').focus();" />
+									</p:selectOneMenu>
+								</h:panelGrid>

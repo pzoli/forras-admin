@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"	
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<h1>Diagram</h1>
+		<h:form id="myCharts">
+			<h:panelGrid columns="1" width="100%" style="aling:center;">
+				<p:calendar value="#{chartRequests.year}" locale="hu" navigator="true" showOn="button"/>
+				<p:commandButton value="Frissítés" update="chartGrid" ajax="false" />
+			</h:panelGrid>
+		</h:form>
+
+		<h:panelGrid columns="3" id="chartGrid">
+			<p:chart type="pie" id="clientTypeChart"
+				widgetVar="ClientTypeChartWidget" model="#{chartRequests.pieModel}"
+				style="width:400px;height:300px" />
+			
+			<p:chart type="bar" id="clientNumberByMonthChart"
+				widgetVar="ClientNumberByMonthChartWidget"
+				model="#{chartRequests.barModel}" style="width:400px;height:300px" />
+			
+			<p:chart type="line" id="historyNumberByMonthChart"
+				widgetVar="HistoryNumberByMonthChartWidget"
+				model="#{chartRequests.historyLineModel}"
+				style="width:400px;height:300px" />
+		</h:panelGrid>
+			<p:chart type="bar" id="clientNumberByMonthAndTypeChart"
+				widgetVar="ClientNumberByMonthAndTypeChartWidget"
+				model="#{chartRequests.barModelByCategory}" style="width:1000px;height:400px" />
+
+	</ui:define>
+</ui:composition>

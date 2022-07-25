@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/eventHandlers.js" />
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+
+		<h:form id="lazyForm">
+			<p:growl id="messages" showDetail="true" />
+			<p:dataTable id="lazyTable" var="item" widgetVar="lazyTableWidget"
+				value="#{groupForClientsManager.lazyDataModel}"
+				styleClass="simpletablestyle" sortBy="#{item.name}" sortOrder="ASCENDING"
+				selection="#{groupForClientsManager.selectedGroups}"
+				paginator="true" rows="10" emptyMessage="Nincs rögzített csoport"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" lazy="true" editable="true">
+				<f:facet name="header">  
+            Csoportok  
+                    </f:facet>
+
+				<p:ajax event="rowEdit" listener="#{groupForClientsManager.onEdit}"
+					update=":lazyForm:messages" />
+				<p:ajax event="rowEditCancel"
+					listener="#{groupForClientsManager.onCancel}"
+					update=":lazyForm:messages" />
+				<p:column selectionMode="multiple" style="width:4%" id="selectCol"/>
+
+				<p:column filterBy="#{item.name}" sortBy="#{item.name}" id="nameCol"
+					filterMatchMode="contains" headerText="Csoport név">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.name}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Létszám" id="clientCountCol">
+					<h:outputText value="#{item.clients.size()}" />
+				</p:column>
+
+				<p:column headerText="Tulajdonos" id="ownerUserCol"
+					rendered="${userService.isAdminRole()}">
+					<h:outputText value="#{item.createdBy.username}" />
+				</p:column>
+
+				<p:column style="width:4%" id="editCol">
+					<p:rowEditor />
+				</p:column>
+
+				<p:column style="width:6%;text-align: center" id="editBtnCol">
+					<p:commandButton update=":lazyDialogForm" id="editBtn"
+						actionListener="#{groupForClientsManager.setNewGroup(item)}"
+						oncomplete="PF('addDialog').show()" icon="ui-icon-search"
+						title="View">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="Új csoport" onclick="PF('addDialog').show();" id="newGroupBtn"
+				update="lazyDialogForm"
+				action="#{groupForClientsManager.createNewGroup()}" />
+
+			<p:commandButton value="Csoport(ok) törlése" id="deleteBtn"
+				onclick="PF('confirmDialog').show();"
+				action="#{groupForClientsManager.deleteSelected()}" />
+		</h:form>
+
+		<p:dialog widgetVar="addDialog" modal="true" header="Kliens adatok"
+			closeOnEscape="true">
+			<h:form id="lazyDialogForm">
+				<div class="viewBorder">
+					<div class="view">
+						<h:panelGrid columns="2"
+							columnClasses="borderlessGridLabel,borderlessGridInput">
+							<h:outputLabel value="Csoport neve:" />
+							<p:inputText value="#{groupForClientsManager.newGroup.name}"
+								label="Csoport neve" id="groupName"
+								requiredMessage="Csoport nevének kitöltése kötelező!">
+								<f:validateRequired />
+							</p:inputText>
+						</h:panelGrid>
+					</div>
+					<p:pickList id="pickList"
+						value="#{groupForClientsManager.clientsModel}" var="pickitem"
+						effect="bounce" itemValue="#{pickitem}"
+						itemLabel="#{pickitem.neve}" showSourceControls="true"
+						showTargetControls="true" showCheckbox="false"
+						showSourceFilter="true" showTargetFilter="true"
+						converter="#{clientsManager}"
+						filterMatchMode="contains">
+
+						<f:facet name="sourceCaption">Kliensek</f:facet>
+						<f:facet name="targetCaption">Csoport tagok</f:facet>
+
+						<p:ajax event="transfer"
+							listener="#{groupForClientsManager.onTransfer}"
+							update=":lazyForm:messages" />
+
+						<p:column>
+							<h:outputText value="#{pickitem.neve}" />
+						</p:column>
+					</p:pickList>
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2" rules="none">
+						<p:commandButton value="Mentés" id="saveBtn"
+							actionListener="#{groupForClientsManager.persistCurrent()}"
+							ajax="true"
+							oncomplete="currentDialogWidget='addDialog';handleComplete(xhr, status, args);"
+							update=":lazyForm" />
+						<p:commandButton value="Megsem" onclick="PF('addDialog').hide();"
+							process="@none" update=":lazyForm" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="confirmDialog" modal="true" header="Megerősítés"
+			closeOnEscape="true">
+			<h:form id="confirmDialogForm">
+				<div class="viewBorder">
+					<h:outputText value="Biztos törölni kívánja a csoportot ?" />
+				</div>
+				<div style="padding-left: 25%; padding-right: 25%;">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Törlés" id="confirmedDeleteBtn"
+							onclick="PF('confirmDialog').hide();" update=":lazyForm"
+							process="@this"
+							action="#{groupForClientsManager.deleteSelected()}" />
+						<p:commandButton value="Mégsem" process="@none"
+							onclick="PF('confirmDialog').hide();" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

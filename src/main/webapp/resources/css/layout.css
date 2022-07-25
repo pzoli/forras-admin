@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+.ui-datatable {
+    border-color: #FFFFAAA;
+    border: 3px;
+    text-align:left;
+}
+
+.center-column {
+    text-align:center;
+}
+
+.ui-datatable-odd {
+    background: none repeat scroll 0 0 #F2F2F2;
+}
+
+.cells-align-top {
+vertical-align:top;
+}
