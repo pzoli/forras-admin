@@ -106,6 +106,21 @@
 		<listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup
 		</listener-class>
 	</listener>
+	<servlet>
+		<servlet-name>Resteasy</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Resteasy</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>javax.ws.rs.Application</param-name>
+		<param-value>hu.infokristaly.rs.webservices.AdminRest</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>
 
 	<session-config>
 		<session-timeout>15</session-timeout>

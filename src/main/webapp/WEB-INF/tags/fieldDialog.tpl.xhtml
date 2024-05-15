@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<p:dialog widgetVar="#{dialogWidgetVar}" header="${dialogHeader}" closeOnEscape="true" appendTo="@(body)"
+		modal="true">
+		<h:form id="mainForm">
+			<h:panelGroup id="dynaGroup">
+				<p:growl id="messages" />
+				<pe:dynaForm id="dynaForm" value="${formModel}" var="data"
+					columnClasses="label-container, field-container">
+
+					<pe:dynaFormControl type="hidden" for="hidden">
+						<p:inputText id="hidden" value="#{data.value}" type="hidden"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="email" for="email">
+						<p:inputText id="email" value="#{data.value}"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="txt" for="txt">
+						<p:inputText id="txt" value="#{data.value}"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="password" for="pwd">
+						<p:password id="pwd" value="#{data.value}"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="booleancheckbox" for="chbox">
+						<p:selectBooleanCheckbox id="chbox" value="#{data.value}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="date" for="date">
+						<p:calendar id="date" value="#{data.value}"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="textarea" for="textarea">
+						<p:inputTextarea cols="70" rows="8" id="textarea"
+							value="#{data.value}" required="#{data.required}" />
+					</pe:dynaFormControl>
+					<pe:dynaFormControl type="integer" for="integer">
+						<p:inputNumber id="integer" value="#{data.value}"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
+
+					<pe:dynaFormControl type="select" for="sel">
+						<p:selectOneMenu id="sel" value="#{data.value}"
+							required="#{data.required}">
+							<f:selectItem itemValue="null" itemLabel="-" noSelectionOption="true"/>
+							<f:selectItems var="s" value="#{managerBean[data.propertyName]}" itemLabel="#{s[data.lookupLabelfield]}" itemValue="#{s[data.lookupKeyfield]}"/>
+						</p:selectOneMenu>
+						<p:commandButton action="#{managerBean.showDialog(data.detailDialogFile)}" process="@this" icon="ui-icon-star">
+							<p:ajax event="dialogReturn" listener="#{managerBean.handleReturn}" update="sel"/>
+						</p:commandButton>
+					</pe:dynaFormControl>
+
+					<f:facet name="buttonBar">
+						<p:commandButton action="#{managerBean.save()}"
+							process="@this,dynaForm" ajax="true" value="#{msg['save-button']}"
+							onsuccess="PF('${dialogWidgetVar}').hide();"
+							update=":mainForm:messages,:mainForm:dynaForm,:tableForm:itemsTable" />
+						<p:commandButton type="reset" value="#{msg['reset-button']}"
+							style="margin-left: 5px;" />
+						<p:commandButton process="@this" ajax="true" value="#{msg['cancel-button']}"
+							onsuccess="PF('${dialogWidgetVar}').hide();"/>
+					</f:facet>
+
+				</pe:dynaForm>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>

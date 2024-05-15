@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<h:form id="tableForm">
+		<p:dataTable id="itemsTable" value="#{managerBean.lazyDataModel}"
+			var="u" emptyMessage="#{msg['empty-table-message']}"
+			styleClass="order-table"
+			selection="#{managerBean[managerBean.getSelectionVar()]}"
+			headerClass="order-table-header" lazy="true" rowKey="#{u.id}"
+			rows="10" paginator="true"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+			rowsPerPageTemplate="5,10,15"
+			rowClasses="order-table-odd-row,order-table-even-row">
+			<f:facet name="{Exporters}">
+				<h:commandLink>
+					<p:graphicImage library="img" name="excel.png" width="24" />
+					<p:dataExporter type="xls" target="itemsTable" fileName="log" />
+				</h:commandLink>
+			</f:facet>
+			<f:facet name="header">
+        		${tableHeader}
+    		</f:facet>
+			<p:column selectionMode="#{managerBean.selectMode}"
+				style="width:16px;text-align:center" />
+			<p:column width="5%" rendered="#{editable}">
+				<p:commandButton action="#{managerBean.setControlData(u)}"
+					oncomplete="PF('${dialogWidgetVar}').show();"
+					update=":mainForm:dynaGroup" ajax="true" process="@this"
+					rendered="#{managerBean.checkSaveRight()}" icon="ui-icon-pencil" />
+			</p:column>
+			<p:columns value="#{managerBean.columns}" var="column"
+				columnIndexVar="colIndex" sortBy="#{u[column.property]}"
+				filterBy="#{u[column.property]}">
+				<f:facet name="header">
+					<h:outputText value="#{column.header}" />
+				</f:facet>
+				<h:outputText value="#{u[column.property]}"
+					rendered="#{managerBean.renderSimple(column.class.simpleName)}" />
+				<h:outputText value="#{u[column.property][column.lookupLabelfield]}"
+					rendered="#{managerBean.renderLookup(column.class.simpleName)}" />
+			</p:columns>
+		</p:dataTable>
+		<p:commandButton action="#{managerBean.initValue()}"
+			value="#{msg['new-button']}"
+			onsuccess="PF('${dialogWidgetVar}').show();"
+			rendered="#{managerBean.checkSaveRight() and editable}"
+			update=":mainForm:dynaGroup" ajax="true" process="@this" />
+		<p:commandButton value="#{msg['delete-button']}" update="itemsTable"
+			rendered="#{editable and managerBean.checkDeleteRight()}"
+			action="#{managerBean.deleteSelected()}" />
+		<p:commandButton value="#{msg['select-button']}" icon="ui-icon-search"
+			process="@this,:tableForm"
+			rendered="#{managerBean.openedInDialogMode()}"
+			actionListener="#{managerBean.selectFromDialog()}" />
+	</h:form>
+</ui:composition>

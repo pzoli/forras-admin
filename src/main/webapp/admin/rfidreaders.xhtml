@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:dp="http://integrity.hu/dynap"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+		<script type="text/javascript"
+			src="${request.contextPath}/resources/js/calendar.js" />
+
+		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
+		<dp:dialog dialogWidgetVar="dlgRFIDCardReaderWidget" dialogHeader="RFID kártyaolvasó"
+			managerBean="#{rFIDCardReaderManager}"
+			formModel="#{rFIDCardReaderManager.formModel}" />
+		<dp:dynTable managerBean="#{rFIDCardReaderManager}" tableHeader="RFID kártyaolvasók"
+			dialogWidgetVar="dlgRFIDCardReaderWidget" />
+
+	</ui:define>
+</ui:composition>
