@@ -391,4 +391,11 @@ public class UserService implements Serializable {
             }
         });
     }
+	
+    public SystemUser findByPIN(String pinCode) {
+        SystemUser systemUser = new SystemUser();
+        systemUser.setPinCode(pinCode);
+        return findByPIN(systemUser);
+    }
+
 }
