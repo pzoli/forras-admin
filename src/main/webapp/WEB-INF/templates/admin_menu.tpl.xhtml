@@ -56,6 +56,24 @@
 			</p:submenu>
 		</c:if>
 		
+		<c:if test="${(userService != null)}">
+			<p:submenu id="nfcentrilogmenu" label="Beléptető rendszer"
+				rendered="${userService.isAdminRole()}">
+				<p:menuitem id="rfidcardsmenu" value="RFID kártyák"
+					url="#{request.contextPath}/admin/rfidcards.xhtml"
+					rendered="${userService.isAdminRole()}" />
+				<p:menuitem id="rfidcardreadermenu" value="RFID olvasók"
+					url="#{request.contextPath}/admin/rfidreaders.xhtml"
+					rendered="${userService.isAdminRole()}" />
+				<p:menuitem id="rfidcardusersmenu" value="RFID felhasználók"
+					url="#{request.contextPath}/admin/rfidusers.xhtml"
+					rendered="${userService.isAdminRole()}" />
+				<p:menuitem id="rfidlogentrymenu" value="RFID napló"
+					url="#{request.contextPath}/admin/rfidlogentry.xhtml"
+					rendered="${userService.isAdminRole()}" />
+			</p:submenu>
+		</c:if>
+		
 		<p:submenu id="Szemelyes" label="Személyes">		
 			<p:menuitem id="messagesmenu" value="Üzenetek" url="#{request.contextPath}/user/messagelist.xhtml" />
 		</p:submenu>
