@@ -309,19 +309,21 @@ public abstract class BasicManager<T> {
     }
 
     public void showDialog(String dialogFile) {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("modal", true);
-        options.put("draggable", false);
-        options.put("resizable", false);
-        options.put("contentHeight", 320);
-        Map<String, List<String>> params = new HashMap<String, List<String>>();
-        List<String> values = new ArrayList<String>();
-        values.add("single");
-        params.put("selectMode", values);
-        values = new ArrayList<String>();
-        values.add("selectOne");
-        params.put("dialogMode", values);
-        PrimeFaces.current().dialog().openDynamic(dialogFile, options, params);
+    	if (dialogFile != null && !dialogFile.isEmpty()) {
+	        Map<String, Object> options = new HashMap<String, Object>();
+	        options.put("modal", true);
+	        options.put("draggable", false);
+	        options.put("resizable", false);
+	        options.put("contentHeight", 320);
+	        Map<String, List<String>> params = new HashMap<String, List<String>>();
+	        List<String> values = new ArrayList<String>();
+	        values.add("single");
+	        params.put("selectMode", values);
+	        values = new ArrayList<String>();
+	        values.add("selectOne");
+	        params.put("dialogMode", values);
+	        PrimeFaces.current().dialog().openDynamic(dialogFile, options, params);
+    	}
     }
 
     public void setCurrent(T current) {

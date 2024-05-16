@@ -280,7 +280,7 @@ public class AlertManager implements Serializable {
                 scheduler.scheduleJob(job, trigger);
             }
         } catch (Exception ex) {
-
+        	System.err.print(ex);
         }
     }
 

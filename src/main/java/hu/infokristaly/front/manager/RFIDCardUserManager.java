@@ -21,11 +21,13 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 import org.primefaces.event.SelectEvent;
 
+import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.model.SystemUser;
 import hu.infokristaly.front.exceptions.ActionAccessDeniedException;
 import hu.infokristaly.middle.service.BasicService;
+import hu.infokristaly.middle.service.ClientsService;
 import hu.infokristaly.middle.service.RFIDCardService;
 import hu.infokristaly.middle.service.RFIDCardUserService;
 import hu.infokristaly.middle.service.UserService;
@@ -48,7 +50,7 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 	private RFIDCardService rFIDCardService;
 	
 	@Inject
-	private UserService userService;
+	private ClientsService clientService;
 	
 	public RFIDCardUserManager() {
 
@@ -127,11 +129,11 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 	        RFIDCard rfidCard = new RFIDCard();
 	        rfidCard.setId(id);
 	        result = rFIDCardService.find(rfidCard);
-	    } else if (model.getPropertyName().equals("systemUser")) {
+	    } else if (model.getPropertyName().equals("client")) {
 	        Long id = Long.valueOf((String)model.getValue());
-	        SystemUser systemUser = new SystemUser();
-	        systemUser.setUserid(id);
-	        result = userService.find(systemUser);
+	        Client client = new Client();
+	        client.setId(id);
+	        result = clientService.find(client);
 	    }
 		return result;
 	}
@@ -141,8 +143,8 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
         return rfidCard;
     }
 
-    public List<SystemUser> getSystemUser() {
-        List<SystemUser> systemUser = userService.findAll(false);
+    public List<Client> getClient() {
+        List<Client> systemUser = clientService.findAll(true, null, null,null);
         return systemUser;
     }
 

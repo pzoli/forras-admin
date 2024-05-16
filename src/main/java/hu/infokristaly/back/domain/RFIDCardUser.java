@@ -36,11 +36,11 @@ public class RFIDCardUser implements Serializable {
     @JoinColumn(name = "rfcardid")
 	private RFIDCard rfidCard;
     
-    @EntityInfo(info="Felhasználó", weight=1, required=true, editor="select")
-    @LookupFieldInfo(keyField="userid",labelField="username", detailDialogFile="") // /admin/users
+    @EntityInfo(info="Kliens", weight=1, required=true, editor="select")
+    @LookupFieldInfo(keyField="id",labelField="neve", detailDialogFile="")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid")
-	private SystemUser systemUser;
+    @JoinColumn(name = "clientid")
+	private Client client;
 
 	public RFIDCardUser() {
 		super();
@@ -74,12 +74,12 @@ public class RFIDCardUser implements Serializable {
 	public void setPeriodEnd(Date periodEnd) {
 		this.periodEnd = periodEnd;
 	}   
-	public SystemUser getSystemUser() {
-		return this.systemUser;
+	public Client getClient() {
+		return this.client;
 	}
 
-	public void setSystemUser(SystemUser systemUser) {
-		this.systemUser = systemUser;
+	public void setClient(Client client) {
+		this.client = client;
 	}
     @Override
     public int hashCode() {
@@ -89,7 +89,7 @@ public class RFIDCardUser implements Serializable {
         result = prime * result + ((periodEnd == null) ? 0 : periodEnd.hashCode());
         result = prime * result + ((periodStart == null) ? 0 : periodStart.hashCode());
         result = prime * result + ((rfidCard == null) ? 0 : rfidCard.hashCode());
-        result = prime * result + ((systemUser == null) ? 0 : systemUser.hashCode());
+        result = prime * result + ((client == null) ? 0 : client.hashCode());
         return result;
     }
     @Override
@@ -121,15 +121,15 @@ public class RFIDCardUser implements Serializable {
                 return false;
         } else if (!rfidCard.equals(other.rfidCard))
             return false;
-        if (systemUser == null) {
-            if (other.systemUser != null)
+        if (client == null) {
+            if (other.client != null)
                 return false;
-        } else if (!systemUser.equals(other.systemUser))
+        } else if (!client.equals(other.client))
             return false;
         return true;
     }
 
     public String getUserName() {
-        return systemUser != null ? systemUser.getUsername() : null;
+        return client != null ? client.getNeve() : null;
     }
 }
