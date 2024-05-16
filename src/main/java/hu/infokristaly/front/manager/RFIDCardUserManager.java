@@ -19,6 +19,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.metadata.ConstraintDescriptor;
 
+import org.primefaces.event.SelectEvent;
+
 import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.model.SystemUser;
@@ -27,6 +29,7 @@ import hu.infokristaly.middle.service.BasicService;
 import hu.infokristaly.middle.service.RFIDCardService;
 import hu.infokristaly.middle.service.RFIDCardUserService;
 import hu.infokristaly.middle.service.UserService;
+import hu.infokristaly.utils.FieldModel;
 import hu.infokristaly.utils.LookupFieldModel;
 
 @Named
@@ -94,6 +97,15 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 				FacesMessage message = new FacesMessage("Failed: " + e.getMessage());
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
+		}
+	}
+
+	public void handleReturn(SelectEvent event) {
+		if (event.getObject() instanceof RFIDCard) {
+			RFIDCard selected = (RFIDCard) event.getObject();
+			formModel.getControls().stream()
+					.filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("rfidCard"))
+					.forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
 		}
 	}
 

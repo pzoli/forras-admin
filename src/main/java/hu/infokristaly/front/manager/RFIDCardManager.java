@@ -85,7 +85,7 @@ public class RFIDCardManager extends BasicManager<RFIDCard> implements Serializa
 			}
 		}
 	}
-
+	
 	@Override
 	protected Logger getLogger() {
 		return logger;

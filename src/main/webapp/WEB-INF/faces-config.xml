@@ -11,9 +11,9 @@
 	language governing permissions and limitations under the License. -->
 <!-- This file is not required if you don't need any extra configuration. -->
 <faces-config version="2.2"
-    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
         http://xmlns.jcp.org/xml/ns/javaee
         http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
@@ -32,19 +32,18 @@
 		<converter-class>hu.infokristaly.utils.SubjectTypeConverter</converter-class>
 	</converter>
 
+	<factory>
+		<exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
+	</factory>
 
-   <factory>
-	   <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
-   </factory>
+	<!-- <factory> -->
+	<!-- <exception-handler-factory>hu.infokristaly.utils.SubPrimeExceptionHandlerFactory</exception-handler-factory> -->
+	<!-- </factory> -->
 
-<!-- 	<factory> -->
-<!-- 		<exception-handler-factory>hu.infokristaly.utils.SubPrimeExceptionHandlerFactory</exception-handler-factory> -->
-<!-- 	</factory> -->
+	<!-- <factory> -->
+	<!-- <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory> -->
+	<!-- </factory> -->
 
-<!-- 	<factory> -->
-<!-- 		<exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory> -->
-<!-- 	</factory> -->
-	
 	<application>
 		<message-bundle>JsfMessageResources</message-bundle>
 		<locale-config>
@@ -53,25 +52,25 @@
 
 		<el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
 
-        <message-bundle>
-            i18n
-        </message-bundle>
-        <locale-config>
-            <default-locale>hu</default-locale>
-        </locale-config>
-        <resource-bundle>
-            <base-name>i18n</base-name>
-            <var>msg</var>
-        </resource-bundle>
+		<message-bundle>i18n</message-bundle>
+		
+		<locale-config>
+			<default-locale>hu</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>i18n</base-name>
+			<var>msg</var>
+		</resource-bundle>
 
-        <message-bundle>
-            version
-        </message-bundle>
-        <resource-bundle>
-            <base-name>version</base-name>
-            <var>ver</var>
-        </resource-bundle>
+		<message-bundle>version</message-bundle>
+		<resource-bundle>
+			<base-name>version</base-name>
+			<var>ver</var>
+		</resource-bundle>
 
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
 	</application>
-
+	
 </faces-config>

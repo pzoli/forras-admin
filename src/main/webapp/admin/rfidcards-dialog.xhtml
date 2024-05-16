@@ -5,21 +5,23 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:dp="http://integrity.hu/dynap"
-	template="/WEB-INF/templates/default.xhtml">
+	template="/WEB-INF/templates/dialog.xhtml">
 	<f:metadata>
-		<f:viewAction action="#{rFIDCardUserManager.setSelectMode('multiple')}" />
-		<f:viewAction action="#{rFIDCardUserManager.setDialogMode('')}"/>
+		<f:viewParam name="selectMode"
+			value="#{rFIDCardManager.selectMode}" />
+		<f:viewParam name="dialogMode"
+			value="#{rFIDCardManager.dialogMode}" />
 	</f:metadata>
 	<ui:define name="content">
 		<script type="text/javascript"
 			src="${request.contextPath}/resources/js/calendar.js" />
 
 		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
-		<dp:dialog dialogWidgetVar="dlgRFIDCardUserWidget" dialogHeader="RFID felhasználók"
-			managerBean="#{rFIDCardUserManager}"
-			formModel="#{rFIDCardUserManager.formModel}" />
-		<dp:dynTable managerBean="#{rFIDCardUserManager}" tableHeader="RFID felhasználók"
-			dialogWidgetVar="dlgRFIDCardUserWidget" editable="true"/>
+		<dp:dialog dialogWidgetVar="dlgRFIDCardWidget" dialogHeader="RFID kártya"
+			managerBean="#{rFIDCardManager}"
+			formModel="#{rFIDCardManager.formModel}" />
+		<dp:dynTable managerBean="#{rFIDCardManager}" tableHeader="RFID kártyák"
+			dialogWidgetVar="dlgRFIDCardWidget" editable="true"/>
 
 	</ui:define>
 </ui:composition>

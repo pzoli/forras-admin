@@ -54,7 +54,7 @@
 							<f:selectItem itemValue="null" itemLabel="-" noSelectionOption="true"/>
 							<f:selectItems var="s" value="#{managerBean[data.propertyName]}" itemLabel="#{s[data.lookupLabelfield]}" itemValue="#{s[data.lookupKeyfield]}"/>
 						</p:selectOneMenu>
-						<p:commandButton action="#{managerBean.showDialog(data.detailDialogFile)}" process="@this" icon="ui-icon-star">
+						<p:commandButton action="#if ((data.detailDialogFile.isEmpty()) managerBean.showDialog(data.detailDialogFile)}" process="@this" icon="ui-icon-star">
 							<p:ajax event="dialogReturn" listener="#{managerBean.handleReturn}" update="sel"/>
 						</p:commandButton>
 					</pe:dynaFormControl>

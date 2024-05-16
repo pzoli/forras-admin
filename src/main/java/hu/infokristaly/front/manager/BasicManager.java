@@ -15,6 +15,7 @@ import javax.persistence.PersistenceException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.PrimeFaces;
+import org.primefaces.PrimeFaces.Dialog;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
@@ -34,6 +35,8 @@ import hu.infokristaly.utils.LookupFieldModel;
 
 public abstract class BasicManager<T> {
 
+	private Class<T> clazz;
+	
     protected Optional<T> current;
 
     protected List<ColumnModel> columns;
@@ -326,7 +329,7 @@ public abstract class BasicManager<T> {
     }
 
     public T getCurrent() {
-        return current.get();
+        return current.isPresent() ? current.get() : null;
     }
 
     public void setFormModel(DynaFormModel formModel) {
@@ -365,12 +368,22 @@ public abstract class BasicManager<T> {
                 current = Optional.empty();
             }
         }
-        PrimeFaces.current().dialog().closeDynamic(current.get());
-        //RequestContext.getCurrentInstance().closeDialog(current.get());
+        if (current.isPresent()) {
+        	PrimeFaces.current().dialog().closeDynamic(current.get());
+        }
     }
-
+    
+    public T getInstanceOfT(Class<T> aClass) throws InstantiationException, IllegalAccessException {
+        return aClass.newInstance();
+     }
+    
     protected Class<?> getDomainClass() {
-        Class<?> result = current.get().getClass();
+    	Class<?> result;
+    	if (current.isPresent()) {
+    		result= current.get().getClass();
+    	} else {
+    		result = clazz;
+    	}
         return result;
     }
 

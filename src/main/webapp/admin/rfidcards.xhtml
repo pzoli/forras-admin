@@ -6,6 +6,10 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:dp="http://integrity.hu/dynap"
 	template="/WEB-INF/templates/default.xhtml">
+	<f:metadata>
+		<f:viewAction action="#{rFIDCardManager.setSelectMode('multiple')}" />
+		<f:viewAction action="#{rFIDCardManager.setDialogMode('')}"/>
+	</f:metadata>
 	<ui:define name="content">
 		<script type="text/javascript"
 			src="${request.contextPath}/resources/js/calendar.js" />

@@ -19,6 +19,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.metadata.ConstraintDescriptor;
 
+import org.primefaces.event.SelectEvent;
+
+import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.RFIDCardReader;
 import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.domain.RFIDLogEntry;
@@ -28,6 +31,7 @@ import hu.infokristaly.middle.service.RFIDCardReadersService;
 import hu.infokristaly.middle.service.RFIDCardUserService;
 import hu.infokristaly.middle.service.RFIDLogEntryService;
 import hu.infokristaly.middle.service.UserService;
+import hu.infokristaly.utils.FieldModel;
 import hu.infokristaly.utils.LookupFieldModel;
 
 @Named
@@ -41,16 +45,16 @@ public class RFIDLogEntryManager extends BasicManager<RFIDLogEntry> implements S
 
 	@Inject
 	private RFIDLogEntryService rFIDLogEntryService;
-	
+
 	@Inject
 	private RFIDCardUserService rFIDCardUserService;
-	
+
 	@Inject
 	private RFIDCardReadersService rFIDCardReadersService;
-	
+
 	@Inject
 	private UserService userService;
-	
+
 	public RFIDLogEntryManager() {
 
 	}
@@ -68,12 +72,27 @@ public class RFIDLogEntryManager extends BasicManager<RFIDLogEntry> implements S
 		}
 	}
 
+	public void handleReturn(SelectEvent event) {
+		if (event.getObject() instanceof RFIDCardUser) {
+			RFIDCardUser selected = (RFIDCardUser) event.getObject();
+			formModel.getControls().stream()
+					.filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("rfidCardUser"))
+					.forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
+		} else if (event.getObject() instanceof RFIDCardReader) {
+			RFIDCardReader selected = (RFIDCardReader) event.getObject();
+			formModel.getControls().stream()
+					.filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("rfidCardReader"))
+					.forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
+		}
+
+	}
+
 	public void save() {
 		setCurrentBeanProperties();
 		try {
 			if (current.isPresent()) {
 				if (current.get().getId() == null) {
-				    rFIDLogEntryService.persist(current.get());
+					rFIDLogEntryService.persist(current.get());
 				} else {
 					rFIDLogEntryService.merge(current.get());
 				}
@@ -113,32 +132,32 @@ public class RFIDLogEntryManager extends BasicManager<RFIDLogEntry> implements S
 
 	@Override
 	protected Object getDetailFieldValue(LookupFieldModel model) {
-	    Object result = null;
-	    if (model.getPropertyName().equals("rfidCardUser")) {
-	        Long id = Long.valueOf((String)model.getValue());
-	        RFIDCardUser rfidCard = new RFIDCardUser();
-	        rfidCard.setId(id);
-	        result = rFIDCardUserService.find(rfidCard);
-	    } else if (model.getPropertyName().equals("rfidCardReader")) {
-	        Long id = Long.valueOf((String)model.getValue());
-	        RFIDCardReader rfidCardReader = new RFIDCardReader();
-	        rfidCardReader.setId(id);
-	        result = rFIDCardReadersService.find(rfidCardReader);
-	    }
+		Object result = null;
+		if (model.getPropertyName().equals("rfidCardUser")) {
+			Long id = Long.valueOf((String) model.getValue());
+			RFIDCardUser rfidCard = new RFIDCardUser();
+			rfidCard.setId(id);
+			result = rFIDCardUserService.find(rfidCard);
+		} else if (model.getPropertyName().equals("rfidCardReader")) {
+			Long id = Long.valueOf((String) model.getValue());
+			RFIDCardReader rfidCardReader = new RFIDCardReader();
+			rfidCardReader.setId(id);
+			result = rFIDCardReadersService.find(rfidCardReader);
+		}
 		return result;
 	}
 
 	public List<RFIDCardUser> getRfidCardUser() {
-	    List<RFIDCardUser> rfidCard = rFIDCardUserService.findAll();
-        return rfidCard;
-    }
+		List<RFIDCardUser> rfidCard = rFIDCardUserService.findAll();
+		return rfidCard;
+	}
 
-    public List<RFIDCardReader> getRfidCardReader() {
-        List<RFIDCardReader> systemUser = rFIDCardReadersService.findAll();
-        return systemUser;
-    }
+	public List<RFIDCardReader> getRfidCardReader() {
+		List<RFIDCardReader> systemUser = rFIDCardReadersService.findAll();
+		return systemUser;
+	}
 
-    @Override
+	@Override
 	protected Locale getLocale() {
 		// TODO Auto-generated method stub
 		return Locale.forLanguageTag("hu");

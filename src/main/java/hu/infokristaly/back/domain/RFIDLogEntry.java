@@ -26,13 +26,13 @@ public class RFIDLogEntry implements Serializable {
 	private Long id;
 	
     @EntityInfo(info="RFID kártya felhasználó", weight=1, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="userName", detailDialogFile="/admin/rfidusers")
+    @LookupFieldInfo(keyField="id",labelField="userName", detailDialogFile="/admin/rfidusers-dialog")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcarduserid")
     private RFIDCardUser rfidCardUser;
     
     @EntityInfo(info="RFID kártyaolvasó", weight=2, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="readerId", detailDialogFile="/admin/rfidreaders")
+    @LookupFieldInfo(keyField="id",labelField="readerId", detailDialogFile="/admin/rfidreaders-dialog")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcardid")
 	private RFIDCardReader rfidCardReader;
