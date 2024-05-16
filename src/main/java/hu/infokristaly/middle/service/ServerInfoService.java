@@ -2,6 +2,7 @@ package hu.infokristaly.middle.service;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
