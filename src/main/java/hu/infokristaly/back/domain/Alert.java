@@ -118,7 +118,7 @@ public class Alert implements Serializable {
 
 
     /**
-     * @param version the version to set
+     * @param clientType the type of client
      */
     public void setClientType(ClientType clientType) {
         this.clientType = clientType;

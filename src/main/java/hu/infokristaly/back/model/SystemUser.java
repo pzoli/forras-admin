@@ -10,11 +10,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Cacheable(value=true)
+@Table(name="systemuser")
 public class SystemUser implements Serializable {
 
     private static final long serialVersionUID = 1899784687816530303L;
@@ -25,7 +27,8 @@ public class SystemUser implements Serializable {
     private Long userid;
     
     @Basic
-    private String emailAddress;
+    @Column(name="emailaddress")
+   private String emailAddress;
     
     @Basic
     private boolean enabled;
@@ -41,12 +44,15 @@ public class SystemUser implements Serializable {
     private String username;
     
     @Basic
+    @Column(name="adminuser")
     private boolean adminUser = false;
     
     @Basic
+    @Column(name="pincode")
     private String pinCode;
     
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="deleteddate")
     private Date deletedDate;
         
     public Long getUserid() {

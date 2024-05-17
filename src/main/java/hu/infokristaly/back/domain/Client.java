@@ -299,6 +299,7 @@ public class Client implements Serializable, Comparable<Client> {
 	}
 
 	@Temporal(TemporalType.DATE)
+	@Column(name="kervenybeerkezesdatuma")
 	@Basic
 	public Date getKervenyBeerkezesDatuma() {
 		return kervenyBeerkezesDatuma;
