@@ -13,3 +13,9 @@ insert into SubjectType (id,name) values (5,'egyéb');
 insert into AccessibleType (id,typename) values (1,'cím');
 insert into AccessibleType (id,typename) values (2,'telefon');
 insert into AccessibleType (id,typename) values (3,'mobil');
+
+insert into Client_Type (id,typename) values (1,'Nappali ellátott');
+insert into Client_Type (id,typename) values (2,'Közösségi ellátott');
+insert into Client_Type (id,typename) values (3,'Kerületen kívüli');
+insert into Client_Type (id,typename) values (4,'Krízis étkeztetés');
+insert into Client_Type (id,typename) values (5,'Preventív');

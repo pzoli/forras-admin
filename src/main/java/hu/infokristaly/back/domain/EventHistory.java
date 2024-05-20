@@ -150,6 +150,7 @@ public class EventHistory extends EventData implements ScheduleEvent, Serializab
     
     @Override
     @Basic
+    @Column(name = "styleclass")
     public String getStyleClass() {
         return styleClass;
     }
