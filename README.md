@@ -155,3 +155,4 @@ After deploy all database tables created. Create active users view and import de
 
 ## Connected projects
 [forras-datagenerator](https://github.com/pzoli/forras-datagenerator)
+[NFCForward-EEPROM](https://github.com/pzoli/NFCForward-EEPROM)
