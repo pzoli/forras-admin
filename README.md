@@ -20,6 +20,8 @@ Administration basics: [Youtube video](https://youtu.be/iz7qNyf2sac)
 
 Statistics: [Youtube video](https://youtu.be/dz2aLtvqGYg)
 
+(In the video all data are fictive, generated randomly.)
+
 ## Installation
 
 Download Wildfly 9.0.2.Final from [download.jboss.org](https://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.tar.gz)
