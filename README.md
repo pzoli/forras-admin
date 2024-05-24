@@ -154,6 +154,7 @@ mvn package
 copy ./target/forras-admin.war to wildfly deployment folder (wildfly-9.0.2.Final/standalone/deployments)
 
 After deploy all database tables created. Create active users view and import defaults into the database with doc/viewndefaults.sql file. Then run doc/quartz-tables_postgres.sql for regenerate quartz tables.
+Restore AccessibleType table by importing doc/accessibletype.tar to PostgreSQL.
 
 ## Connected projects
 [forras-datagenerator](https://github.com/pzoli/forras-datagenerator)
