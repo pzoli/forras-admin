@@ -155,14 +155,12 @@
 		<h:form id="ScheduleForm">
 			<h:panelGrid columns="2"
 				rendered="#{userService.getLoggedInSystemUser().adminUser or userService.getLoggedInSystemUser().caseManager}">
-				<p:selectCheckboxMenu id="userFilter" style="width:100%;"
+				<p:selectCheckboxMenu id="userFilter" style="width:100%;" 
 					label="Felhasználó" value="#{scheduleManager.lessionManagers}">
 					<p:ajax event="change"
 						listener="#{scheduleManager.cleanLazyMeetingModel()}"
 						update="schedule" />
-					<f:selectItem value="#{null}" itemLabel="-- Saját --"
-						itemValue="#{null}" />
-					<f:selectItems value="#{userService.findAllExceptMe()}" var="user"
+					<f:selectItems value="#{userService.findAll(false)}" var="user"
 						itemLabel="#{user.username}" itemValue="#{user}" />
 					<f:converter converterId="userConv" />
 				</p:selectCheckboxMenu>

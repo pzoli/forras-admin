@@ -17,7 +17,6 @@ import hu.infokristaly.middle.service.GroupForClientsService;
 import hu.infokristaly.middle.service.ScheduleService;
 import hu.infokristaly.middle.service.SubjectService;
 import hu.infokristaly.middle.service.UserService;
-import hu.infokristaly.utils.HibernateUtils;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -104,7 +103,7 @@ public class ScheduleManager implements Serializable {
 
 	private List<Subject> subjects;
 
-	private SystemUser[] lessionManagers = { null };
+	private SystemUser[] lessionManagers = { };
 	private Date initialDate = new Date();
 
 	private DualListModel<SystemUser> userModel;
@@ -529,6 +528,9 @@ public class ScheduleManager implements Serializable {
 	}
 
 	public SystemUser[] getLessionManagers() {
+		if (lessionManagers.length == 0) {
+			lessionManagers = new SystemUser[] {userService.getLoggedInSystemUser()};
+		}
 		return lessionManagers;
 	}
 
