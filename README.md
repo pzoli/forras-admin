@@ -158,5 +158,6 @@ Restore AccessibleType table by importing doc/accessibletype.tar to PostgreSQL.
 
 ## Connected projects
 [forras-datagenerator](https://github.com/pzoli/forras-datagenerator)
+[ForrasAdminRFIDReaderConfigurator](https://github.com/pzoli/ForrasAdminRFIDReaderConfigurator)
 [ForrasAdminRFIDReader](https://github.com/pzoli/ForrasAdminRFIDReader)
 [NFCReaderSetupSwing](https://github.com/pzoli/NFCReaderSetupSwing)
