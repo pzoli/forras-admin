@@ -222,7 +222,7 @@ public class ScheduleService implements Serializable {
     }
 
     private EventHistory findEvent(EventHistory eventHistory) {
-        EventHistory result = em.find(EventHistory.class, eventHistory.getId());
+        EventHistory result = em.find(EventHistory.class, eventHistory.getEventId());
         return result;
     }
 
