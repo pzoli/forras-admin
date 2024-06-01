@@ -1,5 +1,7 @@
 package hu.infokristaly.rs.webservices;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -45,9 +47,10 @@ public class GetUserEvents {
                 Date endDate = end.getTime();
                 events = ((ScheduleService) scheduleService).loadEvents(startDate, endDate, pinCode);
                 if (events != null) {
+                	SimpleDateFormat format = new SimpleDateFormat("HH:mm");
                     for (EventHistory event : events) {
                         String title = new String(event.getTitle());
-                        resultBuff.append(String.valueOf(event.getEventId()) + "\t" + title + "\n");
+                        resultBuff.append(String.valueOf(event.getEventId()) + "\t" + format.format(event.getStartDate()) + " " + title + "\n");
                     }
                 }
             } else {
