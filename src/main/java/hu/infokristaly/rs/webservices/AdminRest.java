@@ -14,6 +14,8 @@ public class AdminRest extends Application {
     public AdminRest(){
          singletons.add(new GetUserEvents());
          singletons.add(new AddClientToEvent());
+         singletons.add(new GetClientsForEvent());
+         singletons.add(new DeleteClientsFromEvent());
          singletons.add(new GetUserMessages());
          singletons.add(new CreateNFCLog());
     }

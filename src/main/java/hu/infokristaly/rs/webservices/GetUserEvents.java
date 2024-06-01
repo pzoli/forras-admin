@@ -1,13 +1,11 @@
 package hu.infokristaly.rs.webservices;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
@@ -62,4 +60,5 @@ public class GetUserEvents {
         String result = resultBuff.toString();
         return events == null ? "FAILED" : result;
     }
+    
 }
