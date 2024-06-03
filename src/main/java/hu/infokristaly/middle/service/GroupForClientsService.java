@@ -254,12 +254,6 @@ public class GroupForClientsService implements Serializable {
 
     public void persistGroup(GroupForClients newGroup) {
         if (newGroup.getId() == null) {
-            ArrayList<Client> clients = new ArrayList<Client>();
-            for (Client item : newGroup.getClients()) {
-                Client client = em.merge(item);
-                clients.add(client);
-            }
-            newGroup.setClients(clients);
             try {
                 newGroup.setCreatedBy(userService.getLoggedInSystemUser());
                 em.persist(newGroup);
