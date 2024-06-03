@@ -603,7 +603,6 @@ public class ClientsService implements Serializable {
 	}
 
 	public Accessible persistAccessible(Accessible accessible) {
-		em.merge(accessible.getAccessible_type());
 		if (accessible.getId() == null) {
 			em.persist(accessible);
 		} else {
