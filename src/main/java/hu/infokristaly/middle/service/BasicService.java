@@ -93,9 +93,9 @@ public abstract class BasicService<T> {
 
 		}
 		if (sortField != null) {
-			if (sortOrder.equals(SortOrder.ASCENDING)) {
+			if (sortOrder.name().equals(SortOrder.ASCENDING.name())) {
 				cq.orderBy(builder.asc(from.get(sortField)));
-			} else if (sortOrder.equals(SortOrder.DESCENDING)) {
+			} else if (sortOrder.name().equals(SortOrder.DESCENDING.name())) {
 				cq.orderBy(builder.desc(from.get(sortField)));
 			}
 		}

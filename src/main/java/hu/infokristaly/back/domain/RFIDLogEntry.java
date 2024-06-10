@@ -32,7 +32,7 @@ public class RFIDLogEntry implements Serializable {
     private RFIDCardUser rfidCardUser;
     
     @EntityInfo(info="RFID kártyaolvasó", weight=2, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="readerId", detailDialogFile="/admin/rfidreaders-dialog")
+    @LookupFieldInfo(keyField="id",labelField="comment", detailDialogFile="/admin/rfidreaders-dialog")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcardid")
 	private RFIDCardReader rfidCardReader;
