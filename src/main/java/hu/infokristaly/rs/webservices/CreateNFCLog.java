@@ -25,7 +25,7 @@ public class CreateNFCLog {
     @Produces("text/plain")
     public String createNFCLog(@QueryParam("rfid") String rfid, @QueryParam("type") String type, @QueryParam("readerid") String readerid, @QueryParam("serverid") String serverid) {
         InitialContext ic;
-        String result = "OK";
+        String result = "{\"RESPONSE\":\"OK\"}";
         try {
             ic = new InitialContext();
             Object rFIDLogEntryService = ic.lookup("java:/global/forras-admin/RFIDLogEntryService");
@@ -52,14 +52,20 @@ public class CreateNFCLog {
                             logEntry.setRfidCardReader(rfidCardReader);
                             logEntry.setRfidCardUser(rfidCardUser);
                             ((RFIDLogEntryService) rFIDLogEntryService).persist(logEntry);
+                        } else {
+                        	result = "{\"RESPONSE\":\"FAILED, user not found\"}";
                         }
+                    } else {
+                    	result = "{\"RESPONSE\":\"FAILED, card reader not found\"}";
                     }
+                } else {
+                	result = "{\"RESPONSE\":\"FAILED, card not found\"}";
                 }
             } else {
-                result = "FAILED: Service is null";
+                result = "{\"RESPONSE\":\"FAILED, Service is null\"}";
             }
         } catch (NamingException e) {
-            result = e.getMessage();
+            result = "{\"RESPONSE\":\"FAILED, "+e.getMessage()+"\"}";
             e.printStackTrace();
         }
         return result;
