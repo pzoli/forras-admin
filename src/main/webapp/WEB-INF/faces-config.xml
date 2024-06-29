@@ -46,16 +46,13 @@
 
 	<application>
 		<message-bundle>JsfMessageResources</message-bundle>
-		<locale-config>
-			<default-locale>hu</default-locale>
-		</locale-config>
-
 		<el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
 
 		<message-bundle>i18n</message-bundle>
 		
 		<locale-config>
 			<default-locale>hu</default-locale>
+			<supported-locale>en</supported-locale>
 		</locale-config>
 		<resource-bundle>
 			<base-name>i18n</base-name>
