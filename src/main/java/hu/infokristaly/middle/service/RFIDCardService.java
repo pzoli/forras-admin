@@ -11,19 +11,22 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.primefaces.model.SortOrder;
 
+import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.infokristaly.back.domain.RFIDCard;
 
 @Named
 @Stateless
-public class RFIDCardService extends BasicService<RFIDCard> implements Serializable {
+public class RFIDCardService extends BasicService
+<RFIDCard> implements Serializable {
 
     private static final long serialVersionUID = -9139027636913174016L;
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @Inject

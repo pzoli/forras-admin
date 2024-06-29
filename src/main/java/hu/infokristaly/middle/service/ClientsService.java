@@ -27,7 +27,7 @@ import hu.infokristaly.back.domain.ClientType;
 import hu.infokristaly.back.domain.Doctor;
 import hu.infokristaly.back.domain.GroupForClients;
 import hu.infokristaly.back.domain.SubjectType;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.back.resources.QRCodeGenerator;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -93,7 +94,7 @@ public class ClientsService implements Serializable {
 	private LogService logService;
 
 	/** The entity manager. */
-	@Inject
+	@PersistenceContext(unitName = "primary")
 	private EntityManager em;
 
 	@Inject
@@ -494,7 +495,7 @@ public class ClientsService implements Serializable {
 		} else {
 			Client preClient = em.find(Client.class, newClient.getId());
 			if ((preClient.getCurrentManager() != null) && (newClient.getCurrentManager() != null)
-					&& preClient.getCurrentManager().getUserid() != newClient.getCurrentManager().getUserid()) {
+					&& preClient.getCurrentManager().getId() != newClient.getCurrentManager().getId()) {
 				updateCaseManagerHistory(preClient, newClient);
 			}
 

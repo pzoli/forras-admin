@@ -47,10 +47,10 @@
 								styleClass="tableFieldLeft" filterMatchMode="contains">
 								<h:outputText value="#{card.message.sentDate}" />
 							</p:column>
-							<!-- sortBy="#{message.sender.username}" filterBy="#{message.sender.username}" -->
+							<!-- sortBy="#{message.sender.userName}" filterBy="#{message.sender.userName}" -->
 							<p:column headerText="Üzenet küldő" style="width:30%;"
 								styleClass="tableFieldLeft" filterMatchMode="contains">
-								<h:outputText value="#{card.message.sender.username}" />
+								<h:outputText value="#{card.message.sender.userName}" />
 							</p:column>
 
 							<!-- sortBy="#{message.title}" filterBy="#{message.title}" -->
@@ -148,7 +148,7 @@
 						<f:selectItem value="#{null}" itemLabel="-- Saját --"
 							itemValue="#{null}" />
 						<f:selectItems value="#{userService.findAllExceptMe()}" var="user"
-							itemLabel="#{user.username}" itemValue="#{user}" />
+							itemLabel="#{user.userName}" itemValue="#{user}" />
 						<f:converter converterId="userConv" />
 					</p:selectCheckboxMenu>
 

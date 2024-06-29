@@ -23,6 +23,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,7 +37,7 @@ import org.primefaces.model.SortOrder;
 import hu.infokristaly.back.domain.Alert;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.ClientChanges;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class AlertService implements Serializable {
     private Logger log;
 
     /** The entity manager. */
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     private Map<String, Object> currentFilters;

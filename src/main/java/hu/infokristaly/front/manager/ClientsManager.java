@@ -25,7 +25,7 @@ import hu.infokristaly.back.domain.ClientChanges;
 import hu.infokristaly.back.domain.ClientType;
 import hu.infokristaly.back.domain.Doctor;
 import hu.infokristaly.back.model.AppProperties;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ClientTypeService;
 import hu.infokristaly.middle.service.ClientsService;
 import hu.infokristaly.middle.service.DoctorService;

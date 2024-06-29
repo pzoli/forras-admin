@@ -7,7 +7,7 @@ import hu.infokristaly.back.domain.ClientChanges;
 import hu.infokristaly.back.domain.EventHistory;
 import hu.infokristaly.back.domain.Message;
 import hu.infokristaly.back.domain.Subject;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -30,6 +30,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.SortOrder;
@@ -40,7 +41,7 @@ public class ActivityService implements Serializable {
 
     private static final long serialVersionUID = -2812358566616597537L;
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @Inject

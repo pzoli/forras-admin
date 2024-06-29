@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
+import hu.exprog.beecomposit.back.model.SystemUser;
+
 @Entity
 public class LogEntry {
 

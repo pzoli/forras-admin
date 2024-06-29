@@ -22,7 +22,7 @@ import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.EventTemplate;
 import hu.infokristaly.back.domain.GroupForClients;
 import hu.infokristaly.back.jobs.JobForCreateEventHistory;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ClientsService;
 import hu.infokristaly.middle.service.EventTemplateService;
 import hu.infokristaly.middle.service.ScheduleService;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+	<h:form id="mainForm">
+		<ui:include src="/WEB-INF/tags/dynFormElements.xhtml" />
+		<p:commandButton action="#{managerBean.save()}" update="@form"
+			process="@this,mainForm" ajax="false" value="#{msg['save-button']}"/>
+	</h:form>
+</ui:composition>

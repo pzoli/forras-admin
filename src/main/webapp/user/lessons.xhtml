@@ -107,7 +107,7 @@
 						<p:tab title="Csoportvezetők">
 							<p:pickList id="leaderpickList"
 								value="#{scheduleManager.userModel}" var="user" effect="bounce"
-								itemValue="#{user}" itemLabel="#{user.username}"
+								itemValue="#{user}" itemLabel="#{user.userName}"
 								converter="#{userManager}" showSourceControls="true"
 								showTargetControls="true" showCheckbox="false"
 								showSourceFilter="true" showTargetFilter="true"
@@ -121,7 +121,7 @@
 									partialSubmit="true" update=":growl" />
 
 								<p:column>
-									<h:outputText value="#{user.username}" />
+									<h:outputText value="#{user.userName}" />
 								</p:column>
 							</p:pickList>
 						</p:tab>
@@ -161,7 +161,7 @@
 						listener="#{scheduleManager.cleanLazyMeetingModel()}"
 						update="schedule" />
 					<f:selectItems value="#{userService.findAll(false)}" var="user"
-						itemLabel="#{user.username}" itemValue="#{user}" />
+						itemLabel="#{user.userName}" itemValue="#{user}" />
 					<f:converter converterId="userConv" />
 				</p:selectCheckboxMenu>
 

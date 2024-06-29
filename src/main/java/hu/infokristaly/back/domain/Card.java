@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 /**
  * Entity implementation class for Entity: Recipient

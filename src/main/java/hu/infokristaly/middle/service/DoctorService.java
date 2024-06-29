@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,7 +37,7 @@ public class DoctorService implements Serializable {
 
     private static final long serialVersionUID = 1030025159894302867L;
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @Inject

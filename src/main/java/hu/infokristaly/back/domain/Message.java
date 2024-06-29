@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 /**
  * Entity implementation class for Entity: Message

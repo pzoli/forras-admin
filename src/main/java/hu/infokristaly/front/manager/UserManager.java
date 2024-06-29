@@ -19,9 +19,9 @@
 package hu.infokristaly.front.manager;
 
 import hu.infokristaly.back.model.AppProperties;
-import hu.infokristaly.back.model.SystemUser;
-import hu.infokristaly.back.model.UserJoinGroup;
-import hu.infokristaly.back.model.UserJoinGroupId;
+import hu.exprog.beecomposit.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.UserJoinGroup;
+import hu.exprog.beecomposit.back.model.UserJoinGroupId;
 import hu.infokristaly.back.resources.IdGenerator;
 import hu.infokristaly.middle.service.UserService;
 import hu.infokristaly.utils.StringToolkit;
@@ -115,13 +115,13 @@ public class UserManager implements Serializable, Converter {
                 @Override
                 public SystemUser getRowData(String rowKey) {
                     SystemUser systemUser = new SystemUser();
-                    systemUser.setUserid(Long.valueOf(rowKey));
+                    systemUser.setId(Long.valueOf(rowKey));
                     return userService.find(systemUser);
                 }
 
                 @Override
                 public Object getRowKey(SystemUser systemUser) {
-                    return systemUser.getUserid();
+                    return systemUser.getId();
                 }
 
                 @Override
@@ -167,17 +167,17 @@ public class UserManager implements Serializable, Converter {
 
     public void onEdit(RowEditEvent event) {
         SystemUser systemUser = (SystemUser) event.getObject();
-        FacesMessage msg = new FacesMessage("Kliens adatai átszerkesztve", systemUser.getUsername());
+        FacesMessage msg = new FacesMessage("Kliens adatai átszerkesztve", systemUser.getUserName());
         SystemUser user = userService.find(systemUser);
-        UserJoinGroup userJoinGroup = userService.findUserJoinGroup(user.getEmailAddress());
-        if ((systemUser.isAdminUser() != user.isAdminUser()) || !systemUser.getEmailAddress().equals(user.getEmailAddress())) {
+        UserJoinGroup userJoinGroup = userService.findUserJoinGroup(user.getOsUserName());
+        if ((systemUser.isAdminUser() != user.isAdminUser()) || !systemUser.getOsUserName().equals(user.getOsUserName())) {
             userService.removeUserJoinGroup(userJoinGroup);
             if (userJoinGroup == null) {
                 userJoinGroup = new UserJoinGroup();
                 userJoinGroup.setUserJoinGroupId(new UserJoinGroupId());
             }
             userJoinGroup.getUserJoinGroupId().setGroupName(systemUser.isAdminUser() ? UserService.ADMIN_GROUP : UserService.USER_GROUP);
-            userJoinGroup.getUserJoinGroupId().setUserName(systemUser.getEmailAddress());
+            userJoinGroup.getUserJoinGroupId().setUserName(systemUser.getOsUserName());
             userService.persistUserJoinGroup(userJoinGroup);
         }
         userService.persistSystemUser(systemUser);
@@ -185,7 +185,7 @@ public class UserManager implements Serializable, Converter {
     }
 
     public void onCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Új kliens módosítása visszavonva", ((SystemUser) event.getObject()).getUsername());
+        FacesMessage msg = new FacesMessage("Új kliens módosítása visszavonva", ((SystemUser) event.getObject()).getUserName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -200,7 +200,7 @@ public class UserManager implements Serializable, Converter {
     public void persistCurrent() {
         UserJoinGroupId userJoinGroupId = new UserJoinGroupId();
         userJoinGroupId.setGroupName(newSystemUser.isAdminUser() ? UserService.ADMIN_GROUP : UserService.USER_GROUP);
-        userJoinGroupId.setUserName(newSystemUser.getEmailAddress());
+        userJoinGroupId.setUserName(newSystemUser.getOsUserName());
         UserJoinGroup userJoinGroup = new UserJoinGroup();
         userJoinGroup.setUserJoinGroupId(userJoinGroupId);
         try {
@@ -212,7 +212,7 @@ public class UserManager implements Serializable, Converter {
             userService.persistSystemUser(newSystemUser);
             userService.persistUserProperties(newSystemUser, userProperties);
         } catch (Exception ex) {
-            FacesMessage msg = new FacesMessage("Sikertelen felvétel", "[" + newSystemUser.getEmailAddress() + "] e-mail cím már létezik!");
+            FacesMessage msg = new FacesMessage("Sikertelen felvétel", "[" + newSystemUser.getOsUserName() + "] e-mail cím már létezik!");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -248,7 +248,7 @@ public class UserManager implements Serializable, Converter {
                 item.setDeletedDate(new Date());
                 item.setEnabled(false);
                 userService.mergeSystemUser(item);
-                FacesMessage msg = new FacesMessage("Törlés", "[" + item.getUsername() + "] hivatkozás miatt nem törölhető! A felhasználót elrejtettük, így a régebbi foglalkozásokon látható marad.");
+                FacesMessage msg = new FacesMessage("Törlés", "[" + item.getUserName() + "] hivatkozás miatt nem törölhető! A felhasználót elrejtettük, így a régebbi foglalkozásokon látható marad.");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             }
         }
@@ -258,7 +258,7 @@ public class UserManager implements Serializable, Converter {
     public void generateUserQRCode() {
         SystemUser user = userService.getLoggedInSystemUser();
         String oFileName = null;
-        oFileName = appProperties.getDestinationPath() + new String("/user_" + StringToolkit.getCFileName(user.getUsername().replace(' ', '_')) + ".jpg");
+        oFileName = appProperties.getDestinationPath() + new String("/user_" + StringToolkit.getCFileName(user.getUserName().replace(' ', '_')) + ".jpg");
 
         try {
             userService.generateQRCode(user, oFileName);
@@ -275,11 +275,11 @@ public class UserManager implements Serializable, Converter {
     public void generateUserPINCode() {
         SystemUser loggedInUser = userService.getLoggedInSystemUser();
         loggedInUser = userService.find(loggedInUser);
-        String resource = (new Date()) + loggedInUser.getEmailAddress();
+        String resource = (new Date()) + loggedInUser.getOsUserName();
         try {
             String result = IdGenerator.getMD5Sum(resource.getBytes());
             loggedInUser.setPinCode(result);
-            loggedInUser.setUserpassword(null);
+            loggedInUser.setOsUserPassword(null);
             userService.persistSystemUser(loggedInUser);
             userService.getLoggedInSystemUser().setPinCode(result);
             FacesMessage msg = new FacesMessage("Sikerült", "PIN kód generálás sikerült.");
@@ -295,14 +295,14 @@ public class UserManager implements Serializable, Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         SystemUser systemUser = new SystemUser();
-        systemUser.setUserid(Long.valueOf(value));
+        systemUser.setId(Long.valueOf(value));
         systemUser = userService.find(systemUser);
         return systemUser;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return String.valueOf(((SystemUser) value).getUserid());
+        return String.valueOf(((SystemUser) value).getId());
     }
 
 }

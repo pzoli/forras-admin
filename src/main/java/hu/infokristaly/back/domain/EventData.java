@@ -3,7 +3,7 @@ package hu.infokristaly.back.domain;
 import java.util.Date;
 import java.util.List;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 public class EventData {
 

@@ -6,7 +6,7 @@
 package hu.infokristaly.front.manager;
 
 import hu.infokristaly.back.jobs.JobForCreateDailyReport;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.DailyReportService;
 import hu.infokristaly.middle.service.UserService;
 
@@ -92,7 +92,7 @@ public class DailyReportManager implements Serializable {
                 startCalendar.add(Calendar.SECOND, 2);
                 Trigger trigger = newTrigger().withIdentity(triggerKey).startAt(startCalendar.getTime()).build();
                 JobDetail job = newJob(JobForCreateDailyReport.class).withIdentity(jobId + "dailyreport", "system").build();
-                Long userId = userService.getLoggedInSystemUser().getUserid();
+                Long userId = userService.getLoggedInSystemUser().getId();
                 job.getJobDataMap().put("instant",true);
                 job.getJobDataMap().put("userid", userId);
                 job.getJobDataMap().put("reportStartDate", reportStartDate);

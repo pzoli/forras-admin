@@ -21,7 +21,7 @@
 			<p:dataTable id="lazyTable" var="item" styleClass="shorttablestyle"
 				selection="#{userManager.selectedUsers}" resizableColumns="true"
 				draggableColumns="true" value="#{userManager.lazyDataModel}"
-				sortBy="#{item.username}" paginator="true" rows="10"
+				sortBy="#{item.userName}" paginator="true" rows="10"
 				emptyMessage="Nincs rögzített felhasználó"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15" lazy="true" editable="true">
@@ -36,28 +36,28 @@
 
 				<p:column selectionMode="multiple" style="width:4%" id="selections" />
 
-				<p:column filterBy="#{item.username}" filterMatchMode="contains"
-					id="username" sortBy="#{item.username}" headerText="Név" with="30%"
+				<p:column filterBy="#{item.userName}" filterMatchMode="contains"
+					id="userName" sortBy="#{item.userName}" headerText="Név" with="30%"
 					styleClass="tableFieldLeft">
 					<p:cellEditor>
 						<f:facet name="output">
-							<h:outputText value="#{item.username}" />
+							<h:outputText value="#{item.userName}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText value="#{item.username}" style="width:100%" />
+							<p:inputText value="#{item.userName}" style="width:100%" />
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
 
-				<p:column filterBy="#{item.emailAddress}" filterMatchMode="contains"
-					id="email" sortBy="#{item.emailAddress}" headerText="Email cím"
+				<p:column filterBy="#{item.osUserName}" filterMatchMode="contains"
+					id="email" sortBy="#{item.osUserName}" headerText="Email cím"
 					width="20%" styleClass="tableFieldLeft">
 					<p:cellEditor>
 						<f:facet name="output">
-							<h:outputText value="#{item.emailAddress}" />
+							<h:outputText value="#{item.osUserName}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText value="#{item.emailAddress}" style="width:95%" />
+							<p:inputText value="#{item.osUserName}" style="width:95%" />
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -110,7 +110,7 @@
 							<h:outputText value="*****" />
 						</f:facet>
 						<f:facet name="input">
-							<p:password value="#{item.userpassword}" style="width:90%;"></p:password>
+							<p:password value="#{item.osUserPassword}" style="width:90%;"></p:password>
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
@@ -151,19 +151,19 @@
 					<h:panelGrid columns="2"
 						columnClasses="borderlessGridLabel,borderlessGridInput">
 						<h:outputLabel value="Felhasználó név:" />
-						<p:inputText value="#{userManager.newSystemUser.username}"
+						<p:inputText value="#{userManager.newSystemUser.userName}"
 							id="userName" rendered="true" label="Felhasználó neve">
 							<f:validateRequired />
 						</p:inputText>
 
 						<h:outputLabel value="Email cím:" />
-						<p:inputText value="#{userManager.newSystemUser.emailAddress}"
+						<p:inputText value="#{userManager.newSystemUser.osUserName}"
 							id="emailAddress" rendered="true" label="email cím">
 							<f:validateRequired />
 						</p:inputText>
 
 						<h:outputLabel value="Jelszó:" />
-						<p:password value="#{userManager.newSystemUser.userpassword}"
+						<p:password value="#{userManager.newSystemUser.osUserPassword}"
 							id="password" rendered="true" label="Jelszó">
 							<f:validateRequired />
 							<f:validateLength minimum="3" />

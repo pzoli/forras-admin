@@ -1,6 +1,6 @@
 package hu.infokristaly.back.jobs;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.DailyReportService;
 import hu.infokristaly.middle.service.LogService;
 import hu.infokristaly.middle.service.UserService;
@@ -58,7 +58,7 @@ public class JobForCreateDailyReport implements Job {
                 SystemUser user = null;
                 if (userId != null) {
                     user = new SystemUser();
-                    user.setUserid(userId);
+                    user.setId(userId);
                     user = userService.find(user);
                 }
                 if ((dailyReportService != null) && (dailyReportService instanceof DailyReportService)) {
@@ -76,7 +76,7 @@ public class JobForCreateDailyReport implements Job {
 
     private SystemUser getUserById(Long userId) {
         SystemUser user = new SystemUser();
-        user.setUserid(userId);
+        user.setId(userId);
         user = userService.find(user);
         return user;
     }

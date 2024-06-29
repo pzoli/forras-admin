@@ -5,7 +5,8 @@ import java.lang.Long;
 import java.lang.String;
 import javax.persistence.*;
 
-import hu.infokristaly.front.annotations.EntityInfo;
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+import hu.exprog.honeyweb.front.annotations.EntityInfo;
 
 /**
  * Entity implementation class for Entity: RFIDCard
@@ -22,10 +23,10 @@ public class RFIDCard implements Serializable {
     @Column(unique=true, nullable=false)
 	private Long id;
     
-    @EntityInfo(info="Kártya azonosító", weight=1, required=true, editor="txt")
+    @EntityFieldInfo(info="Kártya azonosító", weight=1, required=true, editor="txt")
 	private String rfid;
     
-    @EntityInfo(info="Kártya típus", weight=2, required=true, editor="txt")
+    @EntityFieldInfo(info="Kártya típus", weight=2, required=true, editor="txt")
 	private String type;
 
 	public RFIDCard() {

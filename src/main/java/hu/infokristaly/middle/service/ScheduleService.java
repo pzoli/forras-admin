@@ -3,7 +3,7 @@ package hu.infokristaly.middle.service;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.EventHistory;
 import hu.infokristaly.back.domain.EventTemplate;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -31,7 +32,7 @@ public class ScheduleService implements Serializable {
 
 	private static final long EVENT = 1L;
 
-	@Inject
+	@PersistenceContext(unitName = "primary")
 	private EntityManager em;
 
 	@Inject
@@ -109,7 +110,7 @@ public class ScheduleService implements Serializable {
 
 		List<SystemUser> leaders = eventTemplate.getLeaders();
 		leaders = findAndUpdateUserList(leaders);
-		List<SystemUser> refreshedUsers = leaders.stream().filter(SystemUser::isEnabled).collect(Collectors.toList());
+		List<SystemUser> refreshedUsers = leaders.stream().filter(SystemUser::getEnabled).collect(Collectors.toList());
 
 		EventHistory newEvent = new EventHistory(eventTemplate, refreshedClients, refreshedUsers);
 
@@ -132,7 +133,7 @@ public class ScheduleService implements Serializable {
 	private List<SystemUser> findAndUpdateUserList(List<SystemUser> users) {
 		List<SystemUser> refreshedUsers = new LinkedList<SystemUser>();
 		for (SystemUser user : users) {
-			SystemUser refUser = em.find(SystemUser.class, user.getUserid());
+			SystemUser refUser = em.find(SystemUser.class, user.getId());
 			if (refUser != null) {
 				refreshedUsers.add(refUser);
 			}
@@ -140,9 +141,15 @@ public class ScheduleService implements Serializable {
 		return refreshedUsers;
 	}
 
-	public void mergeEvent(EventHistory currentEvent) {
-		em.merge(currentEvent);
-		logService.logUserActivity(currentEvent.getCreatedBy(), EVENT, LogService.MODIFY, currentEvent);
+	public EventHistory mergeEvent(EventHistory currentEvent) {
+		EventHistory result;
+		try {
+			result = em.merge(currentEvent);
+			logService.logUserActivity(currentEvent.getCreatedBy(), EVENT, LogService.MODIFY, currentEvent);
+		} catch (Exception ex) {
+			result = null;
+		}
+		return result;
 	}
 
 	/*
@@ -181,7 +188,8 @@ public class ScheduleService implements Serializable {
 					List<Client> clients = eventHistory.getClients();
 					if (clients == null) {
 						eventHistory.setClients(new ArrayList<Client>());
-					} else if (!(eventHistory.getClients().contains(client))) {
+					}
+					if (!(eventHistory.getClients().contains(client))) {
 						eventHistory.getClients().add(client);
 						mergeEvent(eventHistory);
 					} else {
@@ -210,14 +218,14 @@ public class ScheduleService implements Serializable {
 		String select = "from EventHistory e"
 				+ " where e.startDate between :beginDate and :endDate and styleClass is null and e.createdBy = :createdBy"
 				+ " or e.eventId in " + "(select e2.eventId from EventHistory e2 join e2.leaders l "
-				+ " where styleClass is null and e2.startDate between :beginDate and :endDate and l.userid = :userid)"
+				+ " where styleClass is null and e2.startDate between :beginDate and :endDate and l.id = :userid)"
 				+ " order by e.startDate desc";
 		Query q = em.createQuery(select);
 		SystemUser systemUser = new SystemUser();
 		systemUser.setPinCode(pinCode);
 		systemUser = userService.findByPIN(systemUser);
 		if (systemUser != null) {
-			q.setParameter("userid", systemUser.getUserid());
+			q.setParameter("userid", systemUser.getId());
 			q.setParameter("createdBy", systemUser);
 			q.setParameter("beginDate", start);
 			q.setParameter("endDate", end);

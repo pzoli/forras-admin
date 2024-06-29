@@ -22,7 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 @Entity
 @Table(name="event_template")
@@ -123,7 +123,7 @@ public class EventTemplate extends EventData implements Serializable {
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_leader", joinColumns = { @JoinColumn(name = "template_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "userid") })
+    @JoinTable(name = "template_leader", joinColumns = { @JoinColumn(name = "template_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
     @Override
     public List<SystemUser> getLeaders() {
         return super.getLeaders();

@@ -43,7 +43,7 @@ import hu.infokristaly.back.domain.SubjectType;
 import hu.infokristaly.back.model.AppProperties;
 import hu.infokristaly.back.model.CatMap;
 import hu.infokristaly.back.model.MonthMap;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.back.model.YearMap;
 
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+	<p:commandButton action="#{managerBean.save()}"
+		process="@this,dynaForm" ajax="true" value="#{msg['save-button']}" id="saveButton"
+		oncomplete="if (args &amp;&amp; !args.validationFailed) PF('${dialogWidgetVar}').hide();"
+		update=":mainForm:messages,:mainForm:dynaForm,:tableForm:itemsTable" />
+	<p:commandButton type="reset" value="#{msg['reset-button']}" id="resetButton"
+		style="margin-left: 5px;" />
+	<p:commandButton process="@this" ajax="true"
+		value="#{msg['cancel-button']}" id="cancelButton"
+		onsuccess="PF('${dialogWidgetVar}').hide();" />
+</ui:composition>

@@ -3,7 +3,7 @@ package hu.infokristaly.back.jobs;
 import hu.infokristaly.back.domain.Card;
 import hu.infokristaly.back.domain.EventTemplate;
 import hu.infokristaly.back.domain.Message;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.LogService;
 import hu.infokristaly.middle.service.MessageService;
 import hu.infokristaly.middle.service.ScheduleService;
@@ -103,7 +103,7 @@ public class JobForCreateEventHistory implements Job {
 
     private SystemUser getUserById(Long userId) {
         SystemUser user = new SystemUser();
-        user.setUserid(userId);
+        user.setId(userId);
         user = userService.find(user);
         return user;
     }

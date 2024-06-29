@@ -91,10 +91,10 @@
 								<h:outputText value="#{item.taj}" />
 							</p:column>
 
-							<p:column filterBy="#{item.currentManager.username}"
+							<p:column filterBy="#{item.currentManager.userName}"
 								style="width:20%" filterMatchMode="contains" id="managerOnActive"
 								headerText="Esetmenedzser" styleClass="tableFieldLeft">
-								<h:outputText value="#{item.currentManager.username}"
+								<h:outputText value="#{item.currentManager.userName}"
 									rendered="#{item.currentManager != null}" />
 							</p:column>
 
@@ -316,10 +316,10 @@
 							<h:outputText value="#{ditem.taj}" />
 						</p:column>
 
-						<p:column filterBy="#{ditem.currentManager.username}"
+						<p:column filterBy="#{ditem.currentManager.useNname}"
 							filterMatchMode="contains" headerText="Eset menedzser" id="managerOnDeleted"
 							styleClass="tableFieldLeft">
-							<h:outputText value="#{ditem.currentManager.username}"
+							<h:outputText value="#{ditem.currentManager.userName}"
 								rendered="#{ditem.currentManager != null}" />
 						</p:column>
 						<p:column style="width:6%;text-align: center" id="detailsColumn">
@@ -414,7 +414,7 @@
 										value="#{clientsManager.currentClient.currentManager}">
 										<f:selectItem itemLabel="--válasszon--" itemValue="#{null}" />
 										<f:selectItems value="#{userService.findAll(true)}"
-											var="manager" itemLabel="#{manager.username}"
+											var="manager" itemLabel="#{manager.userName}"
 											itemValue="#{manager}" />
 										<f:converter converterId="userConv" />
 									</p:selectOneMenu>
@@ -629,7 +629,7 @@
 									</h:outputText>
 								</p:column>
 								<p:column headerText="utolsó módosító">
-									<h:outputText value="#{changes.modifiedBy.username}">
+									<h:outputText value="#{changes.modifiedBy.userName}">
 										<f:convertDateTime pattern="yyyy.MM.dd HH:mm:ss" />
 									</h:outputText>
 								</p:column>
@@ -723,7 +723,7 @@
 					<p:selectOneMenu id="managerSelectTo"
 						value="#{clientsManager.currentCaseManager}">
 						<f:selectItems value="#{userService.findAll(true)}" var="manager"
-							itemLabel="#{manager.username}" itemValue="#{manager}" />
+							itemLabel="#{manager.userName}" itemValue="#{manager}" />
 						<f:converter converterId="userConv" />
 					</p:selectOneMenu>
 				</h:panelGrid>

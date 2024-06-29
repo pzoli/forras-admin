@@ -43,7 +43,7 @@ import hu.infokristaly.back.domain.EventHistory;
 import hu.infokristaly.back.domain.Message;
 import hu.infokristaly.back.domain.SubjectType;
 import hu.infokristaly.back.model.AppProperties;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 @Stateless
 public class DailyReportService implements Serializable {

@@ -78,7 +78,7 @@
 
 				<p:column headerText="Tulajdonos"
 					rendered="${userService.isAdminRole()}">
-					<h:outputText value="#{item.createdBy.username}" />
+					<h:outputText value="#{item.createdBy.userName}" />
 				</p:column>
 
 				<p:column sortBy="#{item.enabled}" headerText="Engedélyezve">
@@ -248,7 +248,7 @@
 						<p:tab title="Csoportvezetők">
 							<p:pickList id="leaderpickList"
 								value="#{eventTemplateManager.userModel}" var="user"
-								effect="bounce" itemValue="#{user}" itemLabel="#{user.username}"
+								effect="bounce" itemValue="#{user}" itemLabel="#{user.userName}"
 								converter="#{userManager}" showSourceControls="true"
 								showTargetControls="true" showCheckbox="false"
 								showSourceFilter="true" showTargetFilter="true"
@@ -262,7 +262,7 @@
 									partialSubmit="true" update=":growl" />
 
 								<p:column>
-									<h:outputText value="#{user.username}" />
+									<h:outputText value="#{user.userName}" />
 								</p:column>
 							</p:pickList>
 						</p:tab>

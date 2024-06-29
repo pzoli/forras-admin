@@ -27,7 +27,7 @@ import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.jobs.JobForCreateAlerts;
 import hu.infokristaly.back.jobs.JobForCreateBackwardAlertReports;
 import hu.infokristaly.back.model.AppProperties;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ActivityService;
 import hu.infokristaly.middle.service.AlertService;
 import hu.infokristaly.middle.service.ClientsService;
@@ -274,7 +274,7 @@ public class AlertManager implements Serializable {
                 startCalendar.set(Calendar.MILLISECOND, 0);
                 Trigger trigger = newTrigger().withIdentity(triggerKey).startAt(startCalendar.getTime()).withSchedule(simpleSchedule().withIntervalInHours(PERIOD_IN_HOURS).repeatForever()).build();
                 JobDetail job = newJob(JobForCreateAlerts.class).withIdentity(jobId + "alerts", "system").build();
-                Long userId = userService.getLoggedInSystemUser().getUserid();
+                Long userId = userService.getLoggedInSystemUser().getId();
                 job.getJobDataMap().put("instant", false);
                 job.getJobDataMap().put("userid", userId);
                 scheduler.scheduleJob(job, trigger);
@@ -333,7 +333,7 @@ public class AlertManager implements Serializable {
                 startCalendar.add(Calendar.SECOND, 10);
                 Trigger trigger = newTrigger().withIdentity(triggerKey).startAt(startCalendar.getTime()).build();
                 JobDetail job = newJob(JobForCreateAlerts.class).withIdentity(jobId + "alerts", "system").build();
-                Long userId = userService.getLoggedInSystemUser().getUserid();
+                Long userId = userService.getLoggedInSystemUser().getId();
                 job.getJobDataMap().put("instant", true);
                 job.getJobDataMap().put("userid", userId);
                 scheduler.scheduleJob(job, trigger);
@@ -357,7 +357,7 @@ public class AlertManager implements Serializable {
                 startCalendar.add(Calendar.SECOND, 10);
                 Trigger trigger = newTrigger().withIdentity(triggerKey).startAt(startCalendar.getTime()).build();
                 JobDetail job = newJob(JobForCreateBackwardAlertReports.class).withIdentity(jobId + "backalerts", "system").build();
-                Long userId = userService.getLoggedInSystemUser().getUserid();
+                Long userId = userService.getLoggedInSystemUser().getId();
                 job.getJobDataMap().put("instant", true);
                 job.getJobDataMap().put("startdate", appProperties.getDefaultAlertManagerStartDate());
                 job.getJobDataMap().put("userid", userId);

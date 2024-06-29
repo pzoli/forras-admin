@@ -3,7 +3,7 @@ package hu.infokristaly.middle.service;
 import hu.infokristaly.back.domain.Card;
 import hu.infokristaly.back.domain.ClientType;
 import hu.infokristaly.back.domain.Message;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.primefaces.event.RowEditEvent;
@@ -33,7 +34,7 @@ public class MessageService implements Serializable {
 
     private static final long serialVersionUID = 5171597252594999255L;
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @SuppressWarnings("unchecked")
@@ -184,7 +185,7 @@ public class MessageService implements Serializable {
             List<Card> removables = new LinkedList<Card>();
             while (iter.hasNext()) {
                 Card item = iter.next();
-                if (item.getRecipientSystemUser().getUserid() == user.getUserid()) {
+                if (item.getRecipientSystemUser().getId() == user.getId()) {
                     removables.add(item);
                 }
             }

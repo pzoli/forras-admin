@@ -11,7 +11,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleRenderingMode;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.util.Date;
 import java.util.List;
@@ -193,7 +193,7 @@ public class EventHistory extends EventData implements ScheduleEvent, Serializab
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "event_leader", joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "eventid") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "userid") })
+    @JoinTable(name = "event_leader", joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "eventid") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
     @Override
     public List<SystemUser> getLeaders() {
         return super.getLeaders();

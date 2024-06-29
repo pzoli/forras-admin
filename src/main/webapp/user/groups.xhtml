@@ -49,7 +49,7 @@
 
 				<p:column headerText="Tulajdonos" id="ownerUserCol"
 					rendered="${userService.isAdminRole()}">
-					<h:outputText value="#{item.createdBy.username}" />
+					<h:outputText value="#{item.createdBy.userName}" />
 				</p:column>
 
 				<p:column style="width:4%" id="editCol">

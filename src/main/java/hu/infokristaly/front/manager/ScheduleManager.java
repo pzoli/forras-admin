@@ -10,7 +10,7 @@ import hu.infokristaly.back.domain.EventHistory;
 import hu.infokristaly.back.domain.EventTemplate;
 import hu.infokristaly.back.domain.GroupForClients;
 import hu.infokristaly.back.domain.Subject;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ClientsService;
 import hu.infokristaly.middle.service.EventTemplateService;
 import hu.infokristaly.middle.service.GroupForClientsService;
@@ -353,8 +353,7 @@ public class ScheduleManager implements Serializable {
 		initialDate = event.getStartDate();
 		event.setModificationDate(new Date());
 		event.setModifiedBy(userService.getLoggedInSystemUser());
-		currentEvent = event;
-		scheduleService.mergeEvent(event);
+		currentEvent = scheduleService.mergeEvent(event);
 	}
 
 	public void onEventResize(ScheduleEntryResizeEvent selectEvent) {
@@ -362,8 +361,7 @@ public class ScheduleManager implements Serializable {
 		event.setModificationDate(new Date());
 		event.setModifiedBy(userService.getLoggedInSystemUser());
 		initialDate = event.getStartDate();
-		currentEvent = event;
-		scheduleService.mergeEvent(event);
+		currentEvent = scheduleService.mergeEvent(event);
 	}
 
 	public EventHistory getCurrentEvent() {
@@ -380,10 +378,9 @@ public class ScheduleManager implements Serializable {
 			currentEvent.setClients(null);
 			currentEvent.setLeaders(null);
 			currentEvent.setModifiedBy(userService.getLoggedInSystemUser());
-			scheduleService.mergeEvent(currentEvent);
 			currentEvent.setClients(Arrays.asList(selectedSrcClients));
 			currentEvent.setLeaders(Arrays.asList(selectedLeaders));
-			scheduleService.mergeEvent(currentEvent);
+			currentEvent = scheduleService.mergeEvent(currentEvent);
 		} else {
 			currentEvent.setCreatedDate(new Date());
 			currentEvent.setCreatedBy(userService.getLoggedInSystemUser());
@@ -403,7 +400,7 @@ public class ScheduleManager implements Serializable {
 		if (currentEvent.getEventId() != null) {
 			currentEvent.setModificationDate(new Date());
 			currentEvent.setModifiedBy(userService.getLoggedInSystemUser());
-			scheduleService.mergeEvent(currentEvent);
+			currentEvent = scheduleService.mergeEvent(currentEvent);
 		} else {
 			currentEvent.setCreatedDate(new Date());
 			currentEvent.setCreatedBy(userService.getLoggedInSystemUser());
@@ -412,6 +409,7 @@ public class ScheduleManager implements Serializable {
 				Subject subject = new Subject();
 				subject.setId(-1);
 				currentEvent.setSubject(subject);
+				currentEvent.setGroupForClients(null);
 			}
 			scheduleService.persistEvent(currentEvent);
 		}
@@ -481,14 +479,14 @@ public class ScheduleManager implements Serializable {
 		if (event.isAdd()) {
 			while (iter.hasNext()) {
 				SystemUser user = new SystemUser();
-				user.setUserid(Long.valueOf(iter.next()));
+				user.setId(Long.valueOf(iter.next()));
 				user = userService.find(user);
 				currentEvent.getLeaders().add(user);
 			}
 		} else {
 			while (iter.hasNext()) {
 				SystemUser user = new SystemUser();
-				user.setUserid(Long.valueOf(iter.next()));
+				user.setId(Long.valueOf(iter.next()));
 				user = userService.find(user);
 				currentEvent.getLeaders().remove(user);
 			}
@@ -747,13 +745,13 @@ public class ScheduleManager implements Serializable {
 	public void onLeaderRowSelect(SelectEvent event) {
 		SystemUser sSystemUser = (SystemUser) event.getObject();
 		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.addMessage(null, new FacesMessage("Hozzáadás: " + sSystemUser.getUsername()));
+		fc.addMessage(null, new FacesMessage("Hozzáadás: " + sSystemUser.getUserName()));
 	}
 
 	public void onLeaderRowUnselect(UnselectEvent event) {
 		SystemUser sSystemUser = (SystemUser) event.getObject();
 		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.addMessage(null, new FacesMessage("Eltávolítás: " + sSystemUser.getUsername()));
+		fc.addMessage(null, new FacesMessage("Eltávolítás: " + sSystemUser.getUserName()));
 	}
 
 	public void onToggleselect(ToggleSelectEvent event) {

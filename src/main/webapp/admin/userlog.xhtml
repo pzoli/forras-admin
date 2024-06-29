@@ -33,9 +33,9 @@
 						</h:commandLink>
 					</f:facet>
 					<p:column headerText="Felhasználó neve" style="width:30%;"
-						styleClass="tableFieldLeft" sortBy="#{log.loggedByUser.username}"
-						filterMatchMode="contains" filterBy="#{log.loggedByUser.username}">
-						<h:outputText value="#{log.loggedByUser.username}" />
+						styleClass="tableFieldLeft" sortBy="#{log.loggedByUser.userName}"
+						filterMatchMode="contains" filterBy="#{log.loggedByUser.userName}">
+						<h:outputText value="#{log.loggedByUser.userName}" />
 					</p:column>
 					<p:column headerText="Dátum" style="width:20%;"
 						styleClass="tableFieldLeft" sortBy="#{log.logTimestamp}"

@@ -1,6 +1,6 @@
 package hu.infokristaly.front.controller;
 
-import hu.infokristaly.front.manager.SelfManager;
+import hu.exprog.beecomposit.front.manager.SelfManager;
 import hu.infokristaly.middle.service.UserService;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +18,6 @@ public class SetupRequests {
     private UserService userService;
     
     public void updateSetupManager() {
-        selfManager.setCurrentSystemUser(userService.getLoggedInSystemUser());
+        selfManager.setCurrent(userService.getLoggedInSystemUser());
     }
 }

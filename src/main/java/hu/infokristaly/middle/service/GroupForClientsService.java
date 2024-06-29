@@ -23,6 +23,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -35,7 +36,7 @@ import org.primefaces.model.SortOrder;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.GroupForClients;
 import hu.infokristaly.back.domain.SubjectType;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class GroupForClientsService implements Serializable {
     private Logger log;
 
     /** The entity manager. */
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @Inject
@@ -128,7 +129,7 @@ public class GroupForClientsService implements Serializable {
 
         if (!userService.getLoggedInSystemUser().isAdminUser()) {
             Expression<String> created_by = from.get("createdBy");
-            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getUserid());
+            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getId());
             predicateList.add(userPredicate);
         }
 
@@ -190,7 +191,7 @@ public class GroupForClientsService implements Serializable {
         if (!userService.getLoggedInSystemUser().isAdminUser()) {
             Expression<String> created_by = from.get("createdBy");
             Predicate userNull = builder.isNull(created_by);                       
-            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getUserid());
+            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getId());
             userPredicate = builder.or(userPredicate,userNull);
             predicateList.add(userPredicate);
         }
@@ -238,7 +239,7 @@ public class GroupForClientsService implements Serializable {
 
         if (!userService.getLoggedInSystemUser().isAdminUser()) {
             Expression<String> created_by = from.get("createdBy");
-            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getUserid());
+            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getId());
             predicateList.add(userPredicate);
         }
 

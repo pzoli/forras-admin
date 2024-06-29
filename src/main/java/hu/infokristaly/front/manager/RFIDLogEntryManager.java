@@ -25,14 +25,15 @@ import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.RFIDCardReader;
 import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.domain.RFIDLogEntry;
-import hu.infokristaly.front.exceptions.ActionAccessDeniedException;
-import hu.infokristaly.middle.service.BasicService;
+import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
+import hu.exprog.honeyweb.front.manager.BasicManager;
+import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.infokristaly.middle.service.RFIDCardReadersService;
 import hu.infokristaly.middle.service.RFIDCardUserService;
 import hu.infokristaly.middle.service.RFIDLogEntryService;
 import hu.infokristaly.middle.service.UserService;
-import hu.infokristaly.utils.FieldModel;
-import hu.infokristaly.utils.LookupFieldModel;
+import hu.exprog.honeyweb.utils.FieldModel;
+import hu.exprog.honeyweb.utils.LookupFieldModel;
 
 @Named
 @SessionScoped
@@ -179,6 +180,30 @@ public class RFIDLogEntryManager extends BasicManager<RFIDLogEntry> implements S
 	public boolean checkDeleteRight() throws ActionAccessDeniedException {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public boolean checkDeleteRight(RFIDLogEntry entity) throws ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean checkEditableRights(RFIDLogEntry entity) throws ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public Object postProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object preProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

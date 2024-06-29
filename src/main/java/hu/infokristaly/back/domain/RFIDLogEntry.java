@@ -2,8 +2,8 @@ package hu.infokristaly.back.domain;
 
 import hu.infokristaly.back.domain.RFIDCardReader;
 import hu.infokristaly.back.domain.RFIDCardUser;
-import hu.infokristaly.front.annotations.EntityInfo;
-import hu.infokristaly.front.annotations.LookupFieldInfo;
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
 
 import java.io.Serializable;
 import java.lang.Long;
@@ -25,19 +25,19 @@ public class RFIDLogEntry implements Serializable {
     @Column(unique=true, nullable=false)
 	private Long id;
 	
-    @EntityInfo(info="RFID kártya felhasználó", weight=1, required=true, editor="select")
+    @EntityFieldInfo(info="RFID kártya felhasználó", weight=1, required=true, editor="select")
     @LookupFieldInfo(keyField="id",labelField="userName", detailDialogFile="/admin/rfidusers-dialog")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcarduserid")
     private RFIDCardUser rfidCardUser;
     
-    @EntityInfo(info="RFID kártyaolvasó", weight=2, required=true, editor="select")
+    @EntityFieldInfo(info="RFID kártyaolvasó", weight=2, required=true, editor="select")
     @LookupFieldInfo(keyField="id",labelField="comment", detailDialogFile="/admin/rfidreaders-dialog")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcardid")
 	private RFIDCardReader rfidCardReader;
 	
-	@EntityInfo(info="Dátumt", weight=1, required=true, editor="date")
+	@EntityFieldInfo(info="Dátumt", weight=1, required=true, editor="date")
 	private Date logDate;
 	
 

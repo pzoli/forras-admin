@@ -6,7 +6,7 @@
 package hu.infokristaly.front.manager;
 
 import hu.infokristaly.back.jobs.JobForCreateYearReport;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.UserService;
 import hu.infokristaly.middle.service.YearReportService;
 
@@ -96,7 +96,7 @@ public class YearReportManager implements Serializable {
                 startCalendar.add(Calendar.SECOND, 2);
                 Trigger trigger = newTrigger().withIdentity(triggerKey).startAt(startCalendar.getTime()).build();
                 JobDetail job = newJob(JobForCreateYearReport.class).withIdentity(jobId + "yearreport", "system").build();
-                Long userId = userService.getLoggedInSystemUser().getUserid();
+                Long userId = userService.getLoggedInSystemUser().getId();
                 job.getJobDataMap().put("instant",true);
                 job.getJobDataMap().put("userid", userId);
                 job.getJobDataMap().put("reportStartDate", reportStartDate);

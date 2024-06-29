@@ -16,7 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import hu.infokristaly.back.domain.Message;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.MessageService;
 import hu.infokristaly.middle.service.UserService;
 

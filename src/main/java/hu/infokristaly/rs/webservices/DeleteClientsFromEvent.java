@@ -12,7 +12,7 @@ import javax.ws.rs.QueryParam;
 
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.EventHistory;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ScheduleService;
 import hu.infokristaly.middle.service.UserService;
 

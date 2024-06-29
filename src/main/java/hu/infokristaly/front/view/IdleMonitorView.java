@@ -9,7 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.MessageService;
 import hu.infokristaly.middle.service.UserService;
 
@@ -38,7 +38,7 @@ public class IdleMonitorView {
             actualfilters.put("systemUser", systemUser);
             int count = messageService.countUnreded(actualfilters);
             if (count > 0) {
-                message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Újra aktivitás", "Kedves " + (systemUser.getUsername()) + "! Olvasatlan üzeneteid (" + count + ") vannak.");
+                message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Újra aktivitás", "Kedves " + (systemUser.getUserName()) + "! Olvasatlan üzeneteid (" + count + ") vannak.");
             }
         }
         if (message != null) {

@@ -11,33 +11,34 @@
 	<h:form id="tableForm">
 		<p:dataTable id="itemsTable" value="#{managerBean.lazyDataModel}"
 			var="u" emptyMessage="#{msg['empty-table-message']}"
-			styleClass="order-table"
+			styleClass="order-table" resizableColumns="true"
 			selection="#{managerBean[managerBean.getSelectionVar()]}"
 			headerClass="order-table-header" lazy="true" rowKey="#{u.id}"
 			rows="10" paginator="true"
 			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
 			rowsPerPageTemplate="5,10,15"
 			rowClasses="order-table-odd-row,order-table-even-row">
-			<f:facet name="{Exporters}">
-				<h:commandLink>
-					<p:graphicImage library="img" name="excel.png" width="24" />
-					<p:dataExporter type="xls" target="itemsTable" fileName="log" />
-				</h:commandLink>
-			</f:facet>
 			<f:facet name="header">
         		${tableHeader}
     		</f:facet>
+			<f:facet name="{Exporters}">
+				<h:commandLink title="#{msg['export-selecteds']}">
+					<p:graphicImage name="/img/excel.png" width="24" />
+					<p:dataExporter selectionOnly="true" type="xls" target="itemsTable"
+						fileName="unirobotloggers" />
+				</h:commandLink>
+			</f:facet>
 			<p:column selectionMode="#{managerBean.selectMode}"
-				style="width:16px;text-align:center" />
-			<p:column width="5%" rendered="#{editable}">
-				<p:commandButton action="#{managerBean.setControlData(u)}"
+				exportable="false" style="width:16px;text-align:center" />
+			<p:column width="5%" exportable="false" rendered="#{editable}">
+				<p:commandButton action="#{managerBean.setControlData(u)}" title="#{msg['edit-button']}"
 					oncomplete="PF('${dialogWidgetVar}').show();"
 					update=":mainForm:dynaGroup" ajax="true" process="@this"
-					rendered="#{managerBean.checkSaveRight()}" icon="ui-icon-pencil" />
+					rendered="#{managerBean.checkSaveRight()}" disabled="#{!managerBean.checkEditableRights(u)}" icon="ui-icon-pencil" />
 			</p:column>
 			<p:columns value="#{managerBean.columns}" var="column"
-				columnIndexVar="colIndex" sortBy="#{u[column.property]}"
-				filterBy="#{u[column.property]}">
+				resizable="true" columnIndexVar="colIndex"
+				sortBy="#{u[column.sortField]}" filterBy="#{u[column.filterField]}">
 				<f:facet name="header">
 					<h:outputText value="#{column.header}" />
 				</f:facet>
@@ -48,16 +49,29 @@
 			</p:columns>
 		</p:dataTable>
 		<p:commandButton action="#{managerBean.initValue()}"
-			value="#{msg['new-button']}"
-			onsuccess="PF('${dialogWidgetVar}').show();"
-			rendered="#{managerBean.checkSaveRight() and editable}"
-			update=":mainForm:dynaGroup" ajax="true" process="@this" />
-		<p:commandButton value="#{msg['delete-button']}" update="itemsTable"
-			rendered="#{editable and managerBean.checkDeleteRight()}"
-			action="#{managerBean.deleteSelected()}" />
+			value="#{msg['new-button']}" id="newButton"
+			oncomplete="PF('${dialogWidgetVar}').show();"
+			rendered="#{managerBean.checkSaveRight()}"
+			update=":mainForm:dynaGroup" ajax="true" />
+		<p:commandButton value="#{msg['delete-button']}"
+			update="itemsTable,growl" id="deleteButton"
+			rendered="#{managerBean.checkDeleteRight()}"
+			actionListener="#{managerBean.deleteSelected()}">
+			<p:confirm header="#{msg['confirm-dialogheader']}"
+				message="#{msg['delete-confirm-message']}" icon="ui-icon-alert"/>
+		</p:commandButton>
 		<p:commandButton value="#{msg['select-button']}" icon="ui-icon-search"
-			process="@this,:tableForm"
-			rendered="#{managerBean.openedInDialogMode()}"
+			process="@this,:tableForm" id="selectButton"
+			rendered="#{managerBean.openedInDialogMode() &amp;&amp; managerBean.getSelectEnabled()}"
 			actionListener="#{managerBean.selectFromDialog()}" />
 	</h:form>
+
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<h:form>
+			<p:commandButton value="#{msg['yes-button']}" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="#{msg['no-button']}" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</h:form>
+	</p:confirmDialog>
 </ui:composition>

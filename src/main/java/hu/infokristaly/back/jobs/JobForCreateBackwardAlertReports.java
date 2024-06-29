@@ -3,7 +3,7 @@ package hu.infokristaly.back.jobs;
 import hu.infokristaly.back.domain.Card;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.Message;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ActivityService;
 import hu.infokristaly.middle.service.AlertService;
 import hu.infokristaly.middle.service.ClientsService;
@@ -95,7 +95,7 @@ public class JobForCreateBackwardAlertReports implements Job {
 
     private SystemUser getUserById(Long userId) {
         SystemUser user = new SystemUser();
-        user.setUserid(userId);
+        user.setId(userId);
         user = userService.find(user);
         return user;
     }

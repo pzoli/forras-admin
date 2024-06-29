@@ -20,10 +20,12 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardReader;
-import hu.infokristaly.front.exceptions.ActionAccessDeniedException;
-import hu.infokristaly.middle.service.BasicService;
+import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
+import hu.exprog.honeyweb.front.manager.BasicManager;
+import hu.exprog.honeyweb.middle.services.BasicService;
+import hu.exprog.honeyweb.utils.FieldModel;
 import hu.infokristaly.middle.service.RFIDCardReadersService;
-import hu.infokristaly.utils.LookupFieldModel;
+import hu.exprog.honeyweb.utils.LookupFieldModel;
 
 @Named
 @SessionScoped
@@ -98,14 +100,15 @@ public class RFIDCardReaderManager extends BasicManager<RFIDCardReader> implemen
 	}
 
 	@Override
-	protected Object getDetailFieldValue(LookupFieldModel model) {
-		return null;
-	}
-
-	@Override
 	protected Locale getLocale() {
 		// TODO Auto-generated method stub
 		return Locale.forLanguageTag("hu");
+	}
+
+	@Override
+	protected Object getDetailFieldValue(LookupFieldModel model) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -125,5 +128,32 @@ public class RFIDCardReaderManager extends BasicManager<RFIDCardReader> implemen
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	@Override
+	public boolean checkDeleteRight(RFIDCardReader entity)
+			throws ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean checkEditableRights(RFIDCardReader entity)
+			throws ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public Object postProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object preProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

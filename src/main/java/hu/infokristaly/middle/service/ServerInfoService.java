@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.jboss.as.controller.client.ModelControllerClient;
@@ -33,7 +34,7 @@ public class ServerInfoService implements Serializable {
 
     private static final long serialVersionUID = 1024885551824890762L;
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     List<SimpleEntry<String, Object>> filterList = new LinkedList<SimpleEntry<String, Object>>();

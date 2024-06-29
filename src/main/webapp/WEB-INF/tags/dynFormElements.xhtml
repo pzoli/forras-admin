@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+	<h:panelGroup id="dynaGroup">
+		<p:growl id="messages" />
+		<pe:dynaForm id="dynaForm" value="${formModel}" var="data"
+			columnClasses="label-container, field-container">
+
+			<pe:dynaFormControl type="hidden" for="#{data.propertyName}_hidden">
+				<p:inputText id="#{data.propertyName}_hidden" value="#{data.value}"
+					type="hidden" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:inputText>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="email" for="#{data.propertyName}_email">
+				<p:inputText id="#{data.propertyName}_email" value="#{data.value}"
+					disabled="#{data.rights.disabled}" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:inputText>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="txt" for="#{data.propertyName}_txt">
+				<p:inputText id="#{data.propertyName}_txt" value="#{data.value}"
+					disabled="#{data.rights.disabled}" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:inputText>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="password"
+				for="#{data.propertyName}_password">
+				<p:password id="#{data.propertyName}_password" value="#{data.value}"
+					disabled="#{data.rights.disabled}" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:password>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="booleancheckbox"
+				for="#{data.propertyName}_ckbox">
+				<p:selectBooleanCheckbox id="#{data.propertyName}_ckbox"
+					value="#{data.value}" disabled="#{data.rights.disabled}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:selectBooleanCheckbox>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="date" for="#{data.propertyName}_date">
+				<p:calendar id="#{data.propertyName}_date" value="#{data.value}"
+					disabled="#{data.rights.disabled}" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:calendar>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="textarea" for="#{data.propertyName}_texta">
+				<p:inputTextarea cols="70" rows="8" id="#{data.propertyName}_texta"
+					disabled="#{data.rights.disabled}" value="#{data.value}"
+					required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:inputTextarea>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="integer" for="#{data.propertyName}_integer">
+				<p:inputNumber id="#{data.propertyName}_integer"
+					value="#{data.value}" decimalPlaces="0"
+					disabled="#{data.rights.disabled}" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:inputNumber>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="float" for="#{data.propertyName}_float">
+				<p:inputNumber id="#{data.propertyName}_float" value="#{data.value}"
+					decimalPlaces="2" disabled="#{data.rights.disabled}"
+					required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:inputNumber>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="autocomplete"
+				for="#{data.propertyName}_autocomplete">
+				<p:autoComplete scrollHeight="120"
+					id="#{data.propertyName}_autocomplete" dropdown="true"
+					disabled="#{data.rights.disabled}" value="#{data.value}"
+					completeMethod="#{managerBean.autoComplete}"
+					converter="#{data.converter}" var="s" forceSelection="false"
+					itemValue="#{s[data.lookupLabelfield]}"
+					itemLabel="#{s[data.lookupLabelfield]}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+					<p:ajax event="itemSelect" update="@this" />
+				</p:autoComplete>
+				<p:commandButton
+					rendered="#{!data.rights.disabled &amp;&amp; data.rights.admin}"
+					id="#{data.propertyName}_autocompletenew"
+					title="#{msg['new-button']}"
+					action="#{managerBean.showDialog(data.detailDialogFile)}"
+					process="@this" icon="ui-icon-star">
+					<p:ajax event="dialogReturn" listener="#{managerBean.handleReturn}"
+						update="#{data.propertyName}_autocomplete" />
+				</p:commandButton>
+			</pe:dynaFormControl>
+			<pe:dynaFormControl type="select" for="#{data.propertyName}_select">
+				<p:selectOneMenu id="#{data.propertyName}_select"
+					value="#{data.value}" autoWidth="false"
+					disabled="#{data.rights.disabled}" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+					<f:selectItem itemLabel="--- #{msg['select-one']} ---"
+						noSelectionOption="true" />
+					<f:selectItems var="s" value="#{managerBean[data.propertyName]}"
+						itemLabel="#{s[data.lookupLabelfield]}"
+						itemValue="#{s[data.lookupKeyfield]}" />
+				</p:selectOneMenu>
+				<p:commandButton icon="ui-icon-refresh" id="_selectrefresh"
+					update="_select" disabled="#{data.rights.disabled}"
+					title="#{msg['refresh-button']}" />
+				<p:commandButton
+					disabled="#{data.rights.disabled}"
+					id="#{data.propertyName}_selectnew" title="#{msg['new-button']}"
+					action="#{managerBean.showDialog(data.detailDialogFile)}"
+					process="@this" icon="ui-icon-star">
+					<p:ajax event="dialogReturn" listener="#{managerBean.handleReturn}"
+						update="_select" />
+				</p:commandButton>
+			</pe:dynaFormControl>
+
+			<pe:dynaFormControl type="manymenu"
+				for="${data.propertyName}_selectmanymenu">
+				<p:selectManyMenu id="#{data.propertyName}_selectmanymenu" var="t"
+					value="#{data.value}" converter="#{data.converter}"
+					disabled="#{data.rights.disabled}" filter="true"
+					filterMatchMode="custom" filterFunction="${data.filterFunction}"
+					showCheckbox="true" required="#{data.required}">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+					<f:selectItems var="s" value="#{managerBean[data.propertyName]}"
+						itemLabel="#{s[data.lookupLabelfield]}" itemValue="#{s}" />
+					<p:column>
+						<h:outputText value="#{t[data.lookupLabelfield]}" />
+					</p:column>
+				</p:selectManyMenu>
+				<p:commandButton icon="ui-icon-refresh"
+					update="_selectmanymenu"
+					title="#{msg['refresh-button']}"
+					id="#{data.propertyName}_manymenurefresh"
+					rendered="#{!data.rights.disabled}" />
+				<p:commandButton title="#{msg['new-button']}"
+					id="#{data.propertyName}_manymenunew"
+					rendered="#{!data.rights.disabled &amp;&amp; data.rights.admin}"
+					action="#{managerBean.showDialog(data.detailDialogFile)}"
+					process="@this" icon="ui-icon-star">
+					<p:ajax event="dialogReturn" listener="#{managerBean.handleReturn}"
+						update="_selectmanymenu" />
+				</p:commandButton>
+			</pe:dynaFormControl>
+			<ui:insert name="buttonsBar" />
+		</pe:dynaForm>
+	</h:panelGroup>
+</ui:composition>

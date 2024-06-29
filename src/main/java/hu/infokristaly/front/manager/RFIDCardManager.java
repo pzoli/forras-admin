@@ -1,10 +1,10 @@
 package hu.infokristaly.front.manager;
 
+import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.infokristaly.back.domain.RFIDCard;
-import hu.infokristaly.front.exceptions.ActionAccessDeniedException;
-import hu.infokristaly.middle.service.BasicService;
+import hu.exprog.honeyweb.middle.services.BasicService;
+import hu.exprog.honeyweb.utils.FieldModel;
 import hu.infokristaly.middle.service.RFIDCardService;
-import hu.infokristaly.utils.LookupFieldModel;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
@@ -97,32 +97,59 @@ public class RFIDCardManager extends BasicManager<RFIDCard> implements Serializa
 	}
 
 	@Override
-	protected Object getDetailFieldValue(LookupFieldModel model) {
-		return null;
-	}
-
-	@Override
 	protected Locale getLocale() {
 		// TODO Auto-generated method stub
 		return Locale.forLanguageTag("hu");
 	}
 
 	@Override
-	public boolean checkListRight() throws ActionAccessDeniedException {
+	protected Object getDetailFieldValue(hu.exprog.honeyweb.utils.LookupFieldModel model) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean checkListRight() throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
-	public boolean checkSaveRight() throws ActionAccessDeniedException {
+	public boolean checkSaveRight() throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
-	public boolean checkDeleteRight() throws ActionAccessDeniedException {
+	public boolean checkDeleteRight() throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public boolean checkDeleteRight(RFIDCard entity)
+			throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean checkEditableRights(RFIDCard entity)
+			throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public Object postProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object preProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import hu.infokristaly.front.annotations.EntityInfo;
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
 
 /**
  * Entity implementation class for Entity: RFIDCardSystemUser
@@ -25,13 +25,13 @@ public class RFIDCardReader implements Serializable {
     @Column(unique=true, nullable=false)
     private Long id;
     
-    @EntityInfo(info="Dátumtól", weight=1, required=true, editor="date")
+    @EntityFieldInfo(info="Dátumtól", weight=1, required=true, editor="date")
     private Date periodStart;
-    @EntityInfo(info="Dátumig", weight=2, required=true, editor="date")
+    @EntityFieldInfo(info="Dátumig", weight=2, required=true, editor="date")
     private Date periodEnd;
-    @EntityInfo(info="Olvasó azonosító", weight=3, required=true, editor="txt")
+    @EntityFieldInfo(info="Olvasó azonosító", weight=3, required=true, editor="txt")
 	private String readerId;
-    @EntityInfo(info="Megjegyzés", weight=4, required=true, editor="textarea")
+    @EntityFieldInfo(info="Megjegyzés", weight=4, required=true, editor="textarea")
 	private String comment;
 
 	public RFIDCardReader() {

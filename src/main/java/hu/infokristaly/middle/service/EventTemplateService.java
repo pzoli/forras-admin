@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,7 +37,7 @@ public class EventTemplateService implements Serializable {
 
     private static final long serialVersionUID = -2360286862757860424L;
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @Inject
@@ -94,7 +95,7 @@ public class EventTemplateService implements Serializable {
 
         if (!userService.getLoggedInSystemUser().isAdminUser()) {
             Expression<String> created_by = from.get("createdBy");
-            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getUserid());
+            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getId());
             predicateList.add(userPredicate);
         }
 
@@ -140,7 +141,7 @@ public class EventTemplateService implements Serializable {
 
         if (!userService.getLoggedInSystemUser().isAdminUser()) {
             Expression<String> created_by = from.get("createdBy");
-            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getUserid());
+            Predicate userPredicate = builder.equal(created_by, userService.getLoggedInSystemUser().getId());
             predicateList.add(userPredicate);
         }
 

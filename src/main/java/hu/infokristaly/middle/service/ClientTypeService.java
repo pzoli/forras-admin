@@ -23,6 +23,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -64,7 +65,7 @@ public class ClientTypeService implements Serializable {
     private Logger log;
 
     /** The entity manager. */
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     public ClientTypeService() {

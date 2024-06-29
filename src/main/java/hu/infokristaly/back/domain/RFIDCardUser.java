@@ -1,9 +1,9 @@
 package hu.infokristaly.back.domain;
 
 import hu.infokristaly.back.domain.RFIDCard;
-import hu.infokristaly.back.model.SystemUser;
-import hu.infokristaly.front.annotations.EntityInfo;
-import hu.infokristaly.front.annotations.LookupFieldInfo;
+import hu.exprog.beecomposit.back.model.SystemUser;
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
 
 import java.io.Serializable;
 import java.lang.Integer;
@@ -24,19 +24,19 @@ public class RFIDCardUser implements Serializable {
     @Column(unique=true, nullable=false)
     private Long id;
     
-    @EntityInfo(info="Dátumtól", weight=1, required=true, editor="date")
+    @EntityFieldInfo(info="Dátumtól", weight=1, required=true, editor="date")
     private Date periodStart;
     
-    @EntityInfo(info="Dátumig", weight=1, required=true, editor="date")
+    @EntityFieldInfo(info="Dátumig", weight=1, required=true, editor="date")
     private Date periodEnd;
     
-    @EntityInfo(info="RFID kártya", weight=1, required=true, editor="select")
+    @EntityFieldInfo(info="RFID kártya", weight=1, required=true, editor="select")
     @LookupFieldInfo(keyField="id",labelField="rfid", detailDialogFile="/admin/rfidcards-dialog")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcardid")
 	private RFIDCard rfidCard;
     
-    @EntityInfo(info="Kliens", weight=1, required=true, editor="select")
+    @EntityFieldInfo(info="Kliens", weight=1, required=true, editor="select")
     @LookupFieldInfo(keyField="id",labelField="neve", detailDialogFile="")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientid")

@@ -20,7 +20,7 @@ package hu.infokristaly.front.manager;
 
 import hu.infokristaly.back.domain.Card;
 import hu.infokristaly.back.domain.Message;
-import hu.infokristaly.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.MessageService;
 import hu.infokristaly.middle.service.UserService;
 
@@ -326,7 +326,7 @@ public class MessageManager implements Serializable {
         Card result = null;
         SystemUser user = userService.getLoggedInSystemUser();
         for (Card card : m.getCards()) {
-            if (card.getRecipientSystemUser().getUserid() == user.getUserid()) {
+            if (card.getRecipientSystemUser().getId() == user.getId()) {
                 result = card;
                 break;
             }

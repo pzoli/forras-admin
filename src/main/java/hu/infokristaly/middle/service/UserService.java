@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,10 +33,10 @@ import org.primefaces.model.SortOrder;
 
 import com.google.zxing.WriterException;
 
-import hu.infokristaly.back.auth.AuthBackingBean;
-import hu.infokristaly.back.model.SystemUser;
-import hu.infokristaly.back.model.UserJoinGroup;
-import hu.infokristaly.back.model.UserJoinGroupId;
+import hu.exprog.beecomposit.back.resources.AuthBackingBean;
+import hu.exprog.beecomposit.back.model.SystemUser;
+import hu.exprog.beecomposit.back.model.UserJoinGroup;
+import hu.exprog.beecomposit.back.model.UserJoinGroupId;
 import hu.infokristaly.back.model.UserSettings;
 import hu.infokristaly.back.resources.QRCodeGenerator;
 
@@ -51,7 +52,7 @@ public class UserService implements Serializable {
 
     public static final String LOGGED_IN_SYSTEM_USER = "loggedInUser";
 
-    @Inject
+    @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
     @Inject
@@ -74,9 +75,9 @@ public class UserService implements Serializable {
     public SystemUser getLoggedInSystemUser(Principal principal) {
         SystemUser result = null;
         if (principal != null) {
-            Query q = em.createQuery("Select u from SystemUser u where u.emailAddress = :emailAddress and u.enabled = true");
+            Query q = em.createQuery("Select u from SystemUser u where u.osUserName = :osUserName and u.enabled = true");
 
-            q.setParameter("emailAddress", principal.getName());
+            q.setParameter("osUserName", principal.getName());
             result = (SystemUser) q.getSingleResult();
         }
         return result;
@@ -84,16 +85,16 @@ public class UserService implements Serializable {
     }
 
     public void persistSystemUser(SystemUser newSystemUser) {
-        if (newSystemUser.getUserid() == null) {
+        if (newSystemUser.getId() == null) {
             auth.create(newSystemUser);
         } else {
-            if ((newSystemUser.getUserpassword() == null) || (newSystemUser.getUserpassword().isEmpty())) {
+            if ((newSystemUser.getOsUserPassword() == null) || (newSystemUser.getOsUserPassword().isEmpty())) {
                 SystemUser systemUser = find(newSystemUser);
-                String password = systemUser.getUserpassword();
-                newSystemUser.setUserpassword(password);
+                String password = systemUser.getOsUserPassword();
+                newSystemUser.setOsUserPassword(password);
             } else {
                 String userPassword = auth.getUserPassword(newSystemUser);
-                newSystemUser.setUserpassword(userPassword);
+                newSystemUser.setOsUserPassword(userPassword);
             }
 
             newSystemUser = em.merge(newSystemUser);
@@ -102,7 +103,7 @@ public class UserService implements Serializable {
     }
 
     public SystemUser find(SystemUser systemUser) {
-        SystemUser result = em.find(SystemUser.class, systemUser.getUserid());
+        SystemUser result = em.find(SystemUser.class, systemUser.getId());
         return result;
     }
 
@@ -178,7 +179,7 @@ public class UserService implements Serializable {
 
             cq.where(predicates);
         }
-        cq.orderBy(builder.asc(from.get("username")));
+        cq.orderBy(builder.asc(from.get("userName")));
         Query q = em.createQuery(cq);
         return q.getResultList();
     }
@@ -190,13 +191,13 @@ public class UserService implements Serializable {
         cq.select(from);
         List<Predicate> predicateList = new ArrayList<Predicate>();
 
-        Expression<String> x = from.get("userid");
-        Predicate predicate = builder.notEqual(x, getLoggedInSystemUser().getUserid());
+        Expression<String> x = from.get("id");
+        Predicate predicate = builder.notEqual(x, getLoggedInSystemUser().getId());
         predicateList.add(predicate);
 
         Predicate predicates = builder.and(predicateList.toArray(new Predicate[predicateList.size()]));
         cq.where(predicates);
-        cq.orderBy(builder.asc(from.get("username")));
+        cq.orderBy(builder.asc(from.get("userName")));
         Query q = em.createQuery(cq);
         return q.getResultList();
     }
@@ -255,7 +256,7 @@ public class UserService implements Serializable {
                 Principal principal = auth.getLoggedInPrincipal();
                 if (principal != null) {
                     user = getLoggedInSystemUser(principal);
-                    UserJoinGroup group = findUserJoinGroup(user.getEmailAddress());
+                    UserJoinGroup group = findUserJoinGroup(user.getOsUserName());
                     if (group != null) {
                         user.setAdminUser(getRole(user).equals(ADMIN_GROUP));
                         session.setAttribute(LOGGED_IN_SYSTEM_USER, user);
@@ -269,7 +270,7 @@ public class UserService implements Serializable {
     public void removeSystemUser(SystemUser item) {
         item = find(item);
         if (item != null) {
-            UserJoinGroup userJoinGroup = findUserJoinGroup(item.getEmailAddress());
+            UserJoinGroup userJoinGroup = findUserJoinGroup(item.getOsUserName());
             if (userJoinGroup != null) {
                 em.remove(userJoinGroup);
             }
@@ -288,7 +289,7 @@ public class UserService implements Serializable {
 
     public String getRole(SystemUser user) {
         if (user != null) {
-            UserJoinGroup group = findUserJoinGroup(user.getEmailAddress());
+            UserJoinGroup group = findUserJoinGroup(user.getOsUserName());
             if (group != null) {
                 return group.getUserJoinGroupId().getGroupName();
             } else {
@@ -299,9 +300,9 @@ public class UserService implements Serializable {
         }
     }
 
-    public UserJoinGroup findUserJoinGroup(String emailAddress) {
+    public UserJoinGroup findUserJoinGroup(String osUserName) {
         UserJoinGroupId id = new UserJoinGroupId();
-        id.setUserName(emailAddress);
+        id.setUserName(osUserName);
         id.setGroupName(ADMIN_GROUP);
         UserJoinGroup result = em.find(UserJoinGroup.class, id);
         if (result == null) {
@@ -348,15 +349,15 @@ public class UserService implements Serializable {
     }
 
     public void generateQRCode(SystemUser systemUser, String oFileName) throws WriterException, IOException {
-        String contents = "PIN:" + systemUser.getPinCode() + "\tNAME:" + systemUser.getUsername();
-        QRCodeGenerator.generateFile(systemUser.getUsername(), contents, oFileName);
+        String contents = "PIN:" + systemUser.getPinCode() + "\tNAME:" + systemUser.getUserName();
+        QRCodeGenerator.generateFile(systemUser.getUserName(), contents, oFileName);
     }
 
     public void removeUserGroups(SystemUser newSystemUser) {
         UserJoinGroupId userJoinGroupId = new UserJoinGroupId();
         userJoinGroupId.setGroupName(null);
-        newSystemUser = em.find(newSystemUser.getClass(), newSystemUser.getUserid());
-        userJoinGroupId.setUserName(newSystemUser.getEmailAddress());
+        newSystemUser = em.find(newSystemUser.getClass(), newSystemUser.getId());
+        userJoinGroupId.setUserName(newSystemUser.getOsUserName());
         UserJoinGroup userJoinGroup = new UserJoinGroup();
         userJoinGroup.setUserJoinGroupId(userJoinGroupId);
         em.remove(userJoinGroup);
@@ -382,7 +383,7 @@ public class UserService implements Serializable {
 
     public void persistUserProperties(SystemUser newSystemUser, Properties userProperties) {
         userProperties.forEach((k, v) -> {
-            UserSettings userSettings = new UserSettings(newSystemUser.getUserid(), k, v);
+            UserSettings userSettings = new UserSettings(newSystemUser.getId(), k, v);
             UserSettings stored = em.find(UserSettings.class, userSettings.getId());
             if (stored != null) {
                 em.merge(userSettings);

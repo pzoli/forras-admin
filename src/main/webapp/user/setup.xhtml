@@ -24,26 +24,27 @@
 						<h:panelGrid columns="2" columnClasses="gridLabel,gridValue"
 							style="padding-left: 25%; padding-right: 25%;">
 							<p:outputLabel value="Név:" />
-							<p:inputText value="#{selfManager.currentSystemUser.username}"
+							<p:inputText value="#{selfManager.current.userName}"
 								required="true" />
 
 							<p:outputLabel value="E-mail cím: " />
-							<p:inputText
-								value="#{selfManager.currentSystemUser.emailAddress}"
-								required="true" />
+							<p:inputText value="#{selfManager.current.osUserName}"
+								required="true" disabled="true"/>
 
 							<p:outputLabel value="jelszó: " />
-							<p:password value="#{selfManager.currentSystemUser.userpassword}" />
+							<p:password value="#{selfManager.current.osUserPassword}" />
 
 							<p:outputLabel value="nyelv: " rendered="true" />
 							<p:selectOneMenu id="langselector"
-								value="#{selfManager.language}" rendered="true">
-								<f:selectItem itemLabel="Magyar" itemValue="hu" />
-								<f:selectItem itemLabel="English" itemValue="en" />
+								value="#{selfManager.current.language}" rendered="true">
+								<f:selectItems value="#{languageService.findAll()}"
+									var="lang" itemLabel="#{lang.language}"
+									itemValue="#{lang}" />
+								<f:converter converterId="languageConv" />
 							</p:selectOneMenu>
 
 							<h:outputText value="" />
-							<p:commandButton actionListener="#{selfManager.persistCurrent()}"
+							<p:commandButton actionListener="#{selfManager.save()}"
 								value="Mentés" update=":growl" />
 						</h:panelGrid>
 					</h:form>
