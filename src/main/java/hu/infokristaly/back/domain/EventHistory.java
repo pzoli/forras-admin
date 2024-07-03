@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleRenderingMode;
 

@@ -1,7 +1,6 @@
 package hu.infokristaly.back.jobs;
 
 import hu.exprog.beecomposit.back.model.SystemUser;
-import hu.infokristaly.middle.service.DailyReportService;
 import hu.infokristaly.middle.service.LogService;
 import hu.infokristaly.middle.service.UserService;
 import hu.infokristaly.middle.service.YearReportService;

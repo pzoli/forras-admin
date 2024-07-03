@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
 
-import javax.annotation.Resource;
 import javax.naming.InitialContext;
 
 import org.primefaces.model.ScheduleEvent;

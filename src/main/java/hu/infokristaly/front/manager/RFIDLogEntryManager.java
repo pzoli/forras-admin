@@ -21,7 +21,6 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 import org.primefaces.event.SelectEvent;
 
-import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.RFIDCardReader;
 import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.domain.RFIDLogEntry;

@@ -16,7 +16,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.application.exceptionhandler.ExceptionInfo;
 import org.primefaces.application.exceptionhandler.PrimeExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
-import org.primefaces.util.ComponentUtils;
 
 public class SubPrimeExceptionHandler extends PrimeExceptionHandler {
 

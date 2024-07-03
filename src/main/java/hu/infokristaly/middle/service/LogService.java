@@ -1,7 +1,6 @@
 package hu.infokristaly.middle.service;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Date;
 import java.util.LinkedList;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

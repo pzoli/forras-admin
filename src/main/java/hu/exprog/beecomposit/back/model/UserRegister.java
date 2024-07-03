@@ -10,12 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Version;
-
-import org.apache.commons.codec.binary.Hex;
 
 import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
 import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;

@@ -1,11 +1,8 @@
 package hu.infokristaly.middle.service;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +11,6 @@ import java.util.AbstractMap.SimpleEntry;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -45,13 +45,11 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.jboss.logmanager.handlers.SyslogHandler.Severity;
 import org.primefaces.model.SortOrder;
 
 import com.google.zxing.WriterException;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;

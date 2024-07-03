@@ -1,7 +1,6 @@
 package hu.infokristaly.middle.service;
 
 import hu.infokristaly.back.domain.Card;
-import hu.infokristaly.back.domain.ClientType;
 import hu.infokristaly.back.domain.Message;
 import hu.exprog.beecomposit.back.model.SystemUser;
 
@@ -17,15 +16,11 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.SortOrder;
 
 @Stateless

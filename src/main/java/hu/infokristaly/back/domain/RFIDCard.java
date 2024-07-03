@@ -6,7 +6,6 @@ import java.lang.String;
 import javax.persistence.*;
 
 import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
-import hu.exprog.honeyweb.front.annotations.EntityInfo;
 
 /**
  * Entity implementation class for Entity: RFIDCard

@@ -8,8 +8,6 @@ import javax.faces.component.UIInput;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.calendar.Calendar;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.extensions.util.visitcallback.VisitTaskExecutor;
 
 import hu.exprog.honeyweb.front.annotations.FieldEntitySpecificRightsInfo;

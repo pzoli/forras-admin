@@ -1,7 +1,6 @@
 package hu.infokristaly.utils;
 
 import hu.infokristaly.back.domain.Doctor;
-import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.DoctorService;
 import hu.infokristaly.middle.service.UserService;
 

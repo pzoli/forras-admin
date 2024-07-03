@@ -1,12 +1,9 @@
 package hu.infokristaly.back.domain;
 
-import hu.infokristaly.back.domain.RFIDCard;
-import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
 import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
 
 import java.io.Serializable;
-import java.lang.Integer;
 import java.util.Date;
 import javax.persistence.*;
 

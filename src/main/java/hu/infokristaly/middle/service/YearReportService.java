@@ -17,8 +17,6 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;

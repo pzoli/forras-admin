@@ -15,7 +15,6 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.naming.InitialContext;
 
 import org.quartz.Job;

@@ -2,7 +2,6 @@ package selenium;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 

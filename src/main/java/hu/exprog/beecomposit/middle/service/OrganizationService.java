@@ -15,12 +15,12 @@ import javax.persistence.Query;
 
 import org.primefaces.model.SortOrder;
 
-import hu.exprog.beecomposit.back.model.Company;
+import hu.exprog.beecomposit.back.model.Organization;
 import hu.exprog.honeyweb.middle.services.BasicService;
 
 @Named
 @Stateless
-public class CompanyService extends BasicService<Company> implements
+public class OrganizationService extends BasicService<Organization> implements
 		Serializable {
 
 	private static final long serialVersionUID = -9139027636913174016L;
@@ -31,7 +31,7 @@ public class CompanyService extends BasicService<Company> implements
 	@Inject
 	private Logger log;
 
-	public CompanyService() {
+	public OrganizationService() {
 
 	}
 
@@ -84,8 +84,8 @@ public class CompanyService extends BasicService<Company> implements
 	}
 
 	@Override
-	public Company find(Company item) {
-		return em.find(Company.class, item.getId());
+	public Organization find(Organization item) {
+		return em.find(Organization.class, item.getId());
 	}
 
 	@Override
@@ -94,8 +94,8 @@ public class CompanyService extends BasicService<Company> implements
 	}
 
 	@Override
-	public Class<Company> getDomainClass() {
-		return Company.class;
+	public Class<Organization> getDomainClass() {
+		return Organization.class;
 	}
 
 }

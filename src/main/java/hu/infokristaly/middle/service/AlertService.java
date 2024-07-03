@@ -37,8 +37,6 @@ import org.primefaces.model.SortOrder;
 import hu.infokristaly.back.domain.Alert;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.ClientChanges;
-import hu.exprog.beecomposit.back.model.SystemUser;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

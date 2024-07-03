@@ -27,7 +27,6 @@ import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.jobs.JobForCreateAlerts;
 import hu.infokristaly.back.jobs.JobForCreateBackwardAlertReports;
 import hu.infokristaly.back.model.AppProperties;
-import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ActivityService;
 import hu.infokristaly.middle.service.AlertService;
 import hu.infokristaly.middle.service.ClientsService;
@@ -58,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * The FileInfoLazyBean class.

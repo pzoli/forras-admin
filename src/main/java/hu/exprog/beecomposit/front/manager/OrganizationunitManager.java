@@ -25,10 +25,10 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
 import hu.exprog.beecomposit.back.model.Addresses;
-import hu.exprog.beecomposit.back.model.Company;
+import hu.exprog.beecomposit.back.model.Organization;
 import hu.exprog.beecomposit.back.model.Organizationunit;
 import hu.exprog.beecomposit.middle.service.AddressesService;
-import hu.exprog.beecomposit.middle.service.CompanyService;
+import hu.exprog.beecomposit.middle.service.OrganizationService;
 import hu.exprog.beecomposit.middle.service.OrganizationunitService;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
@@ -52,7 +52,7 @@ public class OrganizationunitManager extends BasicManager<Organizationunit> impl
 	private OrganizationunitService organizationunitService;
 
 	@Inject
-	private CompanyService companyService;
+	private OrganizationService organizationService;
 
 	private Organizationunit organization;
 
@@ -128,8 +128,8 @@ public class OrganizationunitManager extends BasicManager<Organizationunit> impl
 	@Override
 	protected Object getDetailFieldValue(LookupFieldModel model) {
 		Object result = model.getValue();
-		if ("company".equals(model.getPropertyName())) {
-			result = companyService.find(Company.class, Long.parseLong((String) model.getValue()));
+		if ("organization".equals(model.getPropertyName())) {
+			result = organizationService.find(Organization.class, Long.parseLong((String) model.getValue()));
 		} else if ("addresses".equals(model.getPropertyName())) {
 			Object value = model.getValue();
 			LinkedList<Addresses> entries = new LinkedList<Addresses>();
@@ -146,14 +146,14 @@ public class OrganizationunitManager extends BasicManager<Organizationunit> impl
 		return result;
 	}
 
-	public List<Company> getCompany() {
-		return companyService.findAll();
+	public List<Organization> getOrganizations() {
+		return organizationService.findAll();
 	}
 
 	public void handleReturn(SelectEvent event) {
-		Company selected = (Company) event.getObject();
+		Organization selected = (Organization) event.getObject();
 		if (current != null) {
-			formModel.getControls().stream().filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("company")).forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
+			formModel.getControls().stream().filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("organization")).forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
 		}
 	}
 

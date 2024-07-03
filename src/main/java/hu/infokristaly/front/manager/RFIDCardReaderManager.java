@@ -18,7 +18,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.metadata.ConstraintDescriptor;
 
-import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardReader;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;

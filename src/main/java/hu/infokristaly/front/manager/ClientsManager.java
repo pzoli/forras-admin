@@ -29,7 +29,6 @@ import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ClientTypeService;
 import hu.infokristaly.middle.service.ClientsService;
 import hu.infokristaly.middle.service.DoctorService;
-import hu.infokristaly.middle.service.GroupForClientsService;
 import hu.infokristaly.middle.service.UserService;
 import hu.infokristaly.utils.StringToolkit;
 

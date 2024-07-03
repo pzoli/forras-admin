@@ -1,8 +1,5 @@
 package hu.infokristaly.back.listener;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 

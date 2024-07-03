@@ -1,8 +1,6 @@
 package selenium;
 
-import java.util.regex.Pattern;
 import java.awt.Robot;
-import java.io.File;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
@@ -10,15 +8,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RunWith(JUnit4.class)

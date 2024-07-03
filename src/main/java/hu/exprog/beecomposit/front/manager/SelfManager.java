@@ -29,7 +29,6 @@ import org.primefaces.event.SelectEvent;
 import hu.exprog.beecomposit.back.application.ApplicationFunctions;
 import hu.exprog.beecomposit.back.model.Language;
 import hu.exprog.beecomposit.back.model.SystemUser;
-import hu.exprog.beecomposit.back.model.UserJoinGroup;
 import hu.exprog.beecomposit.back.model.Usergroup;
 import hu.exprog.beecomposit.back.resources.AuthBackingBean;
 import hu.exprog.beecomposit.middle.service.LanguageService;

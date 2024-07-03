@@ -22,8 +22,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -37,7 +35,6 @@ import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineModel;
 */
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.SortOrder;
 
 @SessionScoped

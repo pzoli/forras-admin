@@ -20,8 +20,8 @@ import javax.validation.metadata.ConstraintDescriptor;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.primefaces.PrimeFaces;
 
-import hu.exprog.beecomposit.back.model.Company;
-import hu.exprog.beecomposit.middle.service.CompanyService;
+import hu.exprog.beecomposit.back.model.Organization;
+import hu.exprog.beecomposit.middle.service.OrganizationService;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.exprog.honeyweb.middle.services.BasicService;
@@ -30,7 +30,7 @@ import hu.exprog.honeyweb.utils.LookupFieldModel;
 
 @Named
 @WindowScoped
-public class CompanyManager extends BasicManager<Company> implements Serializable {
+public class OrganizationManager extends BasicManager<Organization> implements Serializable {
 
 	private static final long serialVersionUID = -8323366024027309156L;
 
@@ -41,9 +41,9 @@ public class CompanyManager extends BasicManager<Company> implements Serializabl
 	private LocaleManager localeManager;
 
 	@Inject
-	private CompanyService companyService;
+	private OrganizationService organizationService;
 
-	public CompanyManager() {
+	public OrganizationManager() {
 
 	}
 
@@ -56,7 +56,7 @@ public class CompanyManager extends BasicManager<Company> implements Serializabl
 
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
-			current = Optional.of(new Company());
+			current = Optional.of(new Organization());
 			clearProperties();
 		}
 	}
@@ -66,12 +66,12 @@ public class CompanyManager extends BasicManager<Company> implements Serializabl
 		try {
 			if (current.isPresent()) {
 				if (current.get().getId() == null) {
-					companyService.persist(current.get());
+					organizationService.persist(current.get());
 				} else {
-					companyService.merge(current.get());
+					organizationService.merge(current.get());
 				}
 			}
-			current = Optional.of(new Company());
+			current = Optional.of(new Organization());
 			clearProperties();
 			PrimeFaces.current().ajax().addCallbackParam(VALIDATION_FAULT, false);
 		} catch (EJBException e) {
@@ -102,8 +102,8 @@ public class CompanyManager extends BasicManager<Company> implements Serializabl
 	}
 
 	@Override
-	protected BasicService<Company> getService() {
-		return companyService;
+	protected BasicService<Organization> getService() {
+		return organizationService;
 	}
 
 	@Override
@@ -145,12 +145,12 @@ public class CompanyManager extends BasicManager<Company> implements Serializabl
 	}
 
 	@Override
-	public boolean checkEditableRights(Company entity) throws ActionAccessDeniedException {
+	public boolean checkEditableRights(Organization entity) throws ActionAccessDeniedException {
 		return true;
 	}
 
 	@Override
-	public boolean checkDeleteRight(Company entity) throws ActionAccessDeniedException {
+	public boolean checkDeleteRight(Organization entity) throws ActionAccessDeniedException {
 		return true;
 	}
 

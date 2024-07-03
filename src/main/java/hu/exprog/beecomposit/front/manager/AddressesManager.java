@@ -41,7 +41,7 @@ public class AddressesManager extends BasicManager<Addresses> implements Seriali
 	private Logger logger;
 
 	@Inject
-	private AddressesService companyService;
+	private AddressesService addresssService;
 
 	public AddressesManager() {
 
@@ -66,9 +66,9 @@ public class AddressesManager extends BasicManager<Addresses> implements Seriali
 		try {
 			if (current.isPresent()) {
 				if (current.get().getId() == null) {
-					companyService.persist(current.get());
+					addresssService.persist(current.get());
 				} else {
-					companyService.merge(current.get());
+					addresssService.merge(current.get());
 				}
 			}
 			current = Optional.of(new Addresses());
@@ -103,7 +103,7 @@ public class AddressesManager extends BasicManager<Addresses> implements Seriali
 
 	@Override
 	protected BasicService<Addresses> getService() {
-		return companyService;
+		return addresssService;
 	}
 
 	@Override

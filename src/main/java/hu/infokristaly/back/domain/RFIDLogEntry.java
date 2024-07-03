@@ -1,7 +1,5 @@
 package hu.infokristaly.back.domain;
 
-import hu.infokristaly.back.domain.RFIDCardReader;
-import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
 import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
 

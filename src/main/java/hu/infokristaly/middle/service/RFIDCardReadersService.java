@@ -17,7 +17,6 @@ import javax.persistence.Query;
 import org.primefaces.model.SortOrder;
 
 import hu.exprog.honeyweb.middle.services.BasicService;
-import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardReader;
 
 @Named

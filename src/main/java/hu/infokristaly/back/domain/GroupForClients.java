@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import hu.exprog.beecomposit.back.model.SystemUser;
 
 import java.util.Date;

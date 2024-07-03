@@ -1,17 +1,11 @@
 package hu.infokristaly.utils;
 
 import hu.infokristaly.back.domain.Client;
-import hu.infokristaly.back.domain.GroupForClients;
 import hu.infokristaly.middle.service.ClientsService;
-import hu.infokristaly.middle.service.GroupForClientsService;
-
-import javax.ejb.Stateless;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.inject.Inject;
 import javax.naming.InitialContext;
 
 @FacesConverter(value="clientConv")

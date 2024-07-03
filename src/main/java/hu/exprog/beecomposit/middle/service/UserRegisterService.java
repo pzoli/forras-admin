@@ -16,7 +16,6 @@ import javax.persistence.Query;
 import org.primefaces.model.SortOrder;
 
 import hu.exprog.beecomposit.back.model.UserRegister;
-import hu.exprog.beecomposit.back.resources.AuthBackingBean;
 import hu.exprog.honeyweb.middle.services.BasicService;
 
 /**

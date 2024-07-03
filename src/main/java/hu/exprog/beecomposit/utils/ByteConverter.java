@@ -2,7 +2,6 @@ package hu.exprog.beecomposit.utils;
 import java.io.DataInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
 
 public class ByteConverter {
 	private Class<?> clazz;

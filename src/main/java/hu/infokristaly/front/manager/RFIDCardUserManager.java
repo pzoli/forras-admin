@@ -24,14 +24,12 @@ import org.primefaces.event.SelectEvent;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardUser;
-import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.infokristaly.middle.service.ClientsService;
 import hu.infokristaly.middle.service.RFIDCardService;
 import hu.infokristaly.middle.service.RFIDCardUserService;
-import hu.infokristaly.middle.service.UserService;
 import hu.exprog.honeyweb.utils.FieldModel;
 import hu.exprog.honeyweb.utils.LookupFieldModel;
 
