@@ -16,7 +16,7 @@ This is a health care administration software. You can manage client information
 
 ## Youtube video for usage
 
-Administration basics: [Youtube video](https://youtu.be/iz7qNyf2sac)
+Administration basics: [Youtube video](https://youtu.be/QBpZJaIqd1Y)
 
 Statistics: [Youtube video](https://youtu.be/dz2aLtvqGYg)
 

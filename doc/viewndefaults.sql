@@ -25,4 +25,4 @@ ALTER SEQUENCE client_type_id_seq RESTART WITH 6;
 -- ALTER SEQUENCE doctor_id_seq RESTART WITH 6;
 
 insert into Language (id,language,localecode,version) values (1,'Magyar','hu',1);
-insert into Language (id,language,localecode,version) values (1,'Angol','en',1);
+insert into Language (id,language,localecode,version) values (1,'English','en',1);
