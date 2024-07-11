@@ -1,0 +1,1 @@
+http://localhost:8080/forras-admin/rest/createNFCLog?rfid=123&type=RF1&readerid=tornaterem

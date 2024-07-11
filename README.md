@@ -164,3 +164,6 @@ Restore AccessibleType table by importing doc/accessibletype.tar to PostgreSQL.
 [QRCodeScanner](https://github.com/pzoli/QRCodeScanner)
 [Forras-imageserver](https://github.com/pzoli/forras-imageserver)
 [DocuStorePictureApp](https://github.com/pzoli/DocuStorePictureApp)
+
+## Sponsored by
+[![Integrity](/doc/integrity-logo.png?raw=true "https://integrity.hu")](https://integrity.hu)
