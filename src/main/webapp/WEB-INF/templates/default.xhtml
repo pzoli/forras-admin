@@ -16,12 +16,51 @@
 </f:facet>
 
 </h:head>
-<f:view contentType="text/html" locale="#{localeManager.locale}">
+<f:view contentType="text/html" locale="#{selfManager.language}">
 	<h:body>
-		<ui:include src="/WEB-INF/templates/admin_menu.tpl.xhtml" />
+		<p:growl id="idlemessages" showDetail="true" sticky="true" />
+		<h:form>			
+			<p:idleMonitor timeout="6000" id="idleMonitor">
+				<p:ajax event="idle" listener="#{idleMonitorView.onIdle}"
+					update="idlemessages" />
+				<p:ajax event="active" listener="#{idleMonitorView.onActive}"
+					update="idlemessages" />
+			</p:idleMonitor>
+			
+			<p:ajaxExceptionHandler id="ajaxExpHandler"
+				type="javax.faces.application.ViewExpiredException"
+				update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+			<p:dialog id="exceptionDialog"
+				header="Lejárt bejelentkezés"
+				widgetVar="exceptionDialog">
+				<p:panel>
+        			<h:outputText
+					value="A rendelkezésre álló 15 perc lejárt. Jelentkezzen be újra." />
+				<br />
+				
+				</p:panel>
+
+				<p:button onclick="document.location.href = document.location.href;"
+					value="Újratöltés!"
+					rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}" />
+			</p:dialog>		
+		</h:form>
+
+		<p:ajaxStatus
+			style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+			<f:facet name="start">
+				<h:graphicImage alt="loading" name="img/loading.gif" />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+		<ui:include src="admin_menu.tpl.xhtml" />
 		<div class="viewBorder">
 			<div class="view">
-				<ui:insert name="content" />				
+				<ui:insert name="content" />
+				<p style="font-size: small">rev.: #{ver['version.major']}.#{ver['version.minor']}.#{ver['version.date']} #{ver['version.time']} #{appProperties.projectStage}</p>				
 			</div>
 		</div>
 	</h:body>
