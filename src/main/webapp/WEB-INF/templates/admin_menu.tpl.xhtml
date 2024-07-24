@@ -97,7 +97,7 @@
 			<c:if test="${(userService != null)}">
 				<p:submenu id="documentmanagermenu" label="Dokumentum kezelés"
 					rendered="${userService.isAdminRole()}">
-					<p:menuitem id="documentsubjectmenu" value="Dokumentum tárgya"
+					<p:menuitem id="documentsubjectmenu" value="#{msg['document-subject']}"
 						url="#{request.contextPath}/admin/document_subject.xhtml"/>
 					
 				</p:submenu>
