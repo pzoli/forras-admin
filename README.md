@@ -156,6 +156,11 @@ copy ./target/forras-admin.war to wildfly deployment folder (wildfly-9.0.2.Final
 After deploy all database tables created. Create active users view and import defaults into the database with doc/viewndefaults.sql file. Then run doc/quartz-tables_postgres.sql for regenerate quartz tables.
 Restore AccessibleType table by importing doc/accessibletype.tar to PostgreSQL.
 
+## Developer suggestions
+
+When importing project to CodeReady Studio choose the Maven / Existing Maven Projects.
+Then you can add forras-admin project to wildfly.
+
 ## Connected projects
 [forras-datagenerator](https://github.com/pzoli/forras-datagenerator)
 [ForrasAdminRFIDReaderConfigurator](https://github.com/pzoli/ForrasAdminRFIDReaderConfigurator)
