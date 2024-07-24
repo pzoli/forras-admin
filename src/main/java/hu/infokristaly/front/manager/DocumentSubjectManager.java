@@ -21,6 +21,7 @@ import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.event.SelectEvent;
 
 import hu.infokristaly.back.domain.DocumentSubject;
+import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.exprog.honeyweb.middle.services.BasicService;
@@ -39,6 +40,10 @@ public class DocumentSubjectManager extends BasicManager<DocumentSubject> implem
 
 	@Inject
 	private DocumentSubjectService documentSubjectService;
+	
+	@Inject
+	private LocaleManager localeManager;
+
 			
 	public DocumentSubjectManager() {
 
@@ -90,6 +95,7 @@ public class DocumentSubjectManager extends BasicManager<DocumentSubject> implem
 		}
 	}
 
+	
 	public void handleReturn(SelectEvent event) {
 	}
 
@@ -111,9 +117,8 @@ public class DocumentSubjectManager extends BasicManager<DocumentSubject> implem
 
     @Override
 	protected Locale getLocale() {
-		// TODO Auto-generated method stub
-		return Locale.forLanguageTag("hu");
-	}
+    	return localeManager.getLocale();
+    }
 
 	@Override
 	public boolean checkListRight() throws ActionAccessDeniedException {

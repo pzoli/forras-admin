@@ -15,10 +15,10 @@
 			src="${request.contextPath}/resources/js/calendar.js" />
 
 		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
-		<dp:dialog dialogWidgetVar="dlgDocumentSubjectWidget" dialogHeader="Dokumentum tárgya"
+		<dp:dialog dialogWidgetVar="dlgDocumentSubjectWidget" dialogHeader="#{msg['document-subject']}"
 			managerBean="#{documentSubjectManager}"
 			formModel="#{documentSubjectManager.formModel}" />
-		<dp:dynTable managerBean="#{documentSubjectManager}" tableHeader="Dokumentum tárgya"
+		<dp:dynTable managerBean="#{documentSubjectManager}" tableHeader="#{msg['document-subject']}"
 			dialogWidgetVar="dlgDocumentSubjectWidget" editable="true"/>
 
 	</ui:define>
