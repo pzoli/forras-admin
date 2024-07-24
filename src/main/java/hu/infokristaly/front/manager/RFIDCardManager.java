@@ -1,5 +1,6 @@
 package hu.infokristaly.front.manager;
 
+import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.infokristaly.back.domain.RFIDCard;
 import hu.exprog.honeyweb.middle.services.BasicService;
@@ -35,6 +36,9 @@ public class RFIDCardManager extends BasicManager<RFIDCard> implements Serializa
 
 	@Inject
 	private RFIDCardService rFIDCardService;
+
+	@Inject
+	private LocaleManager localeManager;
 
 	public RFIDCardManager() {
 
@@ -99,7 +103,7 @@ public class RFIDCardManager extends BasicManager<RFIDCard> implements Serializa
 	@Override
 	protected Locale getLocale() {
 		// TODO Auto-generated method stub
-		return Locale.forLanguageTag("hu");
+		return localeManager.getLocale();
 	}
 
 	@Override

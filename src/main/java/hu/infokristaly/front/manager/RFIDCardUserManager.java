@@ -24,6 +24,7 @@ import org.primefaces.event.SelectEvent;
 import hu.infokristaly.back.domain.Client;
 import hu.infokristaly.back.domain.RFIDCard;
 import hu.infokristaly.back.domain.RFIDCardUser;
+import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.exprog.honeyweb.middle.services.BasicService;
@@ -50,7 +51,10 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 	
 	@Inject
 	private ClientsService clientService;
-	
+
+	@Inject
+	private LocaleManager localeManager;
+
 	public RFIDCardUserManager() {
 
 	}
@@ -150,7 +154,7 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
     @Override
 	protected Locale getLocale() {
 		// TODO Auto-generated method stub
-		return Locale.forLanguageTag("hu");
+		return localeManager.getLocale();
 	}
 
 	@Override
