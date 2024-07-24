@@ -4,80 +4,110 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
-<h:form>
-	<p:menubar id="mainmenubar">
-		<p:submenu id="rendszer" label="#{msg['system-menu']}">
-			<p:menuitem id="beallitasok" value="#{msg['settings-menu']}" url="${request.contextPath}/user/setup.xhtml" />
-			<p:menuitem id="server-info" value="#{msg['server-info']}" url="#{request.contextPath}/admin/server-info.xhtml" rendered="#{userService.loggedInSystemUser.adminUser}"/>
-			<c:if test="${userManager != null}">
-				<p:menuitem id="kilepes" value="#{msg['exit-menu']}" url="#{request.contextPath}/logout.xhtml" rendered="#{! empty userService.loggedInSystemUser}"/>
-			</c:if>
-		</p:submenu>
-
-		<p:submenu id="adatok" label="Adatok">
-			<c:if test="${userManager != null}">
-				<p:menuitem id="importmenu" value="Importálás" url="#{request.contextPath}/admin/import.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="usersmenu" value="Felhasználók" url="#{request.contextPath}/admin/users.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="subjectsmenu" value="Foglalkozások" url="#{request.contextPath}/admin/subjects.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="clientcategorymenu" value="Ellátás jellege" url="#{request.contextPath}/admin/clientcategory.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="doctorsmenu" value="Orvosok" url="#{request.contextPath}/admin/doctors.xhtml"
-					rendered="${userService.isAdminRole()}" />
-			</c:if>
-			<p:menuitem id="clientsmenu" value="Kliensek" url="#{request.contextPath}/user/clients.xhtml" />
-			<p:menuitem id="groupsmenu" value="Csoportjaim" url="#{request.contextPath}/user/groups.xhtml" />
-			<p:menuitem id="eventtemplatesmenu" value="Foglalkozás sablonok"
-				url="#{request.contextPath}/user/event_templates.xhtml" />
-		</p:submenu>
-
-		<p:submenu id="adminisztracio" label="Adminisztráció">
-			<p:menuitem id="foglalkozasaim" value="Foglalkozásaim"
-				url="#{request.contextPath}/user/lessons.xhtml" />
-			<p:menuitem id="meetingsmenu" value="Találkozóim" url="#{request.contextPath}/user/meetings.xhtml" />
-			<p:menuitem id="alertsmenu" value="Figyelmeztetések" url="#{request.contextPath}/user/alerts.xhtml" />
-			<p:menuitem id="activitymenu" value="Aktivitás" url="#{request.contextPath}/user/activitytable.xhtml"
-				rendered="${userService.isAdminRole() or userService.isCaseManager()}" />
-			<p:menuitem id="visitadaymenu" value="Napi kliens lista" url="#{request.contextPath}/user/visitaday.xhtml"
-				rendered="${userService.isAdminRole() or userService.isCaseManager()}" />
-		</p:submenu>
-		
-		<c:if test="${(userService != null)}">
-			<p:submenu id="presentations" label="Kimutatások"
-				rendered="${userService.isAdminRole()}">
-				<p:menuitem id="reportsmenu" value="Napi kimutatás" url="#{request.contextPath}/user/reports.xhtml" />
-				<p:menuitem id="reportsyearmenu" value="Éves kimutatás" url="#{request.contextPath}/user/reportsyear.xhtml" />
-				<p:menuitem id="userlogmenu" value="Napló" url="#{request.contextPath}/admin/userlog.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="chartsmenu" value="Diagramok" url="#{request.contextPath}/admin/charts.xhtml"
-					rendered="${userService.isAdminRole()}" />
+	<h:form>
+		<p:menubar id="mainmenubar">
+			<p:submenu id="rendszer" label="#{msg['system-menu']}">
+				<p:menuitem id="beallitasok" value="#{msg['settings-menu']}"
+					url="${request.contextPath}/user/setup.xhtml" />
+				<p:menuitem id="server-info" value="#{msg['server-info']}"
+					url="#{request.contextPath}/admin/server-info.xhtml"
+					rendered="#{userService.loggedInSystemUser.adminUser}" />
+				<c:if test="${userManager != null}">
+					<p:menuitem id="kilepes" value="#{msg['exit-menu']}"
+						url="#{request.contextPath}/logout.xhtml"
+						rendered="#{! empty userService.loggedInSystemUser}" />
+				</c:if>
 			</p:submenu>
-		</c:if>
-		
-		<c:if test="${(userService != null)}">
-			<p:submenu id="nfcentrilogmenu" label="Beléptető rendszer"
-				rendered="${userService.isAdminRole()}">
-				<p:menuitem id="rfidcardsmenu" value="RFID kártyák"
-					url="#{request.contextPath}/admin/rfidcards.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="rfidcardreadermenu" value="RFID olvasók"
-					url="#{request.contextPath}/admin/rfidreaders.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="rfidcardusersmenu" value="RFID felhasználók"
-					url="#{request.contextPath}/admin/rfidusers.xhtml"
-					rendered="${userService.isAdminRole()}" />
-				<p:menuitem id="rfidlogentrymenu" value="RFID napló"
-					url="#{request.contextPath}/admin/rfidlogentry.xhtml"
-					rendered="${userService.isAdminRole()}" />
+
+			<p:submenu id="adatok" label="Adatok">
+				<c:if test="${userManager != null}">
+					<p:menuitem id="importmenu" value="Importálás"
+						url="#{request.contextPath}/admin/import.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="usersmenu" value="Felhasználók"
+						url="#{request.contextPath}/admin/users.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="subjectsmenu" value="Foglalkozások"
+						url="#{request.contextPath}/admin/subjects.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="clientcategorymenu" value="Ellátás jellege"
+						url="#{request.contextPath}/admin/clientcategory.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="doctorsmenu" value="Orvosok"
+						url="#{request.contextPath}/admin/doctors.xhtml"
+						rendered="${userService.isAdminRole()}" />
+				</c:if>
+				<p:menuitem id="clientsmenu" value="Kliensek"
+					url="#{request.contextPath}/user/clients.xhtml" />
+				<p:menuitem id="groupsmenu" value="Csoportjaim"
+					url="#{request.contextPath}/user/groups.xhtml" />
+				<p:menuitem id="eventtemplatesmenu" value="Foglalkozás sablonok"
+					url="#{request.contextPath}/user/event_templates.xhtml" />
 			</p:submenu>
-		</c:if>
-		
-		<p:submenu id="Szemelyes" label="Személyes">		
-			<p:menuitem id="messagesmenu" value="Üzenetek" url="#{request.contextPath}/user/messagelist.xhtml" />
-		</p:submenu>
-		
-	</p:menubar>
-</h:form>
+
+			<p:submenu id="adminisztracio" label="Adminisztráció">
+				<p:menuitem id="foglalkozasaim" value="Foglalkozásaim"
+					url="#{request.contextPath}/user/lessons.xhtml" />
+				<p:menuitem id="meetingsmenu" value="Találkozóim"
+					url="#{request.contextPath}/user/meetings.xhtml" />
+				<p:menuitem id="alertsmenu" value="Figyelmeztetések"
+					url="#{request.contextPath}/user/alerts.xhtml" />
+				<p:menuitem id="activitymenu" value="Aktivitás"
+					url="#{request.contextPath}/user/activitytable.xhtml"
+					rendered="${userService.isAdminRole() or userService.isCaseManager()}" />
+				<p:menuitem id="visitadaymenu" value="Napi kliens lista"
+					url="#{request.contextPath}/user/visitaday.xhtml"
+					rendered="${userService.isAdminRole() or userService.isCaseManager()}" />
+			</p:submenu>
+
+			<c:if test="${(userService != null)}">
+				<p:submenu id="presentations" label="Kimutatások"
+					rendered="${userService.isAdminRole()}">
+					<p:menuitem id="reportsmenu" value="Napi kimutatás"
+						url="#{request.contextPath}/user/reports.xhtml" />
+					<p:menuitem id="reportsyearmenu" value="Éves kimutatás"
+						url="#{request.contextPath}/user/reportsyear.xhtml" />
+					<p:menuitem id="userlogmenu" value="Napló"
+						url="#{request.contextPath}/admin/userlog.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="chartsmenu" value="Diagramok"
+						url="#{request.contextPath}/admin/charts.xhtml"
+						rendered="${userService.isAdminRole()}" />
+				</p:submenu>
+			</c:if>
+
+			<c:if test="${(userService != null)}">
+				<p:submenu id="nfcentrylogmenu" label="Beléptető rendszer"
+					rendered="${userService.isAdminRole()}">
+					<p:menuitem id="rfidcardsmenu" value="RFID kártyák"
+						url="#{request.contextPath}/admin/rfidcards.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="rfidcardreadermenu" value="RFID olvasók"
+						url="#{request.contextPath}/admin/rfidreaders.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="rfidcardusersmenu" value="RFID felhasználók"
+						url="#{request.contextPath}/admin/rfidusers.xhtml"
+						rendered="${userService.isAdminRole()}" />
+					<p:menuitem id="rfidlogentrymenu" value="RFID napló"
+						url="#{request.contextPath}/admin/rfidlogentry.xhtml"
+						rendered="${userService.isAdminRole()}" />
+				</p:submenu>
+			</c:if>
+
+			<c:if test="${(userService != null)}">
+				<p:submenu id="documentmanagermenu" label="Dokumentum kezelés"
+					rendered="${userService.isAdminRole()}">
+v					<p:menuitem id="documentsubjectmenu" value="Dokumentum tárgya"
+						url="#{request.contextPath}/admin/document_subject.xhtml"
+						rendered="${userService.isAdminRole()}" />
+				</p:submenu>
+			</c:if>
+
+			<p:submenu id="Szemelyes" label="Személyes">
+				<p:menuitem id="messagesmenu" value="Üzenetek"
+					url="#{request.contextPath}/user/messagelist.xhtml" />
+			</p:submenu>
+
+		</p:menubar>
+	</h:form>
 </ui:composition>

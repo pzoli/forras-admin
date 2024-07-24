@@ -36,10 +36,12 @@ public class Organization implements java.io.Serializable {
     @Basic
     String name;
 
+    @EntityFieldInfo(info="#{msg['organization-hqaddress']}", weight=2, required=false, editor="txt")
     @Basic
     @Column(name="hq_address")
     String hqAddress;
 
+    @EntityFieldInfo(info="#{msg['organization-hqphone']}", weight=3, required=false, editor="txt")
     @Basic
     @Column(name="hq_phone")
     String hqPhone;
@@ -48,7 +50,7 @@ public class Organization implements java.io.Serializable {
     @Lob
     private String vCard;
 
-    @EntityFieldInfo(info="#{msg['description']}", weight=2, required=false, editor="textarea")
+    @EntityFieldInfo(info="#{msg['description']}", weight=4, required=false, editor="textarea")
     @Column(name = "description")
     private String description;
 
