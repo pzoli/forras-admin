@@ -65,7 +65,7 @@
 				<p:ajax event="eventSelect"
 					listener="#{scheduleManager.onEventSelect}" update=":timerForm"
 					oncomplete="PF('timerDialogWidget').show();" />
-				<p:ajax event="eventMove" listener="#{scheduleManager.onEventMove}" />
+				<p:ajax event="eventMove" listener="#{scheduleManager.onEventMove}"  update=":ScheduleForm"/>
 				<p:ajax event="eventResize"
 					listener="#{scheduleManager.onEventResize}" />
 			</p:schedule>
