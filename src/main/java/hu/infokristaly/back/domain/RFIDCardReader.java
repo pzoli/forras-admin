@@ -27,7 +27,7 @@ public class RFIDCardReader implements Serializable {
     
     @EntityFieldInfo(info="Dátumtól", weight=1, required=true, editor="date")
     private Date periodStart;
-    @EntityFieldInfo(info="Dátumig", weight=2, required=true, editor="date")
+    @EntityFieldInfo(info="Dátumig", weight=2, required=false, editor="date")
     private Date periodEnd;
     @EntityFieldInfo(info="Olvasó azonosító", weight=3, required=true, editor="txt")
 	private String readerId;

@@ -1,6 +1,7 @@
 package hu.infokristaly.back.domain;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
@@ -32,21 +33,21 @@ public class DocInfo {
     @Column(unique = true, nullable = false)
     Long id;
 
-    @EntityFieldInfo(info="#{msg['document-subject']}", weight=2, required=false, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="name", detailDialogFile="/admin/organization-dialog")
+    @EntityFieldInfo(info="#{msg['document-subject']}", weight=2, required=true, editor="select")
+    @LookupFieldInfo(keyField="id",labelField="value", detailDialogFile="/admin/document_subject-dialog")
     @Basic
     @ManyToOne
     DocumentSubject subject;
 
     @Basic
-    DocumentDirection direction;
+    DocumentDirection direction = DocumentDirection.IN;
     
-    @EntityFieldInfo(info="#{msg['created_at']}", weight=1, required=false, editor="date")
+    @EntityFieldInfo(info="#{msg['created_at']}", weight=1, required=true, editor="date")
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     Date createdAt;
 
-    @EntityFieldInfo(info="#{msg['organization']}", weight=3, required=false, editor="select")
+    @EntityFieldInfo(info="#{msg['organization']}", weight=3, required=true, editor="select")
     @LookupFieldInfo(keyField="id",labelField="name", detailDialogFile="/admin/organization-dialog")
     @Basic
     @ManyToOne
@@ -56,4 +57,72 @@ public class DocInfo {
     @ManyToOne
     Clerk clerk;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public DocumentSubject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(DocumentSubject subject) {
+		this.subject = subject;
+	}
+
+	public DocumentDirection getDirection() {
+		return direction;
+	}
+
+	public void setDirection(DocumentDirection direction) {
+		this.direction = direction;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
+	public Clerk getClerk() {
+		return clerk;
+	}
+
+	public void setClerk(Clerk clerk) {
+		this.clerk = clerk;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(clerk, createdAt, direction, id, organization, subject);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DocInfo other = (DocInfo) obj;
+		return Objects.equals(clerk, other.clerk) && Objects.equals(createdAt, other.createdAt)
+				&& direction == other.direction && Objects.equals(id, other.id)
+				&& Objects.equals(organization, other.organization) && Objects.equals(subject, other.subject);
+	}
+
+    
 }

@@ -55,6 +55,7 @@ public class Organization implements java.io.Serializable {
     private String description;
 
     @ManyToOne
+    @Basic
     @JoinColumn(name = "icon_id")
     private Icon icon;
     
@@ -83,7 +84,6 @@ public class Organization implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "name", length = 128)
     public String getName() {
         return this.name;
     }

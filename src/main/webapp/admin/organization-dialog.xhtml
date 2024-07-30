@@ -7,19 +7,23 @@
 	xmlns:dp="http://integrity.hu/dynap"
 	template="/WEB-INF/templates/dialog.xhtml">
 	<f:metadata>
-		<f:viewParam name="selectMode" value="#{documentSubjectManager.selectMode}" />
-		<f:viewParam name="dialogMode" value="#{documentSubjectManager.dialogMode}"/>
+		<f:viewParam name="selectMode"
+			value="#{organizationManager.selectMode}" />
+		<f:viewParam name="dialogMode"
+			value="#{organizationManager.dialogMode}" />
 	</f:metadata>
 	<ui:define name="content">
 		<script type="text/javascript"
 			src="${request.contextPath}/resources/js/calendar.js" />
 
 		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
-		<dp:dialog dialogWidgetVar="dlgDocumentSubjectWidget" dialogHeader="#{msg['document-subject']}"
-			managerBean="#{documentSubjectManager}"
-			formModel="#{documentSubjectManager.formModel}" />
-		<dp:dynTable managerBean="#{documentSubjectManager}" tableHeader="#{msg['document-subject']}"
-			dialogWidgetVar="dlgDocumentSubjectWidget" editable="true"/>
+		<dp:dialog dialogWidgetVar="dlgOrganizationWidget"
+			dialogHeader="#{msg['organization']}"
+			managerBean="#{organizationManager}"
+			formModel="#{organizationManager.formModel}" />
+		<dp:dynTable managerBean="#{organizationManager}"
+			tableHeader="#{msg['organization']}"
+			dialogWidgetVar="dlgOrganizationWidget" editable="true" />
 
 	</ui:define>
 </ui:composition>

@@ -21,6 +21,8 @@ import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.event.SelectEvent;
 
 import hu.infokristaly.back.domain.DocumentSubject;
+import hu.infokristaly.back.domain.RFIDCardReader;
+import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
