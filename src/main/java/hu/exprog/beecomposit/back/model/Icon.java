@@ -1,6 +1,7 @@
 package hu.exprog.beecomposit.back.model;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 // Generated 2012.09.26. 11:18:58 by Hibernate Tools 4.0.0
 
@@ -106,11 +107,9 @@ public class Icon implements java.io.Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((icon == null) ? 0 : icon.hashCode());
 		result = prime * result + Arrays.hashCode(icon16x16);
 		result = prime * result + Arrays.hashCode(icon32x32);
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + Objects.hash(description, icon, id, version);
 		return result;
 	}
 
@@ -123,25 +122,9 @@ public class Icon implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Icon other = (Icon) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (icon == null) {
-			if (other.icon != null)
-				return false;
-		} else if (!icon.equals(other.icon))
-			return false;
-		if (!Arrays.equals(icon16x16, other.icon16x16))
-			return false;
-		if (!Arrays.equals(icon32x32, other.icon32x32))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		return Objects.equals(description, other.description) && Objects.equals(icon, other.icon)
+				&& Arrays.equals(icon16x16, other.icon16x16) && Arrays.equals(icon32x32, other.icon32x32)
+				&& Objects.equals(id, other.id) && Objects.equals(version, other.version);
 	}
+
 }
