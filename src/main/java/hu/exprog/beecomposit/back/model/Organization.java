@@ -1,7 +1,5 @@
 package hu.exprog.beecomposit.back.model;
 
-import java.util.Objects;
-
 import javax.persistence.Basic;
 
 // Generated 2012.09.26. 11:18:58 by Hibernate Tools 4.0.0
@@ -25,7 +23,9 @@ import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
  */
 @Entity
 @Table(name = "organization", schema = "public")
-public class Organization {
+public class Organization implements java.io.Serializable {
+
+    private static final long serialVersionUID = -2376060991535387263L;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -60,7 +60,7 @@ public class Organization {
     private Icon icon;
     
 	@Version
-	private Long version = 1L;
+	private Long version;
 
     public Organization() {
     }
@@ -69,20 +69,59 @@ public class Organization {
         this.id = id;
     }
 
-	public Long getId() {
-		return id;
+    public Organization(Long id, String name, String description, Icon icon) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVCard() {
+        return this.vCard;
+    }
+    
+    public void setVCard(String vCard) {
+    	this.vCard = vCard;
+    }
+
+    public Icon getIcon() {
+        return this.icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+    }
+
+	public Long getVersion() {
+		return version;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 	public String getHqAddress() {
@@ -101,41 +140,18 @@ public class Organization {
 		this.hqPhone = hqPhone;
 	}
 
-	public String getvCard() {
-		return vCard;
-	}
-
-	public void setvCard(String vCard) {
-		this.vCard = vCard;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Icon getIcon() {
-		return icon;
-	}
-
-	public void setIcon(Icon icon) {
-		this.icon = icon;
-	}
-
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, hqAddress, hqPhone, icon, id, name, vCard, version);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((hqAddress == null) ? 0 : hqAddress.hashCode());
+		result = prime * result + ((hqPhone == null) ? 0 : hqPhone.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((icon == null) ? 0 : icon.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((vCard == null) ? 0 : vCard.hashCode());
+		return result;
 	}
 
 	@Override
@@ -147,10 +163,41 @@ public class Organization {
 		if (getClass() != obj.getClass())
 			return false;
 		Organization other = (Organization) obj;
-		return Objects.equals(description, other.description) && Objects.equals(hqAddress, other.hqAddress)
-				&& Objects.equals(hqPhone, other.hqPhone) && Objects.equals(icon, other.icon)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(vCard, other.vCard) && Objects.equals(version, other.version);
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (hqAddress == null) {
+			if (other.hqAddress != null)
+				return false;
+		} else if (!hqAddress.equals(other.hqAddress))
+			return false;
+		if (hqPhone == null) {
+			if (other.hqPhone != null)
+				return false;
+		} else if (!hqPhone.equals(other.hqPhone))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (icon == null) {
+			if (other.icon != null)
+				return false;
+		} else if (!icon.equals(other.icon))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (vCard == null) {
+			if (other.vCard != null)
+				return false;
+		} else if (!vCard.equals(other.vCard))
+			return false;
+		return true;
 	}
-
 }
