@@ -114,25 +114,23 @@
 			<version>2.0</version>
 		</dependency>
 
-
+<!-- 
 		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-ejb3</artifactId>
 			<scope>provided</scope>
 		</dependency>
- 
+ --> 
 		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-bean-validation</artifactId>
 			<scope>provided</scope>
 		</dependency>
- 
 		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-jsf</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.wildfly</groupId>
 			<artifactId>wildfly-jpa</artifactId>
@@ -175,12 +173,7 @@
 			<artifactId>quartz</artifactId>
 			<version>2.2.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz-jobs</artifactId>
-			<version>2.2.3</version>
-		</dependency>
-
+ 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -191,7 +184,7 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>4.1.2</version>
 		</dependency>
-
+ 
 		<dependency>
 			<groupId>org.apache.deltaspike.modules</groupId>
 			<artifactId>deltaspike-jsf-module-api</artifactId>
@@ -205,7 +198,7 @@
 			<version>${deltaspike.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
+ 
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>

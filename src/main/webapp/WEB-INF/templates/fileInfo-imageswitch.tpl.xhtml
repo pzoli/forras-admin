@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+	<h:form>
+		<p:panelGrid styleClass="noBorders">
+			<p:row>
+				<p:column style="text-align:right;">
+					<p:commandButton type="button" onclick="PF('switcher').previous()"
+						icon="pi pi-chevron-left" id="prev" styleClass="mr-2 mb-3" />
+				</p:column>
+				<p:column style="text-align:left;">
+					<p:commandButton type="button" onclick="PF('switcher').next()"
+						icon="pi pi-chevron-right" id="next" styleClass="mr-2 mb-3" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column colspan="2" style="text-align: center;">
+					<p:imageSwitch widgetVar="switcher" effect="wipe" style="margin: auto;"
+						slideshowAuto="false">
+						<ui:repeat value="${u.fileInfos}" var="image"
+							id="manuelSwitcherImages">
+							<p:graphicImage
+								value="#{imageView.image}" width="500"
+								id="image" rendered="#{!image.uniqueFileName.isEmpty()}">
+								<f:param name="fileName" value="#{image.uniqueFileName}" />
+							</p:graphicImage>
+						</ui:repeat>
+					</p:imageSwitch>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</h:form>
+</ui:composition>

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -28,7 +27,7 @@ public class ImageView implements Serializable {
 
 	@Inject
 	private AppProperties appProperties;
-	
+
 	public ImageView() {
 	}
 
@@ -36,9 +35,8 @@ public class ImageView implements Serializable {
 	public void setStream() {
 		image = new DefaultStreamedContent();
 		FacesContext context = FacesContext.getCurrentInstance();
-	    Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-	    String fileName = map.get("fileName");
-		
+		Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+		String fileName = map.get("fileName");
 		if (fileName != null && !fileName.isEmpty()) {
 			image.setContentType("image/jpeg");
 			FileInputStream fis;
@@ -50,7 +48,8 @@ public class ImageView implements Serializable {
 			}
 		}
 	}
-	public StreamedContent getImage(String fileName) {
+
+	public StreamedContent getImage() {
 		return image;
 	}
 }
