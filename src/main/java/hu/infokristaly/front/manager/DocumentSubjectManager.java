@@ -164,4 +164,10 @@ public class DocumentSubjectManager extends BasicManager<DocumentSubject> implem
 		return null;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -199,4 +199,10 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 		return null;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

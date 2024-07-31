@@ -703,6 +703,8 @@ public abstract class BasicManager<T> {
 	public abstract boolean checkDeleteRight(T entity) throws ActionAccessDeniedException;
 
 	public abstract boolean checkEditableRights(T entity) throws ActionAccessDeniedException;
+	
+	public abstract boolean checkDetailsInTable();
 
 	public abstract Object postProcess(FieldModel field, Object value);
 

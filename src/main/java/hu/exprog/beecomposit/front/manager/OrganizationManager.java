@@ -154,4 +154,10 @@ public class OrganizationManager extends BasicManager<Organization> implements S
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

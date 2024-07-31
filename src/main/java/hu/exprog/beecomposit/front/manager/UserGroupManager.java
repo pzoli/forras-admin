@@ -154,4 +154,10 @@ public class UserGroupManager extends BasicManager<Usergroup> implements Seriali
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

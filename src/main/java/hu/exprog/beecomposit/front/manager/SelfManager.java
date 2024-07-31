@@ -290,4 +290,10 @@ public class SelfManager extends BasicManager<SystemUser> implements Serializabl
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

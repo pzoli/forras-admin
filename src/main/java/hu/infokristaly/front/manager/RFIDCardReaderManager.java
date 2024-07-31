@@ -158,5 +158,11 @@ public class RFIDCardReaderManager extends BasicManager<RFIDCardReader> implemen
 		return null;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

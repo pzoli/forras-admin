@@ -154,4 +154,10 @@ public class LanguageManager extends BasicManager<Language> implements Serializa
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

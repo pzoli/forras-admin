@@ -153,4 +153,10 @@ public class AlertAddressesManager extends BasicManager<AlertAddresses> implemen
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

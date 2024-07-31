@@ -209,4 +209,10 @@ public class RFIDLogEntryManager extends BasicManager<RFIDLogEntry> implements S
 		return null;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

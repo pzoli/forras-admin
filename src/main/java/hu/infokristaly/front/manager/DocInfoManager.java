@@ -205,4 +205,10 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		return null;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

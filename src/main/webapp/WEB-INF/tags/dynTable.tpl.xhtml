@@ -47,6 +47,14 @@
 				<h:outputText value="#{u[column.property][column.lookupLabelfield]}"
 					rendered="#{managerBean.renderLookup(column.class.simpleName)}" />
 			</p:columns>
+			<p:column style="width:4%" id="togglerOnActive" rendered="#{managerBean.checkDetailsInTable()}">
+				<p:rowToggler rendered="true" />
+			</p:column>
+			<p:rowExpansion id="rowexp">
+				<p:panel>
+					<ui:include src="#{expansionTemplate}"/>
+				</p:panel>
+			</p:rowExpansion>
 		</p:dataTable>
 		<p:commandButton action="#{managerBean.initValue()}"
 			value="#{msg['new-button']}" id="newButton"

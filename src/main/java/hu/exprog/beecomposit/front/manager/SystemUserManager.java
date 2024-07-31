@@ -260,4 +260,10 @@ public class SystemUserManager extends BasicManager<SystemUser> implements Seria
 		return checkEditableRights(entity);
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

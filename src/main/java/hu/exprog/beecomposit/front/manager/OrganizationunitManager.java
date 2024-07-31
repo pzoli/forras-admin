@@ -220,4 +220,10 @@ public class OrganizationunitManager extends BasicManager<Organizationunit> impl
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

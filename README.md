@@ -96,6 +96,7 @@ Set service variables with adding domain:naming bindings:
                 <simple name="java:jboss/forrashaz/default-page" value="/user/lessons.xhtml" type="java.lang.String"/>
                 <simple name="java:jboss/forrashaz/templates" value="/home/pzoli/Dokumentumok/forras/templates" type="java.lang.String"/>
                 <simple name="java:jboss/forrashaz/destination" value="/home/pzoli/Dokumentumok/forras" type="java.lang.String"/>
+                <simple name="java:jboss/forrashaz/docinfo-root" value="/home/pzoli/temp" type="java.lang.String"/>
                 <simple name="java:jboss/forrashaz/systemtimerstarthour" value="8" type="java.lang.Integer"/>
                 <simple name="java:jboss/forrashaz/default-language" value="hu" type="java.lang.String"/>
                 <simple name="java:jboss/forrashaz/default-alertmanager-startdate" value="2015.01.01" type="java.lang.String"/>
@@ -111,6 +112,7 @@ Where values are the following:
 * default-page: open page after login
 * templates: formatted .xlsx files for statistics
 * destination: directory for outputs (statistics, QR codes)
+* docinfo-root: incoming document root dir
 * systemtimerstarthour: start hour to generate alerts (new message generation)
 * default-language: available default language (**hu** and **en** are valid)
 * default-alertmanager-startdate: alert calculation start date (YYYY.MM.DD format)

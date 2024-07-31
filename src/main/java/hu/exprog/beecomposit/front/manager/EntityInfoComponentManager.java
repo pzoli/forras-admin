@@ -200,4 +200,10 @@ public class EntityInfoComponentManager extends BasicManager<EntityInfoComponent
 		return true;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

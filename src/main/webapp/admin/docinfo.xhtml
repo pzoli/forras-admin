@@ -7,8 +7,8 @@
 	xmlns:dp="http://integrity.hu/dynap"
 	template="/WEB-INF/templates/default.xhtml">
 	<f:metadata>
-		<f:viewAction name="selectMode" action="#{docInfoManager.setSelectMode('multiple')}" />
-		<f:viewAction name="dialogMode" action="#{docInfoManager.setDialogMode('')}"/>
+		<f:viewAction action="#{docInfoManager.setSelectMode('multiple')}" />
+		<f:viewAction action="#{docInfoManager.setDialogMode('')}"/>
 	</f:metadata>
 	<ui:define name="content">
 		<script type="text/javascript"
@@ -19,7 +19,7 @@
 			managerBean="#{docInfoManager}"
 			formModel="#{docInfoManager.formModel}" />
 		<dp:dynTable managerBean="#{docInfoManager}" tableHeader="#{msg['docinfo']}"
-			dialogWidgetVar="dlgDocInfoWidget" editable="true"/>
+			dialogWidgetVar="dlgDocInfoWidget" editable="true" expansionTemplate="/WEB-INF/templates/fileInfo.tpl.xhtml"/>
 
 	</ui:define>
 </ui:composition>

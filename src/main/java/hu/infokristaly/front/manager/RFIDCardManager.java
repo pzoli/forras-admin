@@ -156,4 +156,10 @@ public class RFIDCardManager extends BasicManager<RFIDCard> implements Serializa
 		return null;
 	}
 
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

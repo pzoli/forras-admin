@@ -33,7 +33,6 @@ public class FileInfo  implements Serializable {
     @Column(name = "lenght")
     private Long lenght;
 
-    @Basic
     @ManyToOne
     @JoinColumn(name = "doc_info_id")
     private DocInfo docInfo;

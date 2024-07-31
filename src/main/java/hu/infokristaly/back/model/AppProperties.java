@@ -33,6 +33,9 @@ public class AppProperties implements Serializable {
     @Resource(mappedName = "java:jboss/forrashaz/destination")
     private String destinationPath;
 
+    @Resource(mappedName = "java:jboss/forrashaz/docinfo-root")
+    private String docinfoRootPath;
+
     @Resource(mappedName = "java:jboss/forrashaz/systemtimerstarthour")
     private Integer systemTimerStartHour;
 
@@ -69,6 +72,10 @@ public class AppProperties implements Serializable {
 
     public String getDestinationPath() {
         return destinationPath;
+    }
+
+    public String getDocinfoRootPath() {
+        return docinfoRootPath;
     }
 
     public void setDestinationPath(String destinationPath) {
