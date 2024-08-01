@@ -38,7 +38,7 @@ public class ImageView implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> map = context.getExternalContext().getRequestParameterMap();
 		String fileName = map.get("fileName");
-		System.out.println("PhaseId:" + context.getCurrentPhaseId() + " fileName:"+fileName);
+		//System.out.println("PhaseId:" + context.getCurrentPhaseId() + " fileName:"+fileName);
 		if (context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE) {
 			if (fileName != null && !fileName.isEmpty()) {
 				image.setContentType("image/jpeg");
