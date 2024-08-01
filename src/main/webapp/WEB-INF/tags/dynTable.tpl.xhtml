@@ -7,7 +7,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:composite="http://java.sun.com/jsf/composite">
-
+	<script type="text/javascript">
+	    function toggle() {
+			$('.ui-row-toggler.ui-icon.ui-icon-circle-triangle-s').trigger('click');
+			setTimeout(toggleCallback(),2000);
+		}
+		function toggleCallback() {
+			$('.ui-row-toggler.ui-icon.ui-icon-circle-triangle-s').off('click', toggle);
+			$('.ui-row-toggler.ui-icon.ui-icon-circle-triangle-e').on('click', toggle);
+		}
+    </script>
 	<h:form id="tableForm">
 		<p:dataTable id="itemsTable" value="#{managerBean.lazyDataModel}"
 			var="u" emptyMessage="#{msg['empty-table-message']}"
@@ -28,13 +37,18 @@
 						fileName="unirobotloggers" />
 				</h:commandLink>
 			</f:facet>
+			<p:ajax event="rowToggle"
+				oncomplete="${toggleSingleRow} &amp;&amp; toggleCallback()" />
 			<p:column selectionMode="#{managerBean.selectMode}"
 				exportable="false" style="width:16px;text-align:center" />
 			<p:column width="5%" exportable="false" rendered="#{editable}">
-				<p:commandButton action="#{managerBean.setControlData(u)}" title="#{msg['edit-button']}"
+				<p:commandButton action="#{managerBean.setControlData(u)}"
+					title="#{msg['edit-button']}"
 					oncomplete="PF('${dialogWidgetVar}').show();"
 					update=":mainForm:dynaGroup" ajax="true" process="@this"
-					rendered="#{managerBean.checkSaveRight()}" disabled="#{!managerBean.checkEditableRights(u)}" icon="ui-icon-pencil" />
+					rendered="#{managerBean.checkSaveRight()}"
+					disabled="#{!managerBean.checkEditableRights(u)}"
+					icon="ui-icon-pencil" />
 			</p:column>
 			<p:columns value="#{managerBean.columns}" var="column"
 				resizable="true" columnIndexVar="colIndex"
@@ -47,12 +61,15 @@
 				<h:outputText value="#{u[column.property][column.lookupLabelfield]}"
 					rendered="#{managerBean.renderLookup(column.class.simpleName)}" />
 			</p:columns>
-			<p:column style="width:4%" id="togglerOnActive" rendered="#{managerBean.checkDetailsInTable()}">
-				<p:rowToggler rendered="true" />
+			<p:column style="width:4%" id="togglerOnActive"
+				rendered="#{managerBean.checkDetailsInTable()}">
+				<p:rowToggler rendered="true">
+
+				</p:rowToggler>
 			</p:column>
 			<p:rowExpansion id="rowexp">
 				<p:panel>
-					<ui:include src="#{expansionTemplate}"/>
+					<ui:include src="#{expansionTemplate}" />
 				</p:panel>
 			</p:rowExpansion>
 		</p:dataTable>
@@ -66,7 +83,7 @@
 			rendered="#{managerBean.checkDeleteRight()}"
 			actionListener="#{managerBean.deleteSelected()}">
 			<p:confirm header="#{msg['confirm-dialogheader']}"
-				message="#{msg['delete-confirm-message']}" icon="ui-icon-alert"/>
+				message="#{msg['delete-confirm-message']}" icon="ui-icon-alert" />
 		</p:commandButton>
 		<p:commandButton value="#{msg['select-button']}" icon="ui-icon-search"
 			process="@this,:tableForm" id="selectButton"

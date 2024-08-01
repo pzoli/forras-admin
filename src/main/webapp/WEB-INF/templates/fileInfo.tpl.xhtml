@@ -7,19 +7,21 @@
 	<h:outputStylesheet name="primeicons/primeicons.css"
 		library="primefaces" />
 	<h:form>
+		
 		<p:panel style="text-align:center;">
-			<p:commandButton type="button" value="Mutasd"
-				onclick="PF('dlg').show()" icon="pi pi-home" />
+			<p:commandButton type="button" value="Megtekint"
+				onclick="PF('dlg').show()"
+				icon="pi pi-home" />
 
 			<p:dialog header="Images" widgetVar="dlg" modal="true"
-				draggable="false" resizable="false" showEffect="fade"
-				hideEffect="fade">
+				closeOnEscape="true" draggable="false" resizable="false"
+				showEffect="fade" hideEffect="fade">
 				<p:scrollPanel style="width:500px;">
-					<ui:repeat value="${u.fileInfos}" var="image"
-						id="manuelSwitcherImages">
-						<p:link target="_blank" href="${request.contextPath}/admin/single-fileInfo.xhtml">
+					<ui:repeat value="${u.fileInfos}" var="image">
+						<p:link target="_blank"
+							href="${request.contextPath}/admin/single-fileInfo.xhtml">
 							<f:param name="fileName" value="${image.uniqueFileName}" />
-							<p:graphicImage value="${imageView.image}" width="500" id="image"
+							<p:graphicImage value="${imageView.image}" width="500"
 								rendered="${!image.uniqueFileName.isEmpty()}">
 								<f:param name="fileName" value="${image.uniqueFileName}" />
 							</p:graphicImage>

@@ -19,7 +19,7 @@
 			managerBean="#{docInfoManager}"
 			formModel="#{docInfoManager.formModel}" />
 		<dp:dynTable managerBean="#{docInfoManager}" tableHeader="#{msg['docinfo']}"
-			dialogWidgetVar="dlgDocInfoWidget" editable="true" expansionTemplate="/WEB-INF/templates/fileInfo.tpl.xhtml"/>
+			dialogWidgetVar="dlgDocInfoWidget" editable="true" expansionTemplate="/WEB-INF/templates/fileInfo.tpl.xhtml" toggleSingleRow="true"/>
 
 	</ui:define>
 </ui:composition>
