@@ -1,5 +1,6 @@
 package hu.infokristaly.front.manager;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +24,7 @@ import org.primefaces.event.SelectEvent;
 
 import hu.infokristaly.back.domain.DocInfo;
 import hu.infokristaly.back.domain.DocumentSubject;
+import hu.infokristaly.back.model.AppProperties;
 import hu.exprog.beecomposit.back.model.Organization;
 import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.beecomposit.middle.service.OrganizationService;
@@ -54,6 +56,9 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 	
 	@Inject
 	private LocaleManager localeManager;
+	
+	@Inject
+	private AppProperties appProperties; 
 
 			
 	public DocInfoManager() {
@@ -183,7 +188,12 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 
 	@Override
 	public boolean checkDeleteRight(DocInfo entity) throws ActionAccessDeniedException {
-		// TODO Auto-generated method stub
+		entity.getFileInfos().forEach(c -> {
+			File file = new File(appProperties.getDocinfoRootPath() + File.separatorChar + c.getUniqueFileName());
+			if (!file.delete()) {
+				System.err.println("File("+c.getUniqueFileName()+") not deleted");
+			}
+		});
 		return true;
 	}
 

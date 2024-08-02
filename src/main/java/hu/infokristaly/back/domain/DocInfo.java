@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -61,7 +62,7 @@ public class DocInfo {
     @ManyToOne
     Clerk clerk;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "docInfo")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "docInfo", cascade = CascadeType.REMOVE)
     Collection<FileInfo> fileInfos;
     
 	public Collection<FileInfo> getFileInfos() {
