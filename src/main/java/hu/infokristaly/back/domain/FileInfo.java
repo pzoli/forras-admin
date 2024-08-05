@@ -23,7 +23,7 @@ public class FileInfo  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Integer id;
+    private Long id;
 
     @Basic
     @Column(name = "unique_file_name")
@@ -37,11 +37,11 @@ public class FileInfo  implements Serializable {
     @JoinColumn(name = "doc_info_id")
     private DocInfo docInfo;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

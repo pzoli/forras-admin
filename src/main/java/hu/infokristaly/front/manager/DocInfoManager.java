@@ -2,7 +2,10 @@ package hu.infokristaly.front.manager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +29,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.metadata.ConstraintDescriptor;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
@@ -45,7 +51,6 @@ import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.infokristaly.middle.service.DocInfoService;
 import hu.infokristaly.middle.service.DocumentSubjectService;
 import hu.infokristaly.middle.service.FileInfoService;
-import hu.infokristaly.utils.StreamUtils4Me;
 import hu.exprog.honeyweb.utils.FieldModel;
 import hu.exprog.honeyweb.utils.LookupFieldModel;
 
@@ -75,8 +80,6 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 
 	@Inject
 	private FileInfoService fileInfoService;
-
-	private UploadedFile uploadedFile;
 
 	public DocInfoManager() {
 
@@ -183,31 +186,47 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		return organization;
 	}
 
-	public UploadedFile getUploadedFile() {
-		return uploadedFile;
+	public void deleteFile() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+		String id = map.get("id");
+		if (id != null) {
+			FileInfo fileInfo = new FileInfo();
+			fileInfo.setId(Long.parseLong(id));
+			fileInfo = fileInfoService.find(fileInfo);
+			try {
+				File file = new File(
+						appProperties.getDocinfoRootPath() + File.separatorChar + fileInfo.getUniqueFileName());
+				if (!file.delete()) {
+					System.err.println("File(" + file.toString() + ") not deleted");
+				}
+				fileInfoService.remove(fileInfo);
+				String url = context.getExternalContext().getRequestContextPath() + "/admin/docinfo.xhtml";
+				context.getExternalContext().redirect(url);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public void setUploadedFile(UploadedFile file) {
-		uploadedFile = file;
-	}
-
-	public void upload() {
+	public void fileUploadListener(FileUploadEvent event) {
 		try {
-			if (uploadedFile != null) {
+			if (event.getFile() != null) {
 				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-				File clientsFileName = File.createTempFile("IMG_" + timeStamp + "_", ".jpg",
+				String ext = FilenameUtils.getExtension(event.getFile().getFileName());
+				File file = File.createTempFile("IMG_" + timeStamp + "_", "." + ext,
 						new File(appProperties.getDocinfoRootPath()));
 
-				FileOutputStream fout = new FileOutputStream(clientsFileName);
-				StreamUtils4Me.copy(uploadedFile.getInputstream(), fout, 1024);
-
-				uploadedFile.getInputstream().close();
+				try (InputStream is = event.getFile().getInputstream()) {
+					FileUtils.copyInputStreamToFile(is, file);
+				}
 
 				FileInfo fileInfo = new FileInfo();
 				fileInfo.setDocInfo(getCurrent());
-				fileInfo.setUniqueFileName(clientsFileName.getName());
-				fileInfo.setLenght(uploadedFile.getSize());
+				fileInfo.setUniqueFileName(file.getName());
+				fileInfo.setLenght(event.getFile().getSize());
 				fileInfoService.persist(fileInfo);
 			}
 		} catch (Exception e) {

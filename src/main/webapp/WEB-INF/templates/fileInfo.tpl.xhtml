@@ -21,9 +21,10 @@
 			<p:scrollPanel style="width:500px;">
 				<h:form>
 					<ui:repeat value="${u.fileInfos}" var="image">
-						<p:link target="_blank" title="${image.uniqueFileName}"
+						<p:link title="${image.uniqueFileName}"
 							href="${request.contextPath}/admin/single-fileInfo.xhtml">
 							<f:param name="fileName" value="${image.uniqueFileName}" />
+							<f:param name="id" value="${image.id}" />
 							<p:graphicImage value="${imageView.image}" width="500"
 								rendered="${!image.uniqueFileName.isEmpty()}">
 								<f:param name="fileName" value="${image.uniqueFileName}" />

@@ -16,17 +16,17 @@
 
 		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
 
-		<p:dialog header="uplad" widgetVar="dlgUpload" modal="true"
+		<p:dialog header="Dokumentumkép feltöltése" widgetVar="dlgUpload" modal="true"
 			closeOnEscape="true" draggable="false" resizable="false"
 			showEffect="fade" hideEffect="fade">
 			<p:panel style="text-align:center;">
 				<h:form id="uploadForm" enctype="multipart/form-data">
-					<p:fileUpload mode="simple" value="#{docInfoManager.uploadedFile}" allowTypes="/(\.|\/)(jpeg|jpg)$/"/>
-					<br/>
-					<p:commandButton value="Küldés" ajax="false"
-						action="#{docInfoManager.upload}">
-						<f:param name="docInfo" value="#{docInfoManager.current.id}" />
-					</p:commandButton>
+					<p:fileUpload allowTypes="/(\.|\/)(jpeg|jpg)$/" fileUploadListener="#{docInfoManager.fileUploadListener}"
+					label="Választ" cancelLabel="Mégsem" uploadLabel="Feltölt">
+					</p:fileUpload>
+				</h:form>
+				<h:form>
+					<p:commandButton ajax="false" value="Bezárás"/>
 				</h:form>
 			</p:panel>
 		</p:dialog>
@@ -34,7 +34,7 @@
 		<dp:dialog dialogWidgetVar="dlgDocInfoWidget" dialogHeader="#{msg['docinfo']}"
 			managerBean="#{docInfoManager}"
 			formModel="#{docInfoManager.formModel}" />
-		<dp:dynTable managerBean="#{docInfoManager}" tableHeader="#{msg['docinfo']}"
+		<dp:dynTable managerBean="#{docInfoManager}" tableHeader="#{msg['docinfo']}" id="docInfoDynTable"
 			dialogWidgetVar="dlgDocInfoWidget" editable="true" expansionTemplate="/WEB-INF/templates/fileInfo.tpl.xhtml" toggleSingleRow="true"/>
 
 	</ui:define>
