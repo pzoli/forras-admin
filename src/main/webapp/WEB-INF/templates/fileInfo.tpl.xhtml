@@ -6,20 +6,22 @@
 	xmlns:p="http://primefaces.org/ui">
 	<h:outputStylesheet name="primeicons/primeicons.css"
 		library="primefaces" />
-	<h:form>
 
-		<p:panel style="text-align:center;">
-			<p:outputLabel value="Képek száma: ${u.fileInfos.size()}" />
-			<br />
-			<p:commandButton type="button" value="Megtekint"
-				onclick="PF('dlg').show()" icon="pi pi-home" />
+	<p:panel style="text-align:center;">
+		<p:outputLabel value="Képek száma: ${u.fileInfos.size()}" />
+		<br />
+		<p:commandButton type="button" value="Megtekint"
+			onclick="PF('dlg').show()" icon="pi pi-search" />
+		<p:commandButton type="button" value="Feltöltés"
+			onclick="PF('dlgUpload').show()" icon="pi pi-upload" />
 
-			<p:dialog header="Images" widgetVar="dlg" modal="true"
-				closeOnEscape="true" draggable="false" resizable="false"
-				showEffect="fade" hideEffect="fade">
-				<p:scrollPanel style="width:500px;">
+		<p:dialog header="Images" widgetVar="dlg" modal="true"
+			closeOnEscape="true" draggable="false" resizable="false"
+			showEffect="fade" hideEffect="fade">
+			<p:scrollPanel style="width:500px;">
+				<h:form>
 					<ui:repeat value="${u.fileInfos}" var="image">
-						<p:link target="_blank"
+						<p:link target="_blank" title="${image.uniqueFileName}"
 							href="${request.contextPath}/admin/single-fileInfo.xhtml">
 							<f:param name="fileName" value="${image.uniqueFileName}" />
 							<p:graphicImage value="${imageView.image}" width="500"
@@ -28,8 +30,8 @@
 							</p:graphicImage>
 						</p:link>
 					</ui:repeat>
-				</p:scrollPanel>
-			</p:dialog>
-		</p:panel>
-	</h:form>
+				</h:form>
+			</p:scrollPanel>
+		</p:dialog>
+	</p:panel>
 </ui:composition>

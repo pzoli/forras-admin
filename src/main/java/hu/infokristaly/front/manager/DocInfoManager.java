@@ -1,9 +1,15 @@
 package hu.infokristaly.front.manager;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
@@ -20,10 +26,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.metadata.ConstraintDescriptor;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.UploadedFile;
+import org.primefaces.model.Visibility;
 
 import hu.infokristaly.back.domain.DocInfo;
 import hu.infokristaly.back.domain.DocumentSubject;
+import hu.infokristaly.back.domain.FileInfo;
 import hu.infokristaly.back.model.AppProperties;
 import hu.exprog.beecomposit.back.model.Organization;
 import hu.exprog.beecomposit.front.manager.LocaleManager;
@@ -33,6 +44,8 @@ import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.infokristaly.middle.service.DocInfoService;
 import hu.infokristaly.middle.service.DocumentSubjectService;
+import hu.infokristaly.middle.service.FileInfoService;
+import hu.infokristaly.utils.StreamUtils4Me;
 import hu.exprog.honeyweb.utils.FieldModel;
 import hu.exprog.honeyweb.utils.LookupFieldModel;
 
@@ -47,20 +60,24 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 
 	@Inject
 	private DocInfoService docInfoService;
-	
+
 	@Inject
 	private DocumentSubjectService documentSubjectService;
 
 	@Inject
 	private OrganizationService organizationService;
-	
+
 	@Inject
 	private LocaleManager localeManager;
-	
-	@Inject
-	private AppProperties appProperties; 
 
-			
+	@Inject
+	private AppProperties appProperties;
+
+	@Inject
+	private FileInfoService fileInfoService;
+
+	private UploadedFile uploadedFile;
+
 	public DocInfoManager() {
 
 	}
@@ -111,12 +128,10 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		}
 	}
 
-	
 	public void handleReturn(SelectEvent event) {
 		if (event.getObject() instanceof DocumentSubject) {
 			DocumentSubject selected = (DocumentSubject) event.getObject();
-			formModel.getControls().stream()
-					.filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("subject"))
+			formModel.getControls().stream().filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("subject"))
 					.forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
 		} else if (event.getObject() instanceof Organization) {
 			Organization selected = (Organization) event.getObject();
@@ -138,7 +153,7 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 
 	@Override
 	protected Object getDetailFieldValue(LookupFieldModel model) {
-	    Object result = null;
+		Object result = null;
 		if (model.getPropertyName().equals("subject")) {
 			Long id = Long.valueOf((String) model.getValue());
 			DocumentSubject subject = new DocumentSubject();
@@ -153,20 +168,60 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		return result;
 	}
 
-    @Override
+	@Override
 	protected Locale getLocale() {
-    	return localeManager.getLocale();
-    }
+		return localeManager.getLocale();
+	}
 
-    public List<DocumentSubject> getSubject() {
-        List<DocumentSubject> subject = documentSubjectService.findAll();
-        return subject;
-    }
+	public List<DocumentSubject> getSubject() {
+		List<DocumentSubject> subject = documentSubjectService.findAll();
+		return subject;
+	}
 
-    public List<Organization> getOrganization() {
-        List<Organization> organization = organizationService.findAll();
-        return organization;
-    }
+	public List<Organization> getOrganization() {
+		List<Organization> organization = organizationService.findAll();
+		return organization;
+	}
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(UploadedFile file) {
+		uploadedFile = file;
+	}
+
+	public void upload() {
+		try {
+			if (uploadedFile != null) {
+				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+				File clientsFileName = File.createTempFile("IMG_" + timeStamp + "_", ".jpg",
+						new File(appProperties.getDocinfoRootPath()));
+
+				FileOutputStream fout = new FileOutputStream(clientsFileName);
+				StreamUtils4Me.copy(uploadedFile.getInputstream(), fout, 1024);
+
+				uploadedFile.getInputstream().close();
+
+				FileInfo fileInfo = new FileInfo();
+				fileInfo.setDocInfo(getCurrent());
+				fileInfo.setUniqueFileName(clientsFileName.getName());
+				fileInfo.setLenght(uploadedFile.getSize());
+				fileInfoService.persist(fileInfo);
+			}
+		} catch (Exception e) {
+			FacesMessage msg = new FacesMessage("Hiba feltöltés közben: " + e.getLocalizedMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+	}
+
+	public void toggleEvent(ToggleEvent event) {
+		Visibility visibility = event.getVisibility();
+		if (visibility.equals(Visibility.VISIBLE)) {
+			setCurrent((DocInfo) event.getData());
+		}
+	}
 
 	@Override
 	public boolean checkListRight() throws ActionAccessDeniedException {
@@ -191,7 +246,7 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		entity.getFileInfos().forEach(c -> {
 			File file = new File(appProperties.getDocinfoRootPath() + File.separatorChar + c.getUniqueFileName());
 			if (!file.delete()) {
-				System.err.println("File("+c.getUniqueFileName()+") not deleted");
+				System.err.println("File(" + c.getUniqueFileName() + ") not deleted");
 			}
 		});
 		return true;
@@ -220,5 +275,4 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 }
