@@ -28,13 +28,13 @@ public class RFIDCardUser implements Serializable {
     private Date periodEnd;
     
     @EntityFieldInfo(info="RFID kártya", weight=1, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="rfid", detailDialogFile="/admin/rfidcards-dialog")
+    @LookupFieldInfo(keyField="id",labelField="rfid", detailDialogFile="/admin/rfidcards-dialog", service="RFIDCardService", filterField="rfidCard.rfid", sortField="rfidCard.rfid")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcardid")
 	private RFIDCard rfidCard;
     
     @EntityFieldInfo(info="Kliens", weight=1, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="neve", detailDialogFile="")
+    @LookupFieldInfo(keyField="id",labelField="neve", detailDialogFile="", service="ClientsService", filterField="client.neve", sortField="client.neve")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientid")
 	private Client client;

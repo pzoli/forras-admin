@@ -23,9 +23,11 @@ public class RFIDCard implements Serializable {
 	private Long id;
     
     @EntityFieldInfo(info="Kártya azonosító", weight=1, required=true, editor="txt")
+    @Basic
 	private String rfid;
     
     @EntityFieldInfo(info="Kártya típus", weight=2, required=true, editor="txt")
+    @Basic
 	private String type;
 
 	public RFIDCard() {

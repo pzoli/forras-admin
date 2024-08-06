@@ -51,8 +51,8 @@
 					icon="ui-icon-pencil" />
 			</p:column>
 			<p:columns value="#{managerBean.columns}" var="column"
-				resizable="true" columnIndexVar="colIndex"
-				sortBy="#{u[column.sortField]}" filterBy="#{u[column.filterField]}">
+				resizable="true" columnIndexVar="colIndex" sortable="true" filterable="true"
+				sortBy="#{column.sortField}" filterBy="#{column.filterField}">
 				<f:facet name="header">
 					<h:outputText value="#{column.header}" />
 				</f:facet>

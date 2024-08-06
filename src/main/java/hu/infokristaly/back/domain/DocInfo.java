@@ -39,7 +39,7 @@ public class DocInfo {
     Long id;
 
     @EntityFieldInfo(info="#{msg['document-subject']}", weight=2, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="value", detailDialogFile="/admin/document_subject-dialog")
+    @LookupFieldInfo(keyField="id",labelField="value", detailDialogFile="/admin/document_subject-dialog", service="SubjectService", filterField="subject.value", sortField="subject.value")
     @Basic
     @ManyToOne
     DocumentSubject subject;
@@ -53,7 +53,7 @@ public class DocInfo {
     Date createdAt;
 
     @EntityFieldInfo(info="#{msg['organization']}", weight=3, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="name", detailDialogFile="/admin/organization-dialog")
+    @LookupFieldInfo(keyField="id",labelField="name", detailDialogFile="/admin/organization-dialog", service="OrganizationService", filterField="organization.name", sortField="organization.name")
     @Basic
     @ManyToOne
     Organization organization;
