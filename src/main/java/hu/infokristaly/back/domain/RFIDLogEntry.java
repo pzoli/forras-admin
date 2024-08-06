@@ -35,7 +35,7 @@ public class RFIDLogEntry implements Serializable {
     @JoinColumn(name = "rfcardid")
 	private RFIDCardReader rfidCardReader;
 	
-	@EntityFieldInfo(info="Dátumt", weight=1, required=true, editor="date")
+	@EntityFieldInfo(info="Dátumt", weight=1, required=true, editor="datetime")
 	private Date logDate;
 	
 

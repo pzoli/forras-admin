@@ -39,6 +39,10 @@
 						<p:calendar id="date" value="#{data.value}"
 							required="#{data.required}" />
 					</pe:dynaFormControl>
+					<pe:dynaFormControl type="datetime" for="datetime">
+						<p:calendar id="datetime" value="#{data.value}" timeInput="true" pattern="yyyy-MM-dd HH:mm"
+							required="#{data.required}" />
+					</pe:dynaFormControl>
 					<pe:dynaFormControl type="textarea" for="textarea">
 						<p:inputTextarea cols="70" rows="8" id="textarea"
 							value="#{data.value}" required="#{data.required}" />

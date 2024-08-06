@@ -47,7 +47,7 @@ public class DocInfo {
     @Basic
     DocumentDirection direction = DocumentDirection.IN;
     
-    @EntityFieldInfo(info="#{msg['created_at']}", weight=1, required=true, editor="date")
+    @EntityFieldInfo(info="#{msg['created_at']}", weight=1, required=true, editor="datetime")
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     Date createdAt;

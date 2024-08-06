@@ -50,6 +50,12 @@
 					<f:attribute name="propertyName" value="#{data.propertyName}" />
 				</p:calendar>
 			</pe:dynaFormControl>
+			<pe:dynaFormControl type="datetime" for="#{data.propertyName}_datetime">
+				<p:calendar id="#{data.propertyName}_datetime" value="#{data.value}" pattern="yyyy-MM-dd HH:mm"
+					disabled="#{data.rights.disabled}" required="#{data.required}" timeInput="true">
+					<f:attribute name="propertyName" value="#{data.propertyName}" />
+				</p:calendar>
+			</pe:dynaFormControl>
 			<pe:dynaFormControl type="textarea" for="#{data.propertyName}_texta">
 				<p:inputTextarea cols="70" rows="8" id="#{data.propertyName}_texta"
 					disabled="#{data.rights.disabled}" value="#{data.value}"
