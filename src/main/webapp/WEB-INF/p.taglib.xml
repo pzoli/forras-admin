@@ -15,14 +15,6 @@
 			<name>managerBean</name>
 			<type>java.lang.Object</type>
 		</attribute>
-		<attribute>
-			<name>expansionTemplate</name>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>toggleSingleRow</name>
-			<type>java.lang.Boolean</type>
-		</attribute>
 	</tag>
 	<tag>
 		<tag-name>dynTable</tag-name>
@@ -41,6 +33,14 @@
 		</attribute>
 		<attribute>
 			<name>editable</name>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<name>expansionTemplate</name>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>toggleSingleRow</name>
 			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
