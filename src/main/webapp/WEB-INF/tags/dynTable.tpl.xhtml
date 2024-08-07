@@ -38,7 +38,7 @@
 				</h:commandLink>
 			</f:facet>
 			<p:ajax event="rowToggle" listener="#{managerBean.toggleEvent}"
-				oncomplete="${toggleSingleRow} &amp;&amp; toggleCallback()" />
+				oncomplete="${toggleSingleRow == true} &amp;&amp; toggleCallback()" />
 			<p:column selectionMode="#{managerBean.selectMode}"
 				exportable="false" style="width:16px;text-align:center" />
 			<p:column width="5%" exportable="false" rendered="#{editable}">
