@@ -1,14 +1,13 @@
 package hu.infokristaly.front.manager;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,28 +30,26 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
 
-import hu.infokristaly.back.domain.DocInfo;
-import hu.infokristaly.back.domain.DocumentSubject;
-import hu.infokristaly.back.domain.FileInfo;
-import hu.infokristaly.back.model.AppProperties;
 import hu.exprog.beecomposit.back.model.Organization;
 import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.beecomposit.middle.service.OrganizationService;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
 import hu.exprog.honeyweb.middle.services.BasicService;
+import hu.exprog.honeyweb.utils.FieldModel;
+import hu.exprog.honeyweb.utils.LookupFieldModel;
+import hu.infokristaly.back.domain.DocInfo;
+import hu.infokristaly.back.domain.DocumentSubject;
+import hu.infokristaly.back.domain.FileInfo;
+import hu.infokristaly.back.model.AppProperties;
 import hu.infokristaly.middle.service.DocInfoService;
 import hu.infokristaly.middle.service.DocumentSubjectService;
 import hu.infokristaly.middle.service.FileInfoService;
-import hu.exprog.honeyweb.utils.FieldModel;
-import hu.exprog.honeyweb.utils.LookupFieldModel;
 
 @Named
 @SessionScoped
@@ -242,6 +239,16 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		}
 	}
 
+	public String currentJSON() {
+		String result = "{\"id\":" + current.get().getId() + "}";
+		try {
+			result = URLEncoder.encode(result, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	@Override
 	public boolean checkListRight() throws ActionAccessDeniedException {
 		// TODO Auto-generated method stub

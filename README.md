@@ -100,6 +100,7 @@ Set service variables with adding domain:naming bindings:
                 <simple name="java:jboss/forrashaz/systemtimerstarthour" value="8" type="java.lang.Integer"/>
                 <simple name="java:jboss/forrashaz/default-language" value="hu" type="java.lang.String"/>
                 <simple name="java:jboss/forrashaz/default-alertmanager-startdate" value="2015.01.01" type="java.lang.String"/>
+				<simple name="java:jboss/forrashaz/scannerURL" value="https://192.168.1.129:8088" type="java.lang.String"/>
             </bindings>
             ...
             <remote-naming/>
@@ -116,6 +117,7 @@ Where values are the following:
 * systemtimerstarthour: start hour to generate alerts (new message generation)
 * default-language: available default language (**hu** and **en** are valid)
 * default-alertmanager-startdate: alert calculation start date (YYYY.MM.DD format)
+* scannerURL: the URL of forras-imageserver
 
 Add security for authentication realm:
 

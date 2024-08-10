@@ -44,6 +44,10 @@ public class AppProperties implements Serializable {
 
     @Resource(mappedName = "java:jboss/forrashaz/default-alertmanager-startdate")
     private String defaultAlertManagerStartDate;
+    
+    @Resource(mappedName = "java:jboss/forrashaz/scannerURL")
+    private String scannerURL;
+    
 
     @Inject
     private ServerInfoService serverInfoService;
@@ -152,5 +156,13 @@ public class AppProperties implements Serializable {
         }
         return result;
     }
+
+	public String getScannerURL() {
+		return scannerURL;
+	}
+
+	public void setScannerURL(String scannerURL) {
+		this.scannerURL = scannerURL;
+	}
     
 }
