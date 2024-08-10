@@ -173,6 +173,7 @@ Then you can add forras-admin project to wildfly.
 [QRCodeScanner](https://github.com/pzoli/QRCodeScanner)
 [Forras-imageserver](https://github.com/pzoli/forras-imageserver)
 [DocuStorePictureApp](https://github.com/pzoli/DocuStorePictureApp)
+[ForrasAdminScannerWebsocket](https://github.com/pzoli/ForrasAdminScannerWebsocket)
 
 ## Sponsored by
 [![Integrity](/doc/integrity-logo.png?raw=true "https://integrity.hu")](https://integrity.hu)
