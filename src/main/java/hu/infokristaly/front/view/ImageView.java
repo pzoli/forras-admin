@@ -41,7 +41,7 @@ public class ImageView implements Serializable {
 		//System.out.println("PhaseId:" + context.getCurrentPhaseId() + " fileName:"+fileName);
 		if (context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE) {
 			if (fileName != null && !fileName.isEmpty()) {
-				image.setContentType("image/jpeg");
+				image.setContentType("image/" + fileName.substring(fileName.indexOf('.')+1));
 				FileInputStream fis;
 				try {
 					fis = new FileInputStream(
