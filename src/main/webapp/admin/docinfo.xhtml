@@ -21,7 +21,7 @@
 			showEffect="fade" hideEffect="fade">
 			<p:panel style="text-align:center;">
 				<h:form id="uploadForm" enctype="multipart/form-data">
-					<p:fileUpload allowTypes="/(\.|\/)(jpeg|jpg)$/" fileUploadListener="#{docInfoManager.fileUploadListener}" sizeLimit="10485760" invalidSizeMessage="A fájl túllépi a mérethatárt (10MB)"
+					<p:fileUpload allowTypes="/(\.|\/)(jpeg|jpg|png)$/" fileUploadListener="#{docInfoManager.fileUploadListener}" sizeLimit="10485760" invalidSizeMessage="A fájl túllépi a mérethatárt (10MB)"
 					label="Választ" cancelLabel="Mégsem" uploadLabel="Feltölt">
 					</p:fileUpload>
 				</h:form>
