@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
@@ -236,6 +237,7 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 		Visibility visibility = event.getVisibility();
 		if (visibility.equals(Visibility.VISIBLE)) {
 			setCurrent((DocInfo) event.getData());
+			current.get().setFileInfos(current.get().getFileInfos().stream().sorted((o1, o2)-> o1.getUniqueFileName().compareTo(o2.getUniqueFileName())).collect(Collectors.toList()));
 		}
 	}
 
