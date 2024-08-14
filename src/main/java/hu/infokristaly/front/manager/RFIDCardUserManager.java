@@ -69,6 +69,7 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new RFIDCardUser());
+			clearProperties();
 		}
 	}
 

@@ -73,6 +73,7 @@ public class RFIDLogEntryManager extends BasicManager<RFIDLogEntry> implements S
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new RFIDLogEntry());
+			clearProperties();
 		}
 	}
 

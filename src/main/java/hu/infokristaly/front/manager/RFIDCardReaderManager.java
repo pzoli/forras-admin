@@ -56,6 +56,7 @@ public class RFIDCardReaderManager extends BasicManager<RFIDCardReader> implemen
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new RFIDCardReader());
+			clearProperties();
 		}
 	}
 

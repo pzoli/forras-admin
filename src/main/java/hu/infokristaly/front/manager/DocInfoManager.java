@@ -93,6 +93,7 @@ public class DocInfoManager extends BasicManager<DocInfo> implements Serializabl
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new DocInfo());
+			clearProperties();
 		}
 	}
 

@@ -54,6 +54,7 @@ public class RFIDCardManager extends BasicManager<RFIDCard> implements Serializa
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new RFIDCard());
+			clearProperties();
 		}
 	}
 

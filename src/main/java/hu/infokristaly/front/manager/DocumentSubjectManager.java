@@ -61,6 +61,7 @@ public class DocumentSubjectManager extends BasicManager<DocumentSubject> implem
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new DocumentSubject());
+			clearProperties();
 		}
 	}
 
