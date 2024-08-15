@@ -43,6 +43,8 @@
 					url="#{request.contextPath}/user/groups.xhtml" />
 				<p:menuitem id="eventtemplatesmenu" value="Foglalkozás sablonok"
 					url="#{request.contextPath}/user/event_templates.xhtml" />
+				<p:menuitem id="organizationmenu" value="#{msg['organization']}"
+					url="#{request.contextPath}/admin/organization.xhtml"/>					
 			</p:submenu>
 
 			<p:submenu id="adminisztracio" label="Adminisztráció">
@@ -99,8 +101,6 @@
 					rendered="${userService.isAdminRole()}">
 					<p:menuitem id="documentsubjectmenu" value="#{msg['document-subject']}"
 						url="#{request.contextPath}/admin/document_subject.xhtml"/>
-					<p:menuitem id="organizationmenu" value="#{msg['organization']}"
-						url="#{request.contextPath}/admin/organization.xhtml"/>					
 					<p:menuitem id="docinfomenu" value="#{msg['docinfo']}"
 						url="#{request.contextPath}/admin/docinfo.xhtml"/>					
 				</p:submenu>
