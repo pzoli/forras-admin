@@ -26,3 +26,13 @@ ALTER SEQUENCE client_type_id_seq RESTART WITH 6;
 
 insert into Language (id,language,localecode,version) values (1,'Magyar','hu',1);
 insert into Language (id,language,localecode,version) values (2,'English','en',1);
+
+insert into accessibletype (id,typename) values (1,'lakcím');
+insert into accessibletype (id,typename) values (2,'telefon');
+insert into accessibletype (id,typename) values (3,'mobil');
+insert into accessibletype (id,typename) values (4,'tartózkodási hely');
+insert into accessibletype (id,typename) values (5,'e-mail');
+insert into accessibletype (id,typename) values (6,'gondnok');
+insert into accessibletype (id,typename) values (7,'hozzátartozó');
+
+ALTER SEQUENCE public.accessibletype_id_seq RESTART WITH 8;
