@@ -174,6 +174,6 @@ Then you can add forras-admin project to wildfly.
 [Forras-imageserver](https://github.com/pzoli/forras-imageserver)
 [DocuStorePictureApp](https://github.com/pzoli/DocuStorePictureApp)
 [ForrasAdminScannerWebsocket](https://github.com/pzoli/ForrasAdminScannerWebsocket)
-
+[ForrasAdminLinuxScannerWebsocket](https://github.com/pzoli/ForrasAdminLinuxScannerWebsocket)
 ## Sponsored by
 [![Integrity](/doc/integrity-logo.png?raw=true "https://integrity.hu")](https://integrity.hu)
