@@ -36,3 +36,4 @@ insert into accessibletype (id,typename) values (6,'gondnok');
 insert into accessibletype (id,typename) values (7,'hozzátartozó');
 
 ALTER SEQUENCE public.accessibletype_id_seq RESTART WITH 8;
+

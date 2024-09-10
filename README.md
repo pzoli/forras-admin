@@ -167,13 +167,21 @@ Then you can add forras-admin project to wildfly.
 
 ## Connected projects
 [forras-datagenerator](https://github.com/pzoli/forras-datagenerator)
+
 [ForrasAdminRFIDReaderConfigurator](https://github.com/pzoli/ForrasAdminRFIDReaderConfigurator)
+
 [ForrasAdminRFIDReader](https://github.com/pzoli/ForrasAdminRFIDReader)
+
 [NFCReaderSetupSwing](https://github.com/pzoli/NFCReaderSetupSwing)
+
 [QRCodeScanner](https://github.com/pzoli/QRCodeScanner)
+
 [Forras-imageserver](https://github.com/pzoli/forras-imageserver)
+
 [DocuStorePictureApp](https://github.com/pzoli/DocuStorePictureApp)
+
 [ForrasAdminScannerWebsocket](https://github.com/pzoli/ForrasAdminScannerWebsocket)
-[ForrasAdminLinuxScannerWebsocket](https://github.com/pzoli/ForrasAdminLinuxScannerWebsocket)
+
+[Forras-admin-wdio](https://github.com/pzoli/forras-admin-wdio/)
 ## Sponsored by
 [![Integrity](/doc/integrity-logo.png?raw=true "https://integrity.hu")](https://integrity.hu)
