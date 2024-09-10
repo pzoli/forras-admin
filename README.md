@@ -182,6 +182,8 @@ Then you can add forras-admin project to wildfly.
 
 [ForrasAdminScannerWebsocket](https://github.com/pzoli/ForrasAdminScannerWebsocket)
 
+[ForrasAdminLinuxScannerWebsocket](https://github.com/pzoli/ForrasAdminLinuxScannerWebsocket)
+
 [Forras-admin-wdio](https://github.com/pzoli/forras-admin-wdio/)
 ## Sponsored by
 [![Integrity](/doc/integrity-logo.png?raw=true "https://integrity.hu")](https://integrity.hu)
