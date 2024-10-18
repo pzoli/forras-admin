@@ -184,6 +184,13 @@ Then you can add forras-admin project to wildfly.
 
 [ForrasAdminLinuxScannerWebsocket](https://github.com/pzoli/ForrasAdminLinuxScannerWebsocket)
 
-[Forras-admin-wdio](https://github.com/pzoli/forras-admin-wdio/)
+[Forras-admin-wdio](https://github.com/pzoli/forras-admin-wdio)
+
+[keycloak-jwtauth-swagger](https://github.com/pzoli/keycloak-jwtauth-swagger)
+
+[forras-admin2-react](https://github.com/pzoli/forras-admin2-react)
+
 ## Sponsored by
 [![Integrity](/doc/integrity-logo.png?raw=true "https://integrity.hu")](https://integrity.hu)
+
+[JetBrains](https://www.jetbrains.com)
