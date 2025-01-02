@@ -1,0 +1,1268 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="pzoli (generated)" id="1735830836267-1">
+        <createTable tableName="addresses">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="addresses_pkey"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="pobox" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-2">
+        <createTable tableName="alertaddresses">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="alertaddresses_pkey"/>
+            </column>
+            <column name="addressename" type="VARCHAR(255)"/>
+            <column name="enabled" type="BOOLEAN"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-3">
+        <createTable tableName="card">
+            <column autoIncrement="true" name="id" startWith="2" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="card_pkey"/>
+            </column>
+            <column name="received_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="messageid" type="BIGINT"/>
+            <column name="userid" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-4">
+        <createTable tableName="doctor">
+            <column autoIncrement="true" name="id" startWith="40" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-5">
+        <createTable tableName="emailimapparams">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="emailimapparams_pkey"/>
+            </column>
+            <column name="imappassword" type="VARCHAR(255)"/>
+            <column name="imapserverhost" type="VARCHAR(255)"/>
+            <column name="imapserverport" type="VARCHAR(255)"/>
+            <column name="imapuser" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-6">
+        <createTable tableName="emailsmtpparams">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="emailsmtpparams_pkey"/>
+            </column>
+            <column name="senderemailaddress" type="VARCHAR(255)"/>
+            <column name="sendername" type="VARCHAR(255)"/>
+            <column name="smtppassword" type="VARCHAR(255)"/>
+            <column name="smtpserverhost" type="VARCHAR(255)"/>
+            <column name="smtpserverport" type="VARCHAR(255)"/>
+            <column name="smtpuser" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-7">
+        <createTable tableName="entityinfocomponent">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="entityinfocomponent_pkey"/>
+            </column>
+            <column name="alternatename" type="VARCHAR(255)"/>
+            <column name="converter" type="VARCHAR(255)"/>
+            <column name="editor" type="VARCHAR(255)"/>
+            <column name="entityname" type="VARCHAR(255)"/>
+            <column name="expected" type="VARCHAR(255)"/>
+            <column name="fieldtype" type="VARCHAR(255)"/>
+            <column name="format" type="VARCHAR(255)"/>
+            <column name="info" type="VARCHAR(255)"/>
+            <column name="listable" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="postprocess" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preprocess" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="required" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT"/>
+            <column name="weight" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-8">
+        <createTable tableName="language">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="language_pkey"/>
+            </column>
+            <column name="language" type="VARCHAR(255)"/>
+            <column name="localecode" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-9">
+        <createTable tableName="logentry">
+            <column autoIncrement="true" name="id" startWith="4" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="logentry_pkey"/>
+            </column>
+            <column name="action" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logtimestamp" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="loggedvalue" type="TEXT"/>
+            <column name="loggedbyuser" type="BIGINT"/>
+            <column name="loggedfunction" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-10">
+        <createTable tableName="loggedfunction">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="loggedfunction_pkey"/>
+            </column>
+            <column name="functionname" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-11">
+        <createTable tableName="message">
+            <column autoIncrement="true" name="id" startWith="2" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="message_pkey"/>
+            </column>
+            <column name="deliveredall" type="BOOLEAN"/>
+            <column name="message" type="TEXT"/>
+            <column name="sent_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="sender" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-12">
+        <createTable tableName="rfidcard">
+            <column autoIncrement="true" name="id" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rfidcard_pkey"/>
+            </column>
+            <column name="rfid" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-13">
+        <createTable tableName="rfidcardreader">
+            <column autoIncrement="true" name="id" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rfidcardreader_pkey"/>
+            </column>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="periodend" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="periodstart" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="readerid" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-14">
+        <createTable tableName="rfidcarduser">
+            <column autoIncrement="true" name="id" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rfidcarduser_pkey"/>
+            </column>
+            <column name="periodend" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="periodstart" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="clientid" type="BIGINT"/>
+            <column name="rfcardid" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-15">
+        <createTable tableName="rfidlogentry">
+            <column autoIncrement="true" name="id" startWith="2" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rfidlogentry_pkey"/>
+            </column>
+            <column name="logdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="rfcardid" type="BIGINT"/>
+            <column name="rfcarduserid" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-16">
+        <createTable tableName="userregister">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="userregister_pkey"/>
+            </column>
+            <column name="activationdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="emailaddress" type="VARCHAR(255)"/>
+            <column name="hashid" type="VARCHAR(255)"/>
+            <column name="ipaddress" type="VARCHAR(255)"/>
+            <column name="mailsendtrycounter" type="SMALLINT"/>
+            <column name="mailsentdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="registereddate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="userpassword" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="registereduser" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-17">
+        <createTable tableName="accessible">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="accessible_pkey"/>
+            </column>
+            <column name="accessible_value" type="VARCHAR(255)"/>
+            <column name="accessible_type_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-18">
+        <createTable tableName="alerts">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="alerts_pkey"/>
+            </column>
+            <column name="nday" type="BIGINT"/>
+            <column name="active" type="BOOLEAN"/>
+            <column name="lastvisit" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="client" type="BIGINT"/>
+            <column name="clienttype" type="INTEGER"/>
+            <column name="createdby" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-19">
+        <createTable tableName="cartaker">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="cartaker_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-20">
+        <createTable tableName="casemanagerforclients">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="casemanagerforclients_pkey"/>
+            </column>
+            <column name="validfrom" type="date"/>
+            <column name="validto" type="date"/>
+            <column name="client" type="BIGINT"/>
+            <column name="manager" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-21">
+        <createTable tableName="clerk">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="clerk_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="organization_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-22">
+        <createTable tableName="client">
+            <column autoIncrement="true" name="id" startWith="101" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="client_pkey"/>
+            </column>
+            <column name="active" type="BOOLEAN"/>
+            <column name="anyja_neve" type="VARCHAR(255)"/>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="deleted_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="felvet_datum" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jovedelmigazolas" type="BOOLEAN"/>
+            <column name="kervenybeerkezesdatuma" type="date"/>
+            <column name="megallapodas" type="BOOLEAN"/>
+            <column name="megjegyzes" type="TEXT"/>
+            <column name="megsz_datum" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="modification_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="neve" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nyilatkozatadat" type="BOOLEAN"/>
+            <column name="nyilatkozatalap" type="BOOLEAN"/>
+            <column name="nyilvantartasiszam" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="orvosijavaslat" type="BOOLEAN"/>
+            <column name="szuletesi_hely" type="VARCHAR(255)"/>
+            <column name="szuletesi_ido" type="date"/>
+            <column name="szuletesi_nev" type="VARCHAR(255)"/>
+            <column name="taj" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="utolsogondozasitervdatuma" type="date"/>
+            <column name="version" type="BIGINT"/>
+            <column name="client_type" type="INTEGER"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="current_doctor" type="INTEGER"/>
+            <column name="current_manager" type="BIGINT"/>
+            <column name="modified_by" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-23">
+        <createTable tableName="client_type">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="client_type_pkey"/>
+            </column>
+            <column name="typename" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-24">
+        <createTable tableName="clientchanges">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="clientchanges_pkey"/>
+            </column>
+            <column name="active" type="BOOLEAN"/>
+            <column name="changetype" type="SMALLINT"/>
+            <column name="modifiedat" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="periodstart" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="client" type="BIGINT"/>
+            <column name="clienttype" type="INTEGER"/>
+            <column name="modifiedby" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-25">
+        <createTable tableName="doc_info">
+            <column autoIncrement="true" name="id" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="doc_info_pkey"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="direction" type="INTEGER"/>
+            <column name="clerk_id" type="BIGINT"/>
+            <column name="organization_id" type="BIGINT"/>
+            <column name="subject_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-26">
+        <createTable tableName="document_subject">
+            <column autoIncrement="true" name="id" startWith="5" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="document_subject_pkey"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-27">
+        <createTable tableName="event_template">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="event_template_pkey"/>
+            </column>
+            <column name="allday" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commentonevent" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="data" type="OID"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="enabled" type="BOOLEAN"/>
+            <column name="enabledonweekend" type="BOOLEAN"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="lastemailaddress" type="VARCHAR(255)"/>
+            <column name="modification_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="period" type="SMALLINT"/>
+            <column name="periodstartdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="group_id" type="INTEGER"/>
+            <column name="modified_by" type="BIGINT"/>
+            <column name="subject_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-28">
+        <createTable tableName="eventhistory">
+            <column autoIncrement="true" name="eventid" startWith="431" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="eventhistory_pkey"/>
+            </column>
+            <column name="allday" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="data" type="OID"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="editable" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="modification_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="styleclass" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="group_id" type="INTEGER"/>
+            <column name="modified_by" type="BIGINT"/>
+            <column name="subject_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-29">
+        <createTable tableName="file_info">
+            <column autoIncrement="true" name="id" startWith="9" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="file_info_pkey"/>
+            </column>
+            <column name="lenght" type="BIGINT"/>
+            <column name="unique_file_name" type="VARCHAR(255)"/>
+            <column name="doc_info_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-30">
+        <createTable tableName="groupforclients">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="groupforclients_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="VARCHAR(255)"/>
+            <column name="validfrom" type="date"/>
+            <column name="validto" type="date"/>
+            <column name="created_by" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-31">
+        <createTable tableName="icon">
+            <column autoIncrement="true" name="iconid" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="icon_pkey"/>
+            </column>
+            <column name="description" type="VARCHAR(512)"/>
+            <column name="icon" type="VARCHAR(64)"/>
+            <column name="icon16x16" type="BYTEA"/>
+            <column name="icon32x32" type="BYTEA"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-32">
+        <createTable tableName="organization">
+            <column autoIncrement="true" name="id" startWith="4" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="organization_pkey"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="hq_address" type="VARCHAR(255)"/>
+            <column name="hq_phone" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="vcard" type="TEXT"/>
+            <column name="version" type="BIGINT"/>
+            <column name="icon_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-33">
+        <createTable tableName="organizationunit">
+            <column autoIncrement="true" name="organizationunitid" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="organizationunit_pkey"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="onlyregister" type="BOOLEAN"/>
+            <column name="organizationunit" type="VARCHAR(128)"/>
+            <column name="registerunit" type="BOOLEAN"/>
+            <column name="shortname" type="VARCHAR(8)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="icon" type="BIGINT"/>
+            <column name="organization" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-34">
+        <createTable tableName="systemuser">
+            <column autoIncrement="true" name="id" startWith="2" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="systemuser_pkey"/>
+            </column>
+            <column name="vcard" type="TEXT"/>
+            <column name="adminuser" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="casemanager" type="BOOLEAN"/>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="deleteddate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="emailaddress" type="VARCHAR(255)"/>
+            <column name="enabled" type="BOOLEAN"/>
+            <column name="osusername" type="VARCHAR(128)"/>
+            <column name="osuserpassword" type="VARCHAR(255)"/>
+            <column name="photo" type="OID"/>
+            <column name="pincode" type="VARCHAR(255)"/>
+            <column name="sqlserverloginname" type="VARCHAR(50)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="language" type="BIGINT"/>
+            <column name="organizationunit" type="BIGINT"/>
+            <column name="usergroup" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-35">
+        <createTable tableName="usergroup">
+            <column autoIncrement="true" name="usergroupid" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="usergroup_pkey"/>
+            </column>
+            <column name="rolegroup" type="VARCHAR(50)"/>
+            <column name="usergroup" type="VARCHAR(50)"/>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-36">
+        <createTable tableName="subject">
+            <column autoIncrement="true" name="id" startWith="64" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="subject_pkey"/>
+            </column>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="deletedate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="lenghtinminute" type="INTEGER"/>
+            <column name="resetalert" type="BOOLEAN"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="uniquemeeting" type="BOOLEAN"/>
+            <column name="subject_type" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-37">
+        <createTable tableName="subjecttype">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="subjecttype_pkey"/>
+            </column>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-38">
+        <createTable tableName="accessibletype">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="accessibletype_pkey"/>
+            </column>
+            <column name="typename" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-39">
+        <createTable tableName="qrtz_job_details">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_job_details_pkey"/>
+            </column>
+            <column name="job_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_job_details_pkey"/>
+            </column>
+            <column name="job_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_job_details_pkey"/>
+            </column>
+            <column name="description" type="VARCHAR(250)"/>
+            <column name="job_class_name" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_durable" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_nonconcurrent" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_update_data" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="requests_recovery" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_data" type="BYTEA"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-40">
+        <createTable tableName="qrtz_triggers">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_triggers_pkey"/>
+            </column>
+            <column name="trigger_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_triggers_pkey"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_triggers_pkey"/>
+            </column>
+            <column name="job_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_group" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(250)"/>
+            <column name="next_fire_time" type="BIGINT"/>
+            <column name="prev_fire_time" type="BIGINT"/>
+            <column name="priority" type="INTEGER"/>
+            <column name="trigger_state" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trigger_type" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="BIGINT"/>
+            <column name="calendar_name" type="VARCHAR(200)"/>
+            <column name="misfire_instr" type="SMALLINT"/>
+            <column name="job_data" type="BYTEA"/>
+            <column name="qrtzjobdetail_job_group" type="VARCHAR(200)"/>
+            <column name="qrtzjobdetail_job_name" type="VARCHAR(200)"/>
+            <column name="qrtzjobdetail_sched_name" type="VARCHAR(120)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-41">
+        <createTable tableName="qrtz_fired_triggers">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_fired_triggers_pkey"/>
+            </column>
+            <column name="entry_id" type="VARCHAR(95)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_fired_triggers_pkey"/>
+            </column>
+            <column name="trigger_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instance_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fired_time" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sched_time" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_name" type="VARCHAR(200)"/>
+            <column name="job_group" type="VARCHAR(200)"/>
+            <column name="is_nonconcurrent" type="BOOLEAN"/>
+            <column name="requests_recovery" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-42">
+        <createIndex indexName="idx_neve" tableName="client">
+            <column name="neve"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-43">
+        <createIndex indexName="idx_taj" tableName="client">
+            <column name="taj"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-44">
+        <createIndex indexName="idx_active" tableName="client">
+            <column name="active"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-45">
+        <addUniqueConstraint columnNames="nyilvantartasiszam" constraintName="uk_qqx5pfo2o5crrny7n9g8x9ll0" tableName="client"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-46">
+        <createIndex indexName="idx_style_class" tableName="eventhistory">
+            <column name="styleclass"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-47">
+        <createIndex indexName="idx_end_date" tableName="eventhistory">
+            <column name="end_date"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-48">
+        <createIndex indexName="idx_start_date" tableName="eventhistory">
+            <column name="start_date"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-49">
+        <createView fullDefinition="false" viewName="v_active_user">SELECT osusername AS username,
+    osuserpassword AS password
+   FROM systemuser u
+  WHERE (enabled = true);</createView>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-50">
+        <addUniqueConstraint columnNames="sqlserverloginname" constraintName="uk_23bl1elret4gpywxtskbpif4n" tableName="systemuser"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-51">
+        <createIndex indexName="idx_qrtz_j_req_recovery" tableName="qrtz_job_details">
+            <column name="sched_name"/>
+            <column name="requests_recovery"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-52">
+        <createIndex indexName="idx_qrtz_j_grp" tableName="qrtz_job_details">
+            <column name="sched_name"/>
+            <column name="job_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-53">
+        <createIndex indexName="idx_qrtz_t_j" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="job_name"/>
+            <column name="job_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-54">
+        <createIndex indexName="idx_qrtz_t_jg" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="job_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-55">
+        <createIndex indexName="idx_qrtz_t_c" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="calendar_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-56">
+        <createIndex indexName="idx_qrtz_t_g" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-57">
+        <createIndex indexName="idx_qrtz_t_state" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_state"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-58">
+        <createIndex indexName="idx_qrtz_t_n_state" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_name"/>
+            <column name="trigger_group"/>
+            <column name="trigger_state"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-59">
+        <createIndex indexName="idx_qrtz_t_n_g_state" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_group"/>
+            <column name="trigger_state"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-60">
+        <createIndex indexName="idx_qrtz_t_next_fire_time" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="next_fire_time"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-61">
+        <createIndex indexName="idx_qrtz_t_nft_st" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_state"/>
+            <column name="next_fire_time"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-62">
+        <createIndex indexName="idx_qrtz_t_nft_misfire" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="misfire_instr"/>
+            <column name="next_fire_time"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-63">
+        <createIndex indexName="idx_qrtz_t_nft_st_misfire" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="misfire_instr"/>
+            <column name="next_fire_time"/>
+            <column name="trigger_state"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-64">
+        <createIndex indexName="idx_qrtz_t_nft_st_misfire_grp" tableName="qrtz_triggers">
+            <column name="sched_name"/>
+            <column name="misfire_instr"/>
+            <column name="next_fire_time"/>
+            <column name="trigger_group"/>
+            <column name="trigger_state"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-65">
+        <createIndex indexName="idx_qrtz_ft_trig_inst_name" tableName="qrtz_fired_triggers">
+            <column name="sched_name"/>
+            <column name="instance_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-66">
+        <createIndex indexName="idx_qrtz_ft_inst_job_req_rcvry" tableName="qrtz_fired_triggers">
+            <column name="sched_name"/>
+            <column name="instance_name"/>
+            <column name="requests_recovery"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-67">
+        <createIndex indexName="idx_qrtz_ft_j_g" tableName="qrtz_fired_triggers">
+            <column name="sched_name"/>
+            <column name="job_name"/>
+            <column name="job_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-68">
+        <createIndex indexName="idx_qrtz_ft_jg" tableName="qrtz_fired_triggers">
+            <column name="sched_name"/>
+            <column name="job_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-69">
+        <createIndex indexName="idx_qrtz_ft_t_g" tableName="qrtz_fired_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_name"/>
+            <column name="trigger_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-70">
+        <createIndex indexName="idx_qrtz_ft_tg" tableName="qrtz_fired_triggers">
+            <column name="sched_name"/>
+            <column name="trigger_group"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-71">
+        <createTable tableName="accessible_client">
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accessible_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-72">
+        <createTable tableName="cartaker_client">
+            <column name="cartaker_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accessible_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-73">
+        <createTable tableName="event_client">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-74">
+        <createTable tableName="event_leader">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-75">
+        <createTable tableName="group_client">
+            <column name="group_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-76">
+        <createTable tableName="group_leaders">
+            <column name="group_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-77">
+        <createTable tableName="message_card">
+            <column name="message_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-78">
+        <createTable tableName="organization_address">
+            <column name="organizationid" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="addressid" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-79">
+        <createTable tableName="qrtz_blob_triggers">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_blob_triggers_pkey"/>
+            </column>
+            <column name="trigger_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_blob_triggers_pkey"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_blob_triggers_pkey"/>
+            </column>
+            <column name="blob_data" type="BYTEA"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-80">
+        <createTable tableName="qrtz_calendars">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_calendars_pkey"/>
+            </column>
+            <column name="calendar_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_calendars_pkey"/>
+            </column>
+            <column name="calendar" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-81">
+        <createTable tableName="qrtz_cron_triggers">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_cron_triggers_pkey"/>
+            </column>
+            <column name="trigger_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_cron_triggers_pkey"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_cron_triggers_pkey"/>
+            </column>
+            <column name="cron_expression" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_zone_id" type="VARCHAR(80)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-82">
+        <createTable tableName="qrtz_locks">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_locks_pkey"/>
+            </column>
+            <column name="lock_name" type="VARCHAR(40)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_locks_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-83">
+        <createTable tableName="qrtz_paused_trigger_grps">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_paused_trigger_grps_pkey"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_paused_trigger_grps_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-84">
+        <createTable tableName="qrtz_scheduler_state">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_scheduler_state_pkey"/>
+            </column>
+            <column name="instance_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_scheduler_state_pkey"/>
+            </column>
+            <column name="last_checkin_time" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="checkin_interval" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-85">
+        <createTable tableName="qrtz_simple_triggers">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_simple_triggers_pkey"/>
+            </column>
+            <column name="trigger_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_simple_triggers_pkey"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_simple_triggers_pkey"/>
+            </column>
+            <column name="repeat_count" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="repeat_interval" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="times_triggered" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-86">
+        <createTable tableName="qrtz_simprop_triggers">
+            <column name="sched_name" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_simprop_triggers_pkey"/>
+            </column>
+            <column name="trigger_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_simprop_triggers_pkey"/>
+            </column>
+            <column name="trigger_group" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="qrtz_simprop_triggers_pkey"/>
+            </column>
+            <column name="str_prop_1" type="VARCHAR(512)"/>
+            <column name="str_prop_2" type="VARCHAR(512)"/>
+            <column name="str_prop_3" type="VARCHAR(512)"/>
+            <column name="int_prop_1" type="INTEGER"/>
+            <column name="int_prop_2" type="INTEGER"/>
+            <column name="long_prop_1" type="BIGINT"/>
+            <column name="long_prop_2" type="BIGINT"/>
+            <column name="dec_prop_1" type="numeric(13, 4)"/>
+            <column name="dec_prop_2" type="numeric(13, 4)"/>
+            <column name="bool_prop_1" type="BOOLEAN"/>
+            <column name="bool_prop_2" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-87">
+        <createTable tableName="template_client">
+            <column name="template_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-88">
+        <createTable tableName="template_leader">
+            <column name="template_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-89">
+        <createTable tableName="user_join_group">
+            <column name="group_name" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_join_group_pkey"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_join_group_pkey"/>
+            </column>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-90">
+        <createTable tableName="usersettings">
+            <column name="key" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="usersettings_pkey"/>
+            </column>
+            <column name="userid" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="usersettings_pkey"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-91">
+        <addForeignKeyConstraint baseColumnNames="created_by" baseTableName="eventhistory" constraintName="fk_2qyww0pna1bxfmltnf7hyldnb" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-92">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="group_client" constraintName="fk_2y7x1sunrwhlm586yfv7qh2pl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-93">
+        <addForeignKeyConstraint baseColumnNames="accessible_id" baseTableName="accessible_client" constraintName="fk_37jyo1frg3kk47ekce7aalwyx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="accessible" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-94">
+        <addForeignKeyConstraint baseColumnNames="subject_id" baseTableName="event_template" constraintName="fk_3iu5aeqfhqjb6hpsdt6geckpe" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="subject" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-95">
+        <addForeignKeyConstraint baseColumnNames="doc_info_id" baseTableName="file_info" constraintName="fk_3jqfbr6xp9rnjxp7t770cj2y0" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doc_info" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-96">
+        <addForeignKeyConstraint baseColumnNames="client_type" baseTableName="client" constraintName="fk_41ckbj56tjl10jpu9m04e2g2k" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client_type" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-97">
+        <addForeignKeyConstraint baseColumnNames="created_by" baseTableName="client" constraintName="fk_41n6sdraruyc1sp5lotnpdyfc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-98">
+        <addForeignKeyConstraint baseColumnNames="client" baseTableName="casemanagerforclients" constraintName="fk_4qobrim0f0u3wdwo87w03sat3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-99">
+        <addForeignKeyConstraint baseColumnNames="rfcarduserid" baseTableName="rfidlogentry" constraintName="fk_5kppe1w0wmwcs9na3vlo4qmej" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="rfidcarduser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-100">
+        <addForeignKeyConstraint baseColumnNames="loggedfunction" baseTableName="logentry" constraintName="fk_5lb6j10l851e6jw321wi7l32w" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="loggedfunction" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-101">
+        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="doc_info" constraintName="fk_6l3kmdb40oqet016hmtsajh39" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-102">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="eventhistory" constraintName="fk_7lfa1xhv2vm63fybn6tyvgdnl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="groupforclients" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-103">
+        <addForeignKeyConstraint baseColumnNames="rfcardid" baseTableName="rfidcarduser" constraintName="fk_7ub7pl3m138wnscctgyasfh5n" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="rfidcard" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-104">
+        <addForeignKeyConstraint baseColumnNames="subject_type" baseTableName="subject" constraintName="fk_7v86ghxm41qkg7ykamyombya4" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="subjecttype" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-105">
+        <addForeignKeyConstraint baseColumnNames="clientid" baseTableName="rfidcarduser" constraintName="fk_7vae8hjkwyw21c7gyb5bud50m" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-106">
+        <addForeignKeyConstraint baseColumnNames="clienttype" baseTableName="alerts" constraintName="fk_7warcv9oke2lirbkmkel77q2t" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client_type" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-107">
+        <addForeignKeyConstraint baseColumnNames="sender" baseTableName="message" constraintName="fk_8l5bwcfajoa0p4opo5av8x39g" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-108">
+        <addForeignKeyConstraint baseColumnNames="clienttype" baseTableName="clientchanges" constraintName="fk_8o29gw7b0dxj4opm5e09xhycl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client_type" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-109">
+        <addForeignKeyConstraint baseColumnNames="subject_id" baseTableName="eventhistory" constraintName="fk_auavvxvd9g949xcl3mceqn37p" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="subject" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-110">
+        <addForeignKeyConstraint baseColumnNames="client" baseTableName="alerts" constraintName="fk_b967ih62h52epe3yqnhpt10kv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-111">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="template_client" constraintName="fk_bkt41b3ne4gykulibx8itymxo" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-112">
+        <addForeignKeyConstraint baseColumnNames="subject_id" baseTableName="doc_info" constraintName="fk_bpu1rp0vbuxphptcfc5cyyxbc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="document_subject" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-113">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="event_leader" constraintName="fk_cxq1ne0i0swe6laumdbncn4t0" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="eventid" referencedTableName="eventhistory" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-114">
+        <addForeignKeyConstraint baseColumnNames="modifiedby" baseTableName="clientchanges" constraintName="fk_dij0genbc3cwou6rwn1mci60" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-115">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="template_leader" constraintName="fk_e8baix5q8rjcmi3lgo30jwy7c" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-116">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="event_client" constraintName="fk_ebaw3fi11tf9kfuxx1w2297nr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="eventid" referencedTableName="eventhistory" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-117">
+        <addForeignKeyConstraint baseColumnNames="card_id" baseTableName="message_card" constraintName="fk_elco8kak732t7ej3utwnixxgl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="card" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-118">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="group_client" constraintName="fk_euvs53dv91pmvcmi153yrg2rv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="groupforclients" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-119">
+        <addForeignKeyConstraint baseColumnNames="current_manager" baseTableName="client" constraintName="fk_f9rm7r9wi4yj1k5ja54ae01pf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-120">
+        <addForeignKeyConstraint baseColumnNames="created_by" baseTableName="groupforclients" constraintName="fk_fuhbni0e9pct6crje7pn3tsr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-121">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="group_leaders" constraintName="fk_g9l7qjwi07b7e9vjsfj3714d0" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="groupforclients" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-122">
+        <addForeignKeyConstraint baseColumnNames="loggedbyuser" baseTableName="logentry" constraintName="fk_gk2qfo6d9y7cjgqnyxg9v1tvv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-123">
+        <addForeignKeyConstraint baseColumnNames="template_id" baseTableName="template_leader" constraintName="fk_gxps1x0kd88e085a1n4u1do4y" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="event_template" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-124">
+        <addForeignKeyConstraint baseColumnNames="userid" baseTableName="card" constraintName="fk_hbqy0l1isdb3gbl3sc3k7hlrp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-125">
+        <addForeignKeyConstraint baseColumnNames="modified_by" baseTableName="eventhistory" constraintName="fk_hmf6oea0uxwuf7y7v4gevn0q7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-126">
+        <addForeignKeyConstraint baseColumnNames="created_by" baseTableName="event_template" constraintName="fk_http9ejqnk2niah9k6wd5nhfs" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-127">
+        <addForeignKeyConstraint baseColumnNames="organizationid" baseTableName="organization_address" constraintName="fk_hw6bmn05adeinw2yhv1q0hgo2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="organizationunitid" referencedTableName="organizationunit" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-128">
+        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="clerk" constraintName="fk_igr5os6rwohvoyift6vevwhjr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-129">
+        <addForeignKeyConstraint baseColumnNames="qrtzjobdetail_job_group,qrtzjobdetail_job_name,qrtzjobdetail_sched_name" baseTableName="qrtz_triggers" constraintName="fk_je2frbyaqwy35tgi5brmnxtax" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="sched_name,job_name,job_group" referencedTableName="qrtz_job_details" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-130">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="group_leaders" constraintName="fk_jiryguh50gxdoixkkducpt3nd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-131">
+        <addForeignKeyConstraint baseColumnNames="messageid" baseTableName="card" constraintName="fk_k1lsej6gjmew2q3tkls9cql71" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="message" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-132">
+        <addForeignKeyConstraint baseColumnNames="clerk_id" baseTableName="doc_info" constraintName="fk_kcxo0i6dbjcmobq8ohnr8n7c4" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="clerk" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-133">
+        <addForeignKeyConstraint baseColumnNames="current_doctor" baseTableName="client" constraintName="fk_kcyix8i3spia20fm3nc5l4w2n" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctor" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-134">
+        <addForeignKeyConstraint baseColumnNames="registereduser" baseTableName="userregister" constraintName="fk_kdvb11e67mrtgs45qdn16tk8w" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-135">
+        <addForeignKeyConstraint baseColumnNames="addressid" baseTableName="organization_address" constraintName="fk_ku7o0h9c3chayvg6rkk67swlp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="addresses" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-136">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="event_template" constraintName="fk_kyxw4y7pp0x2cq8ub4umm7oxv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="groupforclients" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-137">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="event_leader" constraintName="fk_lbjr9g2kfal05n8v0it6hmtls" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-138">
+        <addForeignKeyConstraint baseColumnNames="createdby" baseTableName="alerts" constraintName="fk_lm294vmx1tkwixm4h69bffnks" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-139">
+        <addForeignKeyConstraint baseColumnNames="client" baseTableName="clientchanges" constraintName="fk_lymjpwm40df4xht3jrrmfmvsw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-140">
+        <addForeignKeyConstraint baseColumnNames="rfcardid" baseTableName="rfidlogentry" constraintName="fk_m84bpinlo288ou2qk1wbbwkck" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="rfidcardreader" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-141">
+        <addForeignKeyConstraint baseColumnNames="organizationunit" baseTableName="systemuser" constraintName="fk_ma4rlxap5ftqftwepv3t4krjk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="organizationunitid" referencedTableName="organizationunit" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-142">
+        <addForeignKeyConstraint baseColumnNames="language" baseTableName="systemuser" constraintName="fk_mx8c5gtqrp2mvksdblk6fb0lg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="language" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-143">
+        <addForeignKeyConstraint baseColumnNames="usergroup" baseTableName="systemuser" constraintName="fk_n1ueqt0jk82v3ywn8d7c0k1fh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="usergroupid" referencedTableName="usergroup" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-144">
+        <addForeignKeyConstraint baseColumnNames="manager" baseTableName="casemanagerforclients" constraintName="fk_nr79k7iercyuin3o5acstpa8o" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-145">
+        <addForeignKeyConstraint baseColumnNames="template_id" baseTableName="template_client" constraintName="fk_ns3kvsdvl9yf67adhchuuyb62" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="event_template" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-146">
+        <addForeignKeyConstraint baseColumnNames="modified_by" baseTableName="client" constraintName="fk_nwbkehhjkcyif7w68fi9ochtx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-147">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="organization" constraintName="fk_nxh64ge4kcufp02w1huv8t93k" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="iconid" referencedTableName="icon" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-148">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="event_client" constraintName="fk_omp85hybxs7h9d1h7k0glqy67" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-149">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="accessible_client" constraintName="fk_pgr9kifoqa9nogyif2af9r5jj" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-150">
+        <addForeignKeyConstraint baseColumnNames="cartaker_id" baseTableName="cartaker_client" constraintName="fk_po6kj2uxn2pnn609obpgqydk6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="cartaker" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-151">
+        <addForeignKeyConstraint baseColumnNames="icon" baseTableName="organizationunit" constraintName="fk_q64xpfxag36elawjgxnfrkdon" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="iconid" referencedTableName="icon" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-152">
+        <addForeignKeyConstraint baseColumnNames="modified_by" baseTableName="event_template" constraintName="fk_r7a7g0x9yqfbq5wjs4xxt3vgu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="systemuser" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-153">
+        <addForeignKeyConstraint baseColumnNames="accessible_id" baseTableName="cartaker_client" constraintName="fk_rjodgodjnlmi7ploqc18rw41t" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="accessible" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-154">
+        <addForeignKeyConstraint baseColumnNames="accessible_type_id" baseTableName="accessible" constraintName="fk_su3lrc88vvq0s4xobc2ormbht" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="accessibletype" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-155">
+        <addForeignKeyConstraint baseColumnNames="organization" baseTableName="organizationunit" constraintName="fk_tgkh4c941e25019rpjm7cmn31" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-156">
+        <addForeignKeyConstraint baseColumnNames="message_id" baseTableName="message_card" constraintName="fk_thp9xo1m7470g68jp7y8c34gj" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="message" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-157">
+        <addForeignKeyConstraint baseColumnNames="sched_name,trigger_name,trigger_group" baseTableName="qrtz_blob_triggers" constraintName="qrtz_blob_triggers_sched_name_trigger_name_trigger_group_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="sched_name,trigger_name,trigger_group" referencedTableName="qrtz_triggers" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-158">
+        <addForeignKeyConstraint baseColumnNames="sched_name,trigger_name,trigger_group" baseTableName="qrtz_cron_triggers" constraintName="qrtz_cron_triggers_sched_name_trigger_name_trigger_group_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="sched_name,trigger_name,trigger_group" referencedTableName="qrtz_triggers" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-159">
+        <addForeignKeyConstraint baseColumnNames="sched_name,trigger_name,trigger_group" baseTableName="qrtz_simple_triggers" constraintName="qrtz_simple_triggers_sched_name_trigger_name_trigger_group_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="sched_name,trigger_name,trigger_group" referencedTableName="qrtz_triggers" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-160">
+        <addForeignKeyConstraint baseColumnNames="sched_name,trigger_name,trigger_group" baseTableName="qrtz_simprop_triggers" constraintName="qrtz_simprop_triggers_sched_name_trigger_name_trigger_grou_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="sched_name,trigger_name,trigger_group" referencedTableName="qrtz_triggers" validate="true"/>
+    </changeSet>
+    <changeSet author="pzoli (generated)" id="1735830836267-161">
+        <addForeignKeyConstraint baseColumnNames="sched_name,job_name,job_group" baseTableName="qrtz_triggers" constraintName="qrtz_triggers_sched_name_job_name_job_group_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="sched_name,job_name,job_group" referencedTableName="qrtz_job_details" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
