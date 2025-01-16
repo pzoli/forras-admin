@@ -186,7 +186,9 @@ Then you can add forras-admin project to wildfly.
 
 [Forras-admin-wdio](https://github.com/pzoli/forras-admin-wdio)
 
-[keycloak-jwtauth-swagger](https://github.com/pzoli/keycloak-jwtauth-swagger)
+[forras-admin2-server](https://github.com/pzoli/forras-admin2-server)
+
+[forrasNgModule](https://github.com/pzoli/forras-ng-module)
 
 [forras-admin2-react](https://github.com/pzoli/forras-admin2-react)
 
