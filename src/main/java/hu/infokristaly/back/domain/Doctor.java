@@ -9,28 +9,40 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+
 @Cacheable(value=true)
 @Entity
 public class Doctor implements Serializable {
 
     private static final long serialVersionUID = 8139245173549972194L;
     
-    private Integer id;
+    private Long id;
+    
+    @EntityFieldInfo(info="Név", weight=1, required=true, editor="txt")
     private String name;
 
+    public Doctor() {
+    	
+    }
+    
+    public Doctor(Long id) {
+    	this.id = id;
+    }
+    
     /**
      * @return the id
      */
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(unique=true, nullable=false)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
     /**
      * @param id the id to set
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -28,7 +28,7 @@ import hu.infokristaly.back.model.AppProperties;
 import hu.exprog.beecomposit.back.model.SystemUser;
 import hu.infokristaly.middle.service.ClientTypeService;
 import hu.infokristaly.middle.service.ClientsService;
-import hu.infokristaly.middle.service.DoctorService;
+import hu.infokristaly.middle.service.DoctorsService;
 import hu.infokristaly.middle.service.UserService;
 import hu.infokristaly.utils.StringToolkit;
 
@@ -84,7 +84,7 @@ public class ClientsManager implements Serializable, Converter {
     private ClientTypeService clientTypeService;
 
     @Inject
-    private DoctorService doctorService;
+    private DoctorsService doctorsService;
 
     @Inject
     private AppProperties appProperties;
@@ -369,7 +369,7 @@ public class ClientsManager implements Serializable, Converter {
             currentClient.setModified_by(userService.getLoggedInSystemUser());
         }
         if ((currentDoctorId != null) && !currentDoctorId.isEmpty()) {
-            Doctor doctor = doctorService.find(Integer.valueOf(currentDoctorId));
+            Doctor doctor = doctorsService.find(new Doctor(Long.parseLong(currentDoctorId)));
             currentClient.setCurrentDoctor(doctor);
         } else {
             currentClient.setCurrentDoctor(null);

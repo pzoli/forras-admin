@@ -426,7 +426,7 @@
 									<p:selectOneMenu id="docSelect" style="width:200px;"
 										value="#{clientsManager.currentDoctorId}">
 										<f:selectItem itemLabel="--válasszon--" itemValue="" />
-										<f:selectItems value="#{doctorService.findAllDoctor()}"
+										<f:selectItems value="#{doctorsService.findAll()}"
 											var="doctor" itemLabel="#{doctor.name}"
 											itemValue="#{doctor.id}" />
 									</p:selectOneMenu>

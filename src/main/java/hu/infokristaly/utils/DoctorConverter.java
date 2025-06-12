@@ -1,7 +1,7 @@
 package hu.infokristaly.utils;
 
 import hu.infokristaly.back.domain.Doctor;
-import hu.infokristaly.middle.service.DoctorService;
+import hu.infokristaly.middle.service.DoctorsService;
 import hu.infokristaly.middle.service.UserService;
 
 import javax.faces.component.UIComponent;
@@ -19,14 +19,12 @@ public class DoctorConverter implements Converter {
         } else {
             Doctor result = null;
             try {
-                Integer id = Integer.parseInt(value);
-                Doctor doc = new Doctor();
-                doc.setId(id);
+                Doctor doc = new Doctor(Long.parseLong(value));
                 InitialContext ic = new InitialContext();
-                Object service = ic.lookup("java:/global/forras-admin/DoctorService");
+                Object service = ic.lookup("java:/global/forras-admin/DoctorsService");
                 if ((service != null) && (service instanceof UserService)) {
                     System.out.println("service:" + service);
-                    result = ((DoctorService) service).find(doc);
+                    result = ((DoctorsService) service).find(doc);
                 } else {
                     System.out.println("service is null");
                 }
