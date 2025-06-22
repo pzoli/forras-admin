@@ -21,7 +21,7 @@ public class ClientTypeConverter implements Converter {
 		} else {
 			ClientType result = null;
 			try {
-				Integer id = Integer.parseInt(value);
+				Long id = Long.parseLong(value);
 				ClientType clientType = new ClientType();
 				clientType.setId(id);
 				InitialContext ic = new InitialContext();

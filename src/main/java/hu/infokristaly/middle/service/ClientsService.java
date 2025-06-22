@@ -262,10 +262,10 @@ public class ClientsService implements Serializable {
 		}
 
 		if ((types != null) && (types.length > 0)) {
-			List<Integer> typeIds = new LinkedList<Integer>();
+			List<Long> typeIds = new LinkedList<Long>();
 			for (String type : types) {
 				if ((type != null) && !("".equals(type))) {
-					typeIds.add(Integer.valueOf(type));
+					typeIds.add(Long.valueOf(type));
 				}
 			}
 			if (typeIds.size() > 0) {
@@ -434,10 +434,10 @@ public class ClientsService implements Serializable {
 		}
 
 		if (alive && (types != null) && (types.length > 0)) {
-			List<Integer> typeIds = new LinkedList<Integer>();
+			List<Long> typeIds = new LinkedList<Long>();
 			for (String type : types) {
 				if ((type != null) && !("".equals(type))) {
-					typeIds.add(Integer.valueOf(type));
+					typeIds.add(Long.valueOf(type));
 				}
 			}
 			if (typeIds.size() > 0) {

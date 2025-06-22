@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+
 @Entity
 @Table(name = "client_type")
 @Cacheable(value=true)
@@ -12,24 +14,25 @@ public class ClientType implements Serializable {
 
     private static final long serialVersionUID = 6661983434712372792L;
 
-    private Integer id;
+    private Long id;
+    @EntityFieldInfo(info="Ellátás jellege", weight=1, required=true, editor="txt")
     private String typename;
 
     public ClientType() {
     }
 
-    public ClientType(int id) {
+    public ClientType(long id) {
         setId(id);
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -4,76 +4,22 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:dp="http://integrity.hu/dynap"
 	template="/WEB-INF/templates/default.xhtml">
+	<f:metadata>
+		<f:viewAction action="#{clientTypeManager.setSelectMode('multiple')}" />
+		<f:viewAction action="#{clientTypeManager.setDialogMode('')}"/>
+	</f:metadata>
 	<ui:define name="content">
 		<script type="text/javascript"
 			src="${request.contextPath}/resources/js/calendar.js" />
-		<script type="text/javascript"
-			src="${request.contextPath}/resources/js/eventHandlers.js" />
-			
+
 		<p:growl id="growl" showSummary="true" showDetail="true" sticky="true" />
-		<h:form id="newCtypeForm">
-			<p:panel id="newCtypePanel">
-				<f:facet name="header">
-							Ellátás jellege
-						</f:facet>
-				<h:panelGrid columns="4">
-					<h:outputLabel value="Ellátás neve: " />
-					<p:inputText id="newClientType" required="true"
-						requiredMessage="Ellátás nevét kötelező kitölteni!"
-						value="#{clientTypeManager.newClientType.typename}" />
-					<p:commandButton value="Hozzáad"
-						actionListener="#{clientTypeManager.persistNew}"
-						update="@form,:growl,:CtypeForm" />
-				</h:panelGrid>
-			</p:panel>
-		</h:form>
-		<h:form id="CtypeForm">
-			<p:panel id="CtypePanel">
-				<p:dataTable value="#{clientTypeManager.lazyDataModel}" var="clientType"
-					id="CtypeTable" styleClass="simpletablestyle"
-					selection="#{clientTypeManager.selectedClientType}" lazy="true"
-					emptyMessage="Nincs rögzített ellátás jellege" paginator="true"
-					rows="10" sortBy="#{clientType.typename}" editable="true"
-					rowKey="#{clientType.id}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
-					rowsPerPageTemplate="5,10,15">
-						<f:facet name="{Exporters}">
-								<h:commandLink>
-									<p:graphicImage name="img/excel.png" width="24" />
-									<p:dataExporter type="xls" target="CtypeTable"
-										fileName="foglalkozasok"
-										postProcessor="#{exporterView.postProcessXLS}" />
-								</h:commandLink>
-							</f:facet>
-					<p:ajax event="rowEdit" listener="#{clientTypeManager.onEdit}"
-						update=":CtypeForm:CtypeTable,:growl" />
-					<p:ajax event="rowEditCancel" listener="#{clientTypeManager.onCancel}" update=":growl"/>
-					<p:column selectionMode="multiple" style="width:4%" />
-
-					<p:column headerText="Ellátás jellege" style="width:30%;"
-						styleClass="tableFieldLeft" sortBy="#{clientType.typename}"
-						filterMatchMode="contains" filterBy="#{clientType.typename}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{clientType.typename}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:inputText value="#{clientType.typename}" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-
-					<p:column style="width:6%">
-						<p:rowEditor />
-					</p:column>
-
-				</p:dataTable>
-				<p:commandButton value="Törlés"
-					actionListener="#{clientTypeManager.deleteClientType}" process="@form"
-					update="@form,:CtypeForm:CtypeTable,growl" />
-			</p:panel>
-		</h:form>
+		<dp:dialog dialogWidgetVar="dlgClientTypeWidget" dialogHeader="Ellátás jellege"
+			managerBean="#{clientTypeManager}"
+			formModel="#{clientTypeManager.formModel}" />
+		<dp:dynTable managerBean="#{clientTypeManager}" tableHeader="Ellátás jellege" id="doctors"
+			dialogWidgetVar="dlgClientTypeWidget" editable="true"/>
 
 	</ui:define>
 </ui:composition>

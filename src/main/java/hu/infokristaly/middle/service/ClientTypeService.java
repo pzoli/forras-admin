@@ -1,23 +1,9 @@
-/*
- * 
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
- * @author Zoltan Papp
- * 
- */
 package hu.infokristaly.middle.service;
 
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -25,47 +11,21 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.primefaces.model.SortOrder;
-
+import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.infokristaly.back.domain.ClientType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
-import java.io.Serializable;
-
-/**
- * The FileInfoService implements Serializable, Serializable class. Used for
- * manage fileInfo entities.
- * 
- * @author pzoli
- * @param <FilterOptions>
- * @param <Restrictor>
- * 
- */
-
-@Stateless
 @Named
-public class ClientTypeService implements Serializable {
+@Stateless
+public class ClientTypeService extends BasicService <ClientType> implements Serializable {
 
-    private static final long serialVersionUID = 4896024140026461148L;
+    private static final long serialVersionUID = -9139027636913174016L;
 
-    /** The logger. */
-    @Inject
-    private Logger log;
-
-    /** The entity manager. */
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
+
+    @Inject
+    private Logger log;
 
     public ClientTypeService() {
 
@@ -75,131 +35,62 @@ public class ClientTypeService implements Serializable {
     public void init() {
     }
 
-    /**
-     * Find the fileInfo.
-     * 
-     * @param fileInfo
-     *            the file info
-     * @return the file info
-     */
-    public ClientType find(ClientType client) {
-        ClientType result = em.find(ClientType.class, client.getId());
-        if (result != null) {
-            log.info("Found [" + client.getId() + "] = " + result.getTypename());
-        } else {
-            log.info("Found [" + client.getId() + "] = null");
-        }
-
-        return result;
+    @Override
+    protected Query buildCountQuery(Map<String, Object> filters) {
+        String result = buildQueryString(filters);
+        result = "select count(*) " + result;
+        Query q = em.createQuery(result);
+        return q;
     }
 
-    /**
-     * Find All
-     * 
-     * @param first
-     *            the first
-     * @param pageSize
-     *            the page size
-     * @return the list
-     */
-    @SuppressWarnings("unchecked")
-    public List<ClientType> findAll() {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<ClientType> cq = builder.createQuery(ClientType.class);
-        Root<ClientType> from = cq.from(ClientType.class);
-        cq.select(from);
-
-        cq.orderBy(builder.asc(from.get("typename")));
-        Query q = em.createQuery(cq);
-        return q.getResultList();
+    @Override
+    protected Query buildQuery(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        String result = buildQueryString(filters);
+        Query q = em.createQuery(result);
+        return q;
     }
 
-    public void mergeClientType(ClientType clientType) {
-        em.merge(clientType);
+    @Override
+    protected String buildQueryString(Map<String, Object> filters) {
+        StringBuffer queryBuff = new StringBuffer();
+        queryBuff.append("from Doctor");
+        filters.keySet().stream().forEach(key -> {
+            Object o = filters.get(key);
+            Map<String, String> desc = getDescriptor(key);
+            queryBuff.append(" ");
+        });
+        return queryBuff.toString();
     }
 
-    public void persistClientType(ClientType clientType) {
-        em.persist(clientType);
+    private Map<String, String> getDescriptor(String key) {
+        return null;
     }
 
-    public ClientType findClientType(ClientType clientType) {
-        ClientType result = em.find(ClientType.class, clientType.getId());
-        return result;
+    @Override
+    protected void setQueryParams(Query q, Map<String, Object> filters) {
+        filters.entrySet().stream().forEach((Entry<String, Object> e) -> {
+            q.setParameter(e.getKey(), e.getValue());
+        });
     }
 
-    public ClientType findClientType(Integer primaryKey) {
-        ClientType result = em.find(ClientType.class, primaryKey);
-        return result;
+    @Override
+    public EntityManager getEm() {
+        return em;
     }
 
-    public List<ClientType> findRange(int first, int pageSize, String actualOrderField, SortOrder actualSortOrder, Map<String, Object> filters) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<ClientType> cq = builder.createQuery(ClientType.class);
-        Root<ClientType> from = cq.from(ClientType.class);
-        cq.select(from);
-
-        if ((actualOrderField != null) && !actualOrderField.isEmpty()) {
-            if (actualSortOrder.equals(SortOrder.ASCENDING)) {
-                cq.orderBy(builder.asc(from.get(actualOrderField)));
-            } else {
-                cq.orderBy(builder.desc(from.get(actualOrderField)));
-            }
-        }
-
-        List<Predicate> predicateList = new ArrayList<Predicate>();
-        if ((filters != null) && !filters.isEmpty()) {
-            Set<Entry<String, Object>> es = filters.entrySet();
-            for (Entry<String, Object> filter : es) {
-                String field = filter.getKey();
-                Expression<String> x = from.get(field);
-                String pattern = filter.getValue() + "%";
-                x = builder.lower(x);
-                pattern = pattern.toLowerCase();
-                Predicate predicate = builder.like(x, pattern);
-                predicateList.add(predicate);
-            }
-        }
-        if (!predicateList.isEmpty()) {
-            Predicate predicates = builder.and(predicateList.toArray(new Predicate[predicateList.size()]));
-            cq.where(predicates);
-        }
-
-        Query q = em.createQuery(cq);
-        q.setFirstResult(first);
-        q.setMaxResults(pageSize);
-        return q.getResultList();
+    @Override
+    public ClientType find(ClientType item) {
+        return em.find(ClientType.class, item.getId());
     }
 
-    public int count(Map<String, Object> actualfilters) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<ClientType> cq = builder.createQuery(ClientType.class);
-        Root<ClientType> from = cq.from(ClientType.class);
-        cq.select(from);
-
-        List<Predicate> predicateList = new ArrayList<Predicate>();
-        if ((actualfilters != null) && !actualfilters.isEmpty()) {
-            Set<Entry<String, Object>> es = actualfilters.entrySet();
-            for (Entry<String, Object> filter : es) {
-                String field = filter.getKey();
-                Expression<String> x = from.get(field);
-                String pattern = filter.getValue() + "%";
-                x = builder.lower(x);
-                pattern = pattern.toLowerCase();
-                Predicate predicate = builder.like(x, pattern);
-                predicateList.add(predicate);
-            }
-        }
-        if (!predicateList.isEmpty()) {
-            Predicate predicates = builder.and(predicateList.toArray(new Predicate[predicateList.size()]));
-            cq.where(predicates);
-        }
-        Query q = em.createQuery(cq);
-        return q.getResultList().size();
+    @Override
+    public Logger getLogger() {
+        return log;
     }
 
-    public void deleteClientType(ClientType item) {
-        item = em.find(ClientType.class, item.getId());
-        em.remove(item);
+    @Override
+    public Class<ClientType> getDomainClass() {
+        return ClientType.class;
     }
 
 }
