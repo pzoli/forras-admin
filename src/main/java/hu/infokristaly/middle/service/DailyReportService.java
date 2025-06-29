@@ -72,7 +72,7 @@ public class DailyReportService implements Serializable {
 
     private int pageSize = 52;
     private CellStyle cellStyle;
-    private static int DEFAULT_SUBJ_TYPE_EGYEB = 5;
+    private static long DEFAULT_SUBJ_TYPE_EGYEB = 5L;
 
     public void createReport(SystemUser user, Date reportStartDate, Date reportEndDate, Boolean visibleByActiveBool, String[] selectedClientTypes) {
 
@@ -115,7 +115,7 @@ public class DailyReportService implements Serializable {
         log.info("==============================");
         while (endDate.after(currentStartDate)) {
             List<ScheduleEvent> report = (List<ScheduleEvent>) scheduleService.loadEvents(currentStartDate.getTime(), currentEndDate.getTime(), TimeZone.getDefault(), false, null);
-            TreeMap<String, HashMap<Integer, Integer>> clientCats = new TreeMap<String, HashMap<Integer, Integer>>();
+            TreeMap<String, HashMap<Long, Long>> clientCats = new TreeMap<String, HashMap<Long, Long>>();
             Iterator<ScheduleEvent> iter = report.iterator();
 
             while (iter.hasNext()) {
@@ -139,24 +139,24 @@ public class DailyReportService implements Serializable {
                         boolean containsType = ((version.getClientType() != null) && ArrayUtils.contains(selectedClientTypes, String.valueOf(version.getClientType().getId()))) || ((version.getClientType() == null) && containsNull(selectedClientTypes));
                         if ((version.getActive().equals(visibleByActiveBool) || (visibleByActiveBool == null) || "".equals(visibleByActiveBool)) && containsType) {
                             String nySzam = client.getNyilvantartasiSzam();
-                            HashMap<Integer, Integer> cats;
+                            HashMap<Long, Long> cats;
                             if (clientCats.containsKey(nySzam)) {
                                 cats = clientCats.get(nySzam);
                                 if (cats.containsKey(type.getId())) {
-                                    Integer value = cats.get(type.getId());
+                                    Long value = cats.get(type.getId());
                                     if (value == null) {
-                                        value = 1;
+                                        value = 1L;
                                     } else {
-                                        value += 1;
+                                        value += 1L;
                                     }
                                     cats.put(type.getId(), value);
                                 } else {
-                                    cats.put(type.getId(), 1);
+                                    cats.put(type.getId(), 1L);
                                 }
                                 clientCats.put(nySzam, cats);
                             } else {
-                                cats = new HashMap<Integer, Integer>();
-                                cats.put(type.getId(), 1);
+                                cats = new HashMap<Long, Long>();
+                                cats.put(type.getId(), 1L);
                                 clientCats.put(nySzam, cats);
                             }
                         }
@@ -222,13 +222,13 @@ public class DailyReportService implements Serializable {
         return result;
     }
 
-    private void exportClientCatsToOneSheet(Map<String, HashMap<Integer, Integer>> clientCats, Date startDate) throws InvalidFormatException, IOException {
+    private void exportClientCatsToOneSheet(Map<String, HashMap<Long, Long>> clientCats, Date startDate) throws InvalidFormatException, IOException {
 
         int rowIndex = 10;
         int maxRow = 34;
         int summClientRow = 0;
         int pageIndex = 0;
-        Iterator<Entry<String, HashMap<Integer, Integer>>> iter = clientCats.entrySet().iterator();
+        Iterator<Entry<String, HashMap<Long, Long>>> iter = clientCats.entrySet().iterator();
         if (clientCats.isEmpty()) {
             throw new InvalidFormatException("Foglalkozáslista üres a megadott szűrési paraméterek alapján.");
         }
@@ -294,16 +294,16 @@ public class DailyReportService implements Serializable {
 
                 row = sheet.getRow(rowIndex);
 
-                Entry<String, HashMap<Integer, Integer>> item = iter.next();
+                Entry<String, HashMap<Long, Long>> item = iter.next();
                 XSSFCell cell = row.getCell(1);
                 cell.setCellType(CellType.STRING);
                 String nySzam = item.getKey();
                 cell.setCellValue(nySzam);
                 log.info(rowIndex + ". row 1. cell value: " + cell.getStringCellValue());
-                Iterator<Entry<Integer, Integer>> subjTypeIter = item.getValue().entrySet().iterator();
+                Iterator<Entry<Long, Long>> subjTypeIter = item.getValue().entrySet().iterator();
                 while (subjTypeIter.hasNext()) {
-                    Entry<Integer, Integer> subjtype = subjTypeIter.next();
-                    cell = row.getCell(1 + subjtype.getKey());
+                    Entry<Long, Long> subjtype = subjTypeIter.next();
+                    cell = row.getCell(new Long(1 + subjtype.getKey()).intValue());
                     cell.setCellValue(subjtype.getValue());
                 }
                 rowIndex++;

@@ -165,7 +165,7 @@ public class ScheduleManager implements Serializable {
 			initialDate = event.getStartDate();
 		}
 
-		setSubjects(subjectService.findAllSubject(event.getStartDate()));
+		setSubjects(subjectService.findAll()); //event.getStartDate()
 
 		setLeaders();
 		setClients();
@@ -387,7 +387,7 @@ public class ScheduleManager implements Serializable {
 			if (isMeeting) {
 				currentEvent.setStyleClass(MEETINGSTYLECLASS);
 				Subject subject = new Subject();
-				subject.setId(-1);
+				subject.setId(-1L);
 				currentEvent.setSubject(subject);
 			}
 			currentEvent.setClients(Arrays.asList(selectedSrcClients));
@@ -407,7 +407,7 @@ public class ScheduleManager implements Serializable {
 			if (isMeeting) {
 				currentEvent.setStyleClass(MEETINGSTYLECLASS);
 				Subject subject = new Subject();
-				subject.setId(-1);
+				subject.setId(-1L);
 				currentEvent.setSubject(subject);
 				currentEvent.setGroupForClients(null);
 			}

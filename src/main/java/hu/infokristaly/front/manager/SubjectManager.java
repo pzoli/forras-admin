@@ -1,267 +1,196 @@
-/*
- * 
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
- * @author Zoltan Papp
- * 
- */
 package hu.infokristaly.front.manager;
 
+import hu.exprog.beecomposit.front.manager.LocaleManager;
+import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
+import hu.exprog.honeyweb.front.manager.BasicManager;
+import hu.infokristaly.back.domain.ClientType;
+import hu.infokristaly.back.domain.RFIDCardReader;
+import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.domain.Subject;
 import hu.infokristaly.back.domain.SubjectType;
+import hu.exprog.honeyweb.middle.services.BasicService;
+import hu.exprog.honeyweb.utils.FieldModel;
+import hu.exprog.honeyweb.utils.LookupFieldModel;
+import hu.infokristaly.middle.service.ClientTypeService;
 import hu.infokristaly.middle.service.SubjectService;
+import hu.infokristaly.utils.SubjectTypeConverter;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.metadata.ConstraintDescriptor;
 
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
+import org.primefaces.event.SelectEvent;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The FileInfoLazyBean class.
- */
-@SessionScoped
 @Named
-public class SubjectManager implements Serializable {
+@SessionScoped
+public class SubjectManager extends BasicManager<Subject> implements Serializable {
 
-    private static final long serialVersionUID = -3562322678573374746L;
+	private static final long serialVersionUID = -8935780475418079295L;
 
-    /** The log. */
-    @Inject
-    private Logger log;
+	@Inject
+	private Logger logger;
 
-    private static final int DEFAULT_SUBJECT_TYPE_ID = 5;
-    /** The file info service. */
-    @Inject
-    private SubjectService subjectService;
+	@Inject
+	private SubjectService subjectService;
 
-    private Subject newSubject = new Subject();
+	@Inject
+	private LocaleManager localeManager;
 
-    private Subject currentSubject = new Subject();
+	public SubjectManager() {
 
-    private SubjectType currentSubjectType;
+	}
 
-    private Integer currentSubjectTypeId;
+	@PostConstruct
+	public void init() {
+		logger.log(Level.INFO, "[" + this.getClass().getName() + "] constructor finished.");
+		initValue();
+		initModel();
+	}
 
-    private List<SubjectType> subjectTypes;
+	public void initValue() {
+		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
+			current = Optional.of(new Subject());
+			clearProperties();
+		}
+	}
 
-    private Integer subjectsCount = null;
+	public void handleReturn(SelectEvent event) {
+		if (event.getObject() instanceof SubjectType) {
+			SubjectType selected = (SubjectType) event.getObject();
+			formModel.getControls().stream()
+					.filter(c -> ((FieldModel) c.getData()).getPropertyName().equals("subjectType"))
+					.forEach(d -> setDetailFieldValue((LookupFieldModel) d.getData(), selected.getId()));
+		} 
+	}
 
-    /** The lazy data model. */
-    private LazyDataModel<Subject> lazyDataModel;
+	public void save() {
+		setCurrentBeanProperties();
+		try {
+			if (current.isPresent()) {
+				if (current.get().getId() == null) {
+					subjectService.persist(current.get());
+				} else {
+					subjectService.merge(current.get());
+				}
+			}
+			current = Optional.of(new Subject());
+			clearProperties();
+		} catch (EJBException e) {
+			Throwable ex = e.getCause();
+			if (ex instanceof ConstraintViolationException) {
+				Set<ConstraintViolation<?>> msg = ((ConstraintViolationException) ex).getConstraintViolations();
+				msg.forEach(c -> {
+					StringBuffer validationExcMsg = new StringBuffer();
+					ConstraintDescriptor<?> desc = c.getConstraintDescriptor();
+					logger.info(desc.getAttributes().get("message").toString());
+					String temp = c.getMessageTemplate();
+					logger.info(temp);
+					validationExcMsg.append(c.getPropertyPath()).append(":").append(c.getMessage());
+					FacesMessage message = new FacesMessage(validationExcMsg.toString());
+					FacesContext.getCurrentInstance().addMessage(null, message);
+				});
+			} else {
+				FacesMessage message = new FacesMessage("Failed: " + e.getMessage());
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			}
+		}
+	}
+	
+	@Override
+	protected Logger getLogger() {
+		return logger;
+	}
 
-    private Subject[] selectedSubjects = {};
+	@Override
+	protected BasicService<Subject> getService() {
+		return subjectService;
+	}
 
-    private Boolean deletedVisible = null;
+	@Override
+	protected Locale getLocale() {
+		// TODO Auto-generated method stub
+		return localeManager.getLocale();
+	}
 
-    /**
-     * Gets the lazy data model used for test lazy loaded PrimeFaces table.
-     * 
-     * @return the lazy data model
-     */
-    public LazyDataModel<Subject> getLazyDataModel() {
-        if (lazyDataModel == null) {
-            lazyDataModel = new LazyDataModel<Subject>() {
+	@Override
+	protected Object getDetailFieldValue(LookupFieldModel model) {
+		Object result = null;
+		if (model.getPropertyName().equals("subjectType")) {
+			Long id = Long.valueOf((String) model.getValue());
+			result = subjectService.findSubjectType(id);
+		}
+		return result;
+	}
 
-                private static final long serialVersionUID = 1678907483750487431L;
+	public List<SubjectType> getSubjectType() {
+		List<SubjectType> subjectTypes = subjectService.findAllSubjectType();
+		return subjectTypes;
+	}
 
-                private Map<String, Object> actualfilters;
-                private String actualOrderField;
-                private SortOrder actualSortOrder;
 
-                @PostConstruct
-                public void init() {
-                    log.log(Level.INFO, "[LazyFileInfoDataModel] constructor finished.");
-                }
+	@Override
+	public boolean checkSaveRight() throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-                @Override
-                public Subject getRowData(String rowKey) {
-                    Integer primaryKey = Integer.valueOf(rowKey);
-                    return subjectService.findSubject(primaryKey);
-                }
+	@Override
+	public boolean checkDeleteRight() throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-                @Override
-                public Object getRowKey(Subject subject) {
-                    return subject.getId();
-                }
+	@Override
+	public boolean checkDeleteRight(Subject entity)
+			throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-                @Override
-                public List<Subject> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-                    subjectsCount = null;
-                    this.setPageSize(pageSize);
-                    if ((deletedVisible != null)) {
-                        filters.put("deleteDate", deletedVisible);
-                    }
-                    this.actualfilters = filters;
-                    if (sortField != null) {
-                        this.actualOrderField = sortField;
-                    }
-                    if (sortOrder != null) {
-                        this.actualSortOrder = sortOrder;
-                    }
-                    List<Subject> result = (List<Subject>) subjectService.findRange(first, pageSize, this.actualOrderField, this.actualSortOrder, filters);
-                    log.log(Level.INFO, "[LazyFileInfoDataModel] load finished.");
-                    return result;
-                }
+	@Override
+	public boolean checkEditableRights(Subject entity)
+			throws hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-                @Override
-                public int getRowCount() {
-                    if (subjectsCount == null) {
-                        subjectsCount = subjectService.count(actualfilters);
-                    }
-                    return subjectsCount;
-                }
+	@Override
+	public Object postProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-            };
-        }
-        return lazyDataModel;
-    }
+	@Override
+	public Object preProcess(FieldModel field, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    public List<SubjectType> getSubjectTypes() {
-        if (subjectTypes == null) {
-            subjectTypes = subjectService.findAllSubjectType();
-        }
-        return subjectTypes;
-    }
+	@Override
+	public boolean checkDetailsInTable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    public void createCurrentSubject() {
-        setCurrentSubject(new Subject());
-    }
-
-    public void createNewSubject() {
-        setNewSubject(new Subject());
-        newSubject.setLenghtInMinute(60);
-    }
-
-    public void onEdit(RowEditEvent event) {
-        Subject subject = (Subject) event.getObject();
-        FacesMessage msg = new FacesMessage("Foglalkozás adatai átszerkesztve", subject.getTitle());
-        subjectService.persistSubject(subject);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Új kliens módosítása visszavonva", ((Subject) event.getObject()).getComment());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public Subject getCurrentSubject() {
-        return currentSubject;
-    }
-
-    public void setCurrentSubject(Subject subject) {
-        this.currentSubject = subject;
-    }
-
-    public void prepareNewSubject(Subject subject) {
-        this.currentSubject = subject;
-        this.currentSubjectType = subject.getSubjectType();
-        if (this.currentSubjectType != null) {
-            this.currentSubjectTypeId = this.currentSubjectType.getId();
-        } else {
-            this.currentSubjectTypeId = null;
-        }
-    }
-
-    public void persistNew() {
-        newSubject.setUniqueMeeting(false);
-        newSubject.setResetAlert(true);
-        SubjectType defaultSubjectType = subjectService.findSubjectType(DEFAULT_SUBJECT_TYPE_ID);
-        newSubject.setSubjectType(defaultSubjectType);
-        subjectService.persistSubject(newSubject);
-        createNewSubject();
-    }
-
-    public void persistCurrent() {
-        currentSubjectType = subjectService.findSubjectType(currentSubjectTypeId);
-        currentSubject.setSubjectType(currentSubjectType);
-        subjectService.persistSubject(currentSubject);
-        createCurrentSubject();
-    }
-
-    public Subject[] getSelectedSubjects() {
-        return selectedSubjects;
-    }
-
-    public void setSelectedSubjects(Subject[] selectedSubjects) {
-        this.selectedSubjects = selectedSubjects;
-    }
-
-    public void deleteSubjects() {
-        Date deleteDate = new Date();
-        for (Subject item : selectedSubjects) {
-            try {
-                subjectService.deleteSubject(item);
-            } catch (EJBTransactionRolledbackException ex) {
-                item.setDeleteDate(deleteDate);
-                subjectService.merge(item);
-                FacesMessage msg = new FacesMessage("Megjegyzés", "[" + item.getTitle() + "] hivatkozás miatt nem törölhető, ezért passziv állapotba került.");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-            }
-        }
-    }
-
-    public void restoreSubjects() {
-        for (Subject item : selectedSubjects) {
-            item.setDeleteDate(null);
-            subjectService.merge(item);
-        }
-    }
-
-    public SubjectType getCurrentSubjectType() {
-        return currentSubjectType;
-    }
-
-    public void setCurrentSubjectType(SubjectType currentSubjectType) {
-        this.currentSubjectType = currentSubjectType;
-    }
-
-    public Subject getNewSubject() {
-        return newSubject;
-    }
-
-    public void setNewSubject(Subject newSubject) {
-        this.newSubject = newSubject;
-    }
-
-    public Integer getCurrentSubjectTypeId() {
-        return currentSubjectTypeId;
-    }
-
-    public void setCurrentSubjectTypeId(Integer currentSubjectTypeId) {
-        this.currentSubjectTypeId = currentSubjectTypeId;
-    }
-
-    public Boolean getDeletedVisible() {
-        return deletedVisible;
-    }
-
-    public void setDeletedVisible(Boolean deletedVisible) {
-        this.deletedVisible = deletedVisible;
-    }
+	@Override
+	public boolean checkListRight() throws ActionAccessDeniedException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

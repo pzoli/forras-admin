@@ -71,7 +71,7 @@ public class YearReportService implements Serializable {
     private static final byte EVENT = 6;
 
     private CellStyle cellStyle;
-    private static final int DEFAULT_SUBJ_TYPE_EGYEB = 5;
+    private static final long DEFAULT_SUBJ_TYPE_EGYEB = 5L;
     private static final int TOP_ROW_INDEX = 6;
 
     public void createReport(SystemUser user, Integer reportStartDate,Integer reportEndDate, Boolean visibleByActiveBool, String[] selectedClientTypes) {
@@ -289,13 +289,13 @@ public class YearReportService implements Serializable {
                     cell.setCellValue(nySzamCount);
 
                     CatMap catTypeMap = monthEntry.getValue();
-                    Iterator<Entry<Integer, Integer>> catIter = catTypeMap.entrySet().iterator();
+                    Iterator<Entry<Long, Long>> catIter = catTypeMap.entrySet().iterator();
                     while (catIter.hasNext()) {
-                        Entry<Integer, Integer> catEntry = catIter.next();
-                        int count = catEntry.getValue();
-                        int catType = catEntry.getKey();
+                        Entry<Long, Long> catEntry = catIter.next();
+                        long count = catEntry.getValue();
+                        long catType = catEntry.getKey();
                         row = sheet.getRow(TOP_ROW_INDEX + monthIndex);
-                        cell = row.getCell(yearMap.size() + 1 + yearIndex + ((catType - 1) * yearMap.size()));
+                        cell = row.getCell(new Long(yearMap.size() + 1 + yearIndex + ((catType - 1) * yearMap.size())).intValue());
                         cell.setCellValue(count);
                     }
                     monthIndex++;

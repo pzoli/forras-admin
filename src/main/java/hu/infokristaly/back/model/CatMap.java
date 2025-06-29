@@ -2,7 +2,7 @@ package hu.infokristaly.back.model;
 
 import java.util.TreeMap;
 
-public class CatMap extends TreeMap<Integer, Integer> {
+public class CatMap extends TreeMap<Long, Long> {
 
     private static final long serialVersionUID = -3882513828347158398L;
 
@@ -20,21 +20,21 @@ public class CatMap extends TreeMap<Integer, Integer> {
         return clientCount;
     }
 
-    public void incCatCounter(Integer index) {
+    public void incCatCounter(Long index) {
         if (containsKey(index)) {
-            Integer count = get(index);
+            Long count = get(index);
             if (count == null) {
-                count = 1;
+                count = 1L;
             } else {
                 count++;
             }
             put(index, count);
         } else {
-            put(index, 1);
+            put(index, 1L);
         }
     }
     
-    public Integer getCatCount(Integer index) {
+    public Long getCatCount(Long index) {
         return get(index);
     }
 

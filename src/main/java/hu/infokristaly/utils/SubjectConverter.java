@@ -19,12 +19,14 @@ public class SubjectConverter implements Converter {
         } else {
             Subject result = null;
             try {
-                Integer id = Integer.parseInt(value);
+                Long id = Long.parseLong(value);
                 InitialContext ic = new InitialContext();
                 Object service = ic.lookup("java:/global/forras-admin/SubjectService");
                 if ((service != null) && (service instanceof SubjectService)) {
                     System.out.println("service:" + service);
-                    result = ((SubjectService) service).findSubject(id);
+                    Subject subject = new Subject();
+                    subject.setId(id);
+                    result = ((SubjectService) service).find(subject);
                 } else {
                     System.out.println("service is null");
                 }

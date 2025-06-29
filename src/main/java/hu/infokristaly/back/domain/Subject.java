@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
+
 @Entity
 @Cacheable(value=true)
 @Table(name="subject")
@@ -29,35 +32,43 @@ public class Subject implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(unique=true, nullable=false)
-    private Integer id;
+    private Long id;
     
+    @EntityFieldInfo(info="Foglalkozás neve", weight=1, required=true, editor="txt")
     @Basic
     private String title;
     
+    @EntityFieldInfo(info="Egyéni foglalkozás", weight=2, required=true, editor="booleancheckbox")
     @Basic
     private Boolean uniqueMeeting;
     
+    @EntityFieldInfo(info="Foglalkozás hossza", weight=3, required=true, editor="integer")
     @Basic
     private Integer lenghtInMinute;
     
+    @EntityFieldInfo(info="Foglalkozás jellege", weight=4, required=true, editor="select")
+    @LookupFieldInfo(keyField="id",labelField="name")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="subject_type")
     private SubjectType subjectType;
 
+    @EntityFieldInfo(info="Figyelmeztetés nullázó", weight=5, required=false, editor="booleancheckbox")
     @Basic
     private Boolean resetAlert;
 
+    @EntityFieldInfo(info="Megjegyzés", weight=6, required=false, editor="txt")
     @Basic
     private String comment;
     
+    @EntityFieldInfo(info="Törölve", weight=7, required=false, editor="date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDate;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

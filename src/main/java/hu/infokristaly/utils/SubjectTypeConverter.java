@@ -19,7 +19,7 @@ public class SubjectTypeConverter implements Converter {
         } else {
             SubjectType result = null;
             try {
-                Integer id = Integer.parseInt(value);
+                Long id = Long.parseLong(value);
                 InitialContext ic = new InitialContext();
                 Object service = ic.lookup("java:/global/forras-admin/SubjectService");
                 if ((service != null) && (service instanceof SubjectService)) {
