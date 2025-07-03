@@ -19,7 +19,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+import hu.exprog.honeyweb.front.annotations.FieldEntitySpecificRightsInfo;
+import hu.exprog.honeyweb.front.annotations.FieldRightsInfo;
 import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
+import hu.exprog.honeyweb.front.annotations.QueryFieldInfo;
 
 @Entity
 @Cacheable(value=true)
@@ -48,6 +51,7 @@ public class Subject implements Serializable {
     
     @EntityFieldInfo(info="Foglalkozás jellege", weight=4, required=true, editor="select")
     @LookupFieldInfo(keyField="id",labelField="name")
+    @FieldRightsInfo(admin = "#{false}")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="subject_type")
     private SubjectType subjectType;

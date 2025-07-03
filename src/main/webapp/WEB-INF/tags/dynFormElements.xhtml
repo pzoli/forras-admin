@@ -11,7 +11,6 @@
 		<p:growl id="messages" />
 		<pe:dynaForm id="dynaForm" value="${formModel}" var="data"
 			columnClasses="label-container, field-container">
-
 			<pe:dynaFormControl type="hidden" for="#{data.propertyName}_hidden">
 				<p:inputText id="#{data.propertyName}_hidden" value="#{data.value}"
 					type="hidden" required="#{data.required}">
@@ -102,7 +101,7 @@
 			<pe:dynaFormControl type="select" for="#{data.propertyName}_select">
 				<p:selectOneMenu id="#{data.propertyName}_select"
 					value="#{data.value}" autoWidth="false"
-					disabled="#{data.rights.disabled}" required="#{data.required}">
+					disabled="#{data.rights.disabled || data.rights.readOnly}" required="#{data.required}">
 					<f:attribute name="propertyName" value="#{data.propertyName}" />
 					<f:selectItem itemLabel="--- #{msg['select-one']} ---"
 						noSelectionOption="true" />
@@ -114,7 +113,7 @@
 					update="_select" disabled="#{data.rights.disabled}"
 					title="#{msg['refresh-button']}" />
 				<p:commandButton
-					disabled="#{data.rights.disabled}"
+					disabled="#{data.rights.disabled}" rendered="#{!data.rights.disabled &amp;&amp; data.rights.admin}"
 					id="#{data.propertyName}_selectnew" title="#{msg['new-button']}"
 					action="#{managerBean.showDialog(data.detailDialogFile)}"
 					process="@this" icon="ui-icon-star">

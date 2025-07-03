@@ -3,17 +3,12 @@ package hu.infokristaly.front.manager;
 import hu.exprog.beecomposit.front.manager.LocaleManager;
 import hu.exprog.honeyweb.front.exceptions.ActionAccessDeniedException;
 import hu.exprog.honeyweb.front.manager.BasicManager;
-import hu.infokristaly.back.domain.ClientType;
-import hu.infokristaly.back.domain.RFIDCardReader;
-import hu.infokristaly.back.domain.RFIDCardUser;
 import hu.infokristaly.back.domain.Subject;
 import hu.infokristaly.back.domain.SubjectType;
 import hu.exprog.honeyweb.middle.services.BasicService;
 import hu.exprog.honeyweb.utils.FieldModel;
 import hu.exprog.honeyweb.utils.LookupFieldModel;
-import hu.infokristaly.middle.service.ClientTypeService;
 import hu.infokristaly.middle.service.SubjectService;
-import hu.infokristaly.utils.SubjectTypeConverter;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
@@ -58,15 +53,15 @@ public class SubjectManager extends BasicManager<Subject> implements Serializabl
 	@PostConstruct
 	public void init() {
 		logger.log(Level.INFO, "[" + this.getClass().getName() + "] constructor finished.");
-		initValue();
 		initModel();
+		initValue();
 	}
 
 	public void initValue() {
 		if ((current == null) || (!current.isPresent()) || current.get().getId() != null) {
 			current = Optional.of(new Subject());
-			clearProperties();
 		}
+		setControlData(getCurrent());
 	}
 
 	public void handleReturn(SelectEvent event) {

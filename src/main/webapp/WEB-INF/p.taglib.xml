@@ -6,7 +6,7 @@
 	<namespace>http://integrity.hu/dynap</namespace>
 	<tag>
 		<tag-name>dialog</tag-name>
-		<source>tags/fieldDialog.tpl.xhtml</source>
+		<source>tags/dynDialog.tpl.xhtml</source>
 		<attribute>
 			<name>dialogWidgetVar</name>
 			<type>java.lang.String</type>
