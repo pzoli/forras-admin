@@ -50,7 +50,7 @@ public class Subject implements Serializable {
     private Integer lenghtInMinute;
     
     @EntityFieldInfo(info="Foglalkozás jellege", weight=4, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="name")
+    @LookupFieldInfo(keyField="id",labelField="name", filterField = "subjectType.name", sortField = "subjectType.name")
     @FieldRightsInfo(admin = "#{false}")
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="subject_type")

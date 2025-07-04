@@ -1,6 +1,7 @@
 package hu.infokristaly.back.domain;
 
 import hu.exprog.honeyweb.front.annotations.EntityFieldInfo;
+import hu.exprog.honeyweb.front.annotations.FieldRightsInfo;
 import hu.exprog.honeyweb.front.annotations.LookupFieldInfo;
 
 import java.io.Serializable;
@@ -24,13 +25,14 @@ public class RFIDLogEntry implements Serializable {
 	private Long id;
 	
     @EntityFieldInfo(info="RFID kártya felhasználó", weight=1, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="userName", detailDialogFile="/admin/rfidusers-dialog")
+    @LookupFieldInfo(keyField="id",labelField="userName", detailDialogFile="/admin/rfidusers-dialog", filterField = "rfidCardUser.userName", sortField = "rfidCardUser.userName")
+    @FieldRightsInfo(admin = "#{false}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcarduserid")
     private RFIDCardUser rfidCardUser;
     
     @EntityFieldInfo(info="RFID kártyaolvasó", weight=2, required=true, editor="select")
-    @LookupFieldInfo(keyField="id",labelField="comment", detailDialogFile="/admin/rfidreaders-dialog")
+    @LookupFieldInfo(keyField="id",labelField="comment", detailDialogFile="/admin/rfidreaders-dialog", filterField = "rfidCardReader.comment", sortField = "rfidCardReader.comment")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rfcardid")
 	private RFIDCardReader rfidCardReader;

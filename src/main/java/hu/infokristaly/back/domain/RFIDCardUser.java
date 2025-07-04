@@ -39,6 +39,9 @@ public class RFIDCardUser implements Serializable {
     @JoinColumn(name = "clientid")
 	private Client client;
 
+    @Basic
+    private String userName;
+    
 	public RFIDCardUser() {
 		super();
 	}   
@@ -128,5 +131,9 @@ public class RFIDCardUser implements Serializable {
 
     public String getUserName() {
         return client != null ? client.getNeve() : null;
+    }
+    
+    public void setUserName(String userName) {
+    	this.userName = userName;
     }
 }

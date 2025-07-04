@@ -77,6 +77,7 @@ public class RFIDCardUserManager extends BasicManager<RFIDCardUser> implements S
 		setCurrentBeanProperties();
 		try {
 			if (current.isPresent()) {
+				current.get().setUserName(current.get().getClient().getNeve());
 				if (current.get().getId() == null) {
 				    rFIDCardUserService.persist(current.get());
 				} else {
