@@ -151,15 +151,18 @@ public abstract class BasicManager<T> {
 					if (field.isAnnotationPresent(EntityFieldInfo.class)) {
 						EntityFieldInfo entityInfo = field.getAnnotation(EntityFieldInfo.class);
 						String i18nLabel = evalELToString(entityInfo.info());
+						
 						Optional<QueryFieldInfo> queryFieldInfo = queryInfo != null ? queryFiledInfo(field, queryInfo) : Optional.empty();
 						if (entityInfo.listable() || (queryFieldInfo.isPresent() && queryFieldInfo.get().listable())) {
 							if (field.isAnnotationPresent(LookupFieldInfo.class)) {
 								LookupFieldInfo lookupInfo = field.getAnnotation(LookupFieldInfo.class);
 								String sortField = StringTools.isNotBlank(lookupInfo.sortField()) ? lookupInfo.sortField() : field.getName();
 								String filterField = StringTools.isNotBlank(lookupInfo.filterField()) ? lookupInfo.filterField() : field.getName();
-								initialColumns.add(new LookupColumnModel(i18nLabel, field.getName(), sortField, filterField, lookupInfo.labelField(), lookupInfo.filterFunction(), entityInfo.format()));
+								Converter conv = getConverter(lookupInfo.converter());
+								initialColumns.add(new LookupColumnModel(i18nLabel, field.getName(), sortField, filterField, lookupInfo.labelField(), lookupInfo.filterFunction(), entityInfo.format(), conv));
 							} else {
-								initialColumns.add(new ColumnModel(i18nLabel, field.getName(), field.getName(), field.getName(), entityInfo.format()));
+								Converter conv = getConverter(entityInfo.converter());
+								initialColumns.add(new ColumnModel(i18nLabel, field.getName(), field.getName(), field.getName(), entityInfo.format(), conv));
 							}
 						}
 						row = initialFormModel.createRegularRow();

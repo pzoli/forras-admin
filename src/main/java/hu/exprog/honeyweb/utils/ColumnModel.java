@@ -2,6 +2,8 @@ package hu.exprog.honeyweb.utils;
 
 import java.io.Serializable;
 
+import javax.faces.convert.Converter;
+
 public class ColumnModel implements Serializable {
 
 	private static final long serialVersionUID = 4063465058747639784L;
@@ -11,13 +13,15 @@ public class ColumnModel implements Serializable {
 	private String format;
 	private String sortField;
 	private String filterField;
+	private Converter converter;
 
-	public ColumnModel(String header, String property, String sortField, String filterField, String format) {
+	public ColumnModel(String header, String property, String sortField, String filterField, String format, Converter converter) {
 		this.header = header;
 		this.property = property;
 		this.sortField = sortField;
 		this.filterField = filterField;
 		this.format = format;
+		this.converter = converter;
 	}
 
 	public String getHeader() {
@@ -50,6 +54,14 @@ public class ColumnModel implements Serializable {
 
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+	public Converter getConverter() {
+		return converter;
+	}
+
+	public void setConverter(Converter converter) {
+		this.converter = converter;
 	}
 		
 }

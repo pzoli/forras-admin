@@ -3,6 +3,7 @@ package hu.exprog.honeyweb.middle.services;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,8 @@ public abstract class BasicService<T> {
 	protected abstract void setQueryParams(Query q, Map<String, Object> filters);
 
 	@SuppressWarnings("unchecked")
-	public List<T> findRangeByQString(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+	public List<T> findRangeByQString(int first, int pageSize, String sortField, SortOrder sortOrder,
+			Map<String, Object> filters) {
 		List<T> result = null;
 		Query q = buildQuery(sortField, sortOrder, filters);
 		setQueryParams(q, filters);
@@ -76,7 +78,8 @@ public abstract class BasicService<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> findRange(int first, int pageSize, String sortField, hu.exprog.honeyweb.middle.services.SortOrder sortOrder, Map<String, Object> filters) {
+	public List<T> findRange(int first, int pageSize, String sortField,
+			hu.exprog.honeyweb.middle.services.SortOrder sortOrder, Map<String, Object> filters) {
 		CriteriaBuilder builder = getEm().getCriteriaBuilder();
 		CriteriaQuery<T> cq = builder.createQuery(getDomainClass());
 		Root<T> from = cq.from(getDomainClass());
@@ -94,13 +97,14 @@ public abstract class BasicService<T> {
 			if (sortField.contains(".")) {
 				String fieldName = sortField.substring(0, sortField.indexOf("."));
 				String propertyName = sortField.substring(sortField.indexOf(".") + 1);
-				Optional<Join<T, ?>> joinForAlias = from.getJoins().stream().filter(j -> j.getAlias().equals(fieldName + "_" + propertyName)).findFirst();
+				Optional<Join<T, ?>> joinForAlias = from.getJoins().stream()
+						.filter(j -> j.getAlias().equals(fieldName + "_" + propertyName)).findFirst();
 				if (joinForAlias.isPresent()) {
 					x = joinForAlias.get().get(propertyName);
 				} else {
 					Join<?, ?> join = from.join(fieldName);
 					join.alias(fieldName + "_" + propertyName);
-					x = join.get(propertyName);					
+					x = join.get(propertyName);
 				}
 			} else {
 				x = from.get(sortField);
@@ -127,13 +131,16 @@ public abstract class BasicService<T> {
 			String field = filter.getKey();
 			Expression<?> x = null;
 			if (field.contains(".")) {
-				String fieldName = field.substring(0, field.indexOf("."));
-				String propertyName = field.substring(field.indexOf(".") + 1);
+				String[] items = field.split("\\.");
+
+				String fieldName = items[items.length - 2];
+				String propertyName = items[items.length - 1];
 
 				Join<?, ?> join = from.join(fieldName);
 				join.alias(fieldName + "_" + propertyName);
 				field = propertyName;
 				x = join.get(propertyName);
+
 			} else {
 				x = from.get(field);
 			}
@@ -149,7 +156,7 @@ public abstract class BasicService<T> {
 					pattern = pattern.toLowerCase();
 					predicate = builder.like((Expression<String>) x, pattern);
 				} else if (x.getJavaType().equals(Boolean.class)) {
-					if (((String) filter.getValue()).toLowerCase().startsWith("t")) {
+					if ((filter.getValue().toString()).toLowerCase().startsWith("t")) {
 						predicate = builder.isTrue((Expression<Boolean>) x);
 					} else {
 						predicate = builder.isFalse((Expression<Boolean>) x);

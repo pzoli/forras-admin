@@ -41,7 +41,7 @@ public class Subject implements Serializable {
     @Basic
     private String title;
     
-    @EntityFieldInfo(info="Egyéni foglalkozás", weight=2, required=true, editor="booleancheckbox")
+    @EntityFieldInfo(info="Egyéni foglalkozás", weight=2, required=true, editor="booleancheckbox", converter = "BoolConv")
     @Basic
     private Boolean uniqueMeeting;
     
@@ -56,7 +56,7 @@ public class Subject implements Serializable {
     @JoinColumn(name="subject_type")
     private SubjectType subjectType;
 
-    @EntityFieldInfo(info="Figyelmeztetés nullázó", weight=5, required=false, editor="booleancheckbox", converter = "booleanConverter") 
+    @EntityFieldInfo(info="Figyelmeztetés nullázó", weight=5, required=false, editor="booleancheckbox", converter = "BoolConv") 
     @Basic
     private Boolean resetAlert;
 

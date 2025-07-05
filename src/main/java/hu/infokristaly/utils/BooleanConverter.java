@@ -12,7 +12,7 @@ public class BooleanConverter implements Converter {
 		if (value == null) {
 			return null;
 		} else {
-			return Boolean.valueOf(value);
+			return Boolean.valueOf(value.toLowerCase().equals("igen"));
 		}
 	}
 

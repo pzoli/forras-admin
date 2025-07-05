@@ -18,9 +18,10 @@
 		}
     </script>
 	<h:form id="tableForm">
-		<p:dataTable id="itemsTable" value="#{managerBean.lazyDataModel}"
-			var="u" emptyMessage="#{msg['empty-table-message']}"
-			styleClass="order-table" resizableColumns="true"
+		<p:dataTable id="itemsTable" widgetVar="itemsTable"
+			value="#{managerBean.lazyDataModel}" var="u"
+			emptyMessage="#{msg['empty-table-message']}" styleClass="order-table"
+			resizableColumns="true"
 			selection="#{managerBean[managerBean.getSelectionVar()]}"
 			headerClass="order-table-header" lazy="true" rowKey="#{u.id}"
 			rows="10" paginator="true"
@@ -51,14 +52,21 @@
 					icon="ui-icon-pencil" />
 			</p:column>
 			<p:columns value="#{managerBean.columns}" var="column"
-				resizable="true" columnIndexVar="colIndex" sortable="true" filterable="true"
-				sortBy="#{column.sortField}" filterBy="#{column.filterField}">
+				resizable="true" columnIndexVar="colIndex" sortable="true"
+				filterable="true" sortBy="#{column.sortField}"
+				filterBy="#{column.filterField}">
 				<f:facet name="header">
 					<h:outputText value="#{column.header}" />
 				</f:facet>
+				<f:facet name="filter">
+					<p:inputText style="width:80%" rendered="#{empty column.converter}"
+						onkeyup="PF('itemsTable').filter();" />
+				</f:facet>
 				<h:outputText value="#{u[column.property]}"
-					rendered="#{managerBean.renderSimple(column.class.simpleName)}" />
+					rendered="#{managerBean.renderSimple(column.class.simpleName)}"
+					converter="#{column.converter}" />
 				<h:outputText value="#{u[column.property][column.lookupLabelfield]}"
+					converter="#{column.converter}"
 					rendered="#{managerBean.renderLookup(column.class.simpleName)}" />
 			</p:columns>
 			<p:column style="width:4%" id="togglerOnActive"
