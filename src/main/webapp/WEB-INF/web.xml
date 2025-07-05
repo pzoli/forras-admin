@@ -49,7 +49,7 @@
 
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>aristo</param-value>
+		<param-value>cupertino</param-value>
 	</context-param>
 	<servlet>
 		<servlet-name>QuartzInitializer</servlet-name>

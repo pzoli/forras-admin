@@ -276,7 +276,12 @@ public abstract class BasicManager<T> {
 			return null;
 		}
 		FacesContext context = FacesContext.getCurrentInstance();
-		Converter result = context.getApplication().createConverter(converterName);
+		Converter result = null;
+		try {
+			result = context.getApplication().createConverter(converterName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 

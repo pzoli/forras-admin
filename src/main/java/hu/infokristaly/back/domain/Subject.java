@@ -56,7 +56,7 @@ public class Subject implements Serializable {
     @JoinColumn(name="subject_type")
     private SubjectType subjectType;
 
-    @EntityFieldInfo(info="Figyelmeztetés nullázó", weight=5, required=false, editor="booleancheckbox")
+    @EntityFieldInfo(info="Figyelmeztetés nullázó", weight=5, required=false, editor="booleancheckbox", converter = "booleanConverter") 
     @Basic
     private Boolean resetAlert;
 
