@@ -172,7 +172,7 @@ Then you can add forras-admin project to wildfly.
 
 [ForrasAdminRFIDReader](https://github.com/pzoli/ForrasAdminRFIDReader)
 
-[NFCReaderSetupSwing](https://github.com/pzoli/NFCReaderSetupSwing)
+[NFCReaderSettingsSwing](https://github.com/pzoli/NFCReaderSettingsSwing)
 
 [QRCodeScanner](https://github.com/pzoli/QRCodeScanner)
 
